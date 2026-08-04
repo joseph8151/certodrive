@@ -8,9 +8,16 @@ import { makeT } from "@/lib/i18n";
 import { prisma } from "@/lib/db";
 import { VEHICLE_CATEGORIES, VEHICLE_META, POPULAR_CITIES } from "@/lib/constants";
 
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const locale = await getLocale();
   const t = makeT(locale);
+  const sp = await searchParams;
+
+  // Prefill the booking widget from query params (used by rebook / favorites).
+  const prefillKeys = ["serviceType", "pickupCountry", "pickupCity", "pickupLocation", "destination", "vehicleCategory"] as const;
+  const prefill: Record<string, string> = {};
+  for (const k of prefillKeys) if (sp[k]) prefill[k] = String(sp[k]);
+  const hasPrefill = Object.keys(prefill).length > 0;
 
   const reviewRows = await prisma.review.findMany({
     where: { rating: { gte: 4 }, comment: { not: null } },
@@ -76,7 +83,7 @@ export default async function HomePage() {
           </div>
 
           <div id="book" className="scroll-mt-20">
-            <BookingWidget locale={locale} />
+            <BookingWidget locale={locale} prefill={hasPrefill ? prefill : undefined} />
           </div>
         </div>
       </section>

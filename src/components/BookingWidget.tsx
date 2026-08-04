@@ -54,10 +54,12 @@ export default function BookingWidget({
   locale,
   serviceType = "AIRPORT_PICKUP",
   compact = false,
+  prefill,
 }: {
   locale: Locale;
   serviceType?: string;
   compact?: boolean;
+  prefill?: Partial<Form>;
 }) {
   const t = makeT(locale);
   const router = useRouter();
@@ -94,6 +96,7 @@ export default function BookingWidget({
     phone: "",
     messenger: "",
     promotionCode: "",
+    ...prefill,
   });
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));

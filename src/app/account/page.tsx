@@ -8,6 +8,8 @@ import { getSession } from "@/lib/auth";
 import { getLocale } from "@/lib/locale";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
+import FavoriteRouteCard, { bookHref } from "@/components/FavoriteRouteCard";
+import SaveRouteButton from "@/components/SaveRouteButton";
 
 export default async function AccountPage() {
   const session = await getSession();
@@ -17,19 +19,22 @@ export default async function AccountPage() {
   const L = locale === "ko";
 
   // Bookings owned by this account or made as a guest with the same email.
-  const bookings = await prisma.booking.findMany({
-    where: { OR: [{ customerUserId: session.userId }, { customerEmail: session.email.toLowerCase() }] },
-    orderBy: { createdAt: "desc" },
-    include: { assignedDriver: true },
-  });
+  const [bookings, favorites] = await Promise.all([
+    prisma.booking.findMany({
+      where: { OR: [{ customerUserId: session.userId }, { customerEmail: session.email.toLowerCase() }] },
+      orderBy: { createdAt: "desc" },
+      include: { assignedDriver: true },
+    }),
+    prisma.favoriteRoute.findMany({ where: { userId: session.userId }, orderBy: { createdAt: "desc" } }),
+  ]);
 
   const upcoming = bookings.filter((b) => !["COMPLETED", "CANCELLED", "REFUNDED", "NO_SHOW"].includes(b.status));
   const past = bookings.filter((b) => ["COMPLETED", "CANCELLED", "REFUNDED", "NO_SHOW"].includes(b.status));
 
   const Card = ({ b }: { b: (typeof bookings)[number] }) => (
-    <Link href={`/booking/confirm/${b.reference}`} className="card p-5 hover:card-shadow transition-shadow block">
+    <div className="card p-5">
       <div className="flex items-center justify-between">
-        <span className="font-display text-lg font-bold">{b.reference}</span>
+        <Link href={`/booking/confirm/${b.reference}`} className="font-display text-lg font-bold hover:text-[var(--color-gold-dark)]">{b.reference}</Link>
         <StatusPill status={b.status} locale={locale} />
       </div>
       <div className="text-sm text-[var(--color-slate)] mt-2">{b.pickupLocation} → {b.destination}</div>
@@ -38,7 +43,11 @@ export default async function AccountPage() {
         <span className="text-xs text-[var(--color-slate)]">{b.assignedDriver ? `${L ? "기사" : "Driver"}: ${b.assignedDriver.contactName}` : ""}</span>
         <span className="font-semibold">{formatMoney(b.customerPrice, b.currency)}</span>
       </div>
-    </Link>
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--color-line)]">
+        <Link href={bookHref(b)} className="btn btn-outline text-xs py-1 px-2">{L ? "재예약" : "Rebook"}</Link>
+        <SaveRouteButton reference={b.reference} locale={locale} />
+      </div>
+    </div>
   );
 
   return (
@@ -55,6 +64,15 @@ export default async function AccountPage() {
             <LogoutButton locale={locale} />
           </div>
         </div>
+
+        {favorites.length > 0 && (
+          <section className="mb-8">
+            <h2 className="font-semibold text-lg mb-3">{L ? "즐겨찾기 노선" : "Favorite routes"}</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {favorites.map((fav) => <FavoriteRouteCard key={fav.id} fav={fav} locale={locale} />)}
+            </div>
+          </section>
+        )}
 
         {bookings.length === 0 ? (
           <div className="card p-10 text-center">
