@@ -252,6 +252,7 @@ model Booking {
   notifications Notification[]
   statusEvents  BookingStatusEvent[]
   review        Review?
+  changeRequests BookingChangeRequest[]
 
   @@index([status])
   @@index([pickupCountry, pickupCity])
@@ -365,6 +366,36 @@ model CorporateAccount {
   note         String?
   status       String   @default("PENDING") // PENDING | ACTIVE | REJECTED
   createdAt    DateTime @default(now())
+}
+
+// Customer-requested changes to a booking (date/time/pickup/etc), reviewed by admin.
+model BookingChangeRequest {
+  id         String   @id @default(cuid())
+  bookingId  String
+  booking    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  changes    String   // JSON of requested field → new value
+  note       String?
+  status     String   @default("PENDING") // PENDING | APPLIED | REJECTED
+  createdAt  DateTime @default(now())
+  resolvedAt DateTime?
+
+  @@index([bookingId])
+  @@index([status])
+}
+
+// CMS content for per-city landing pages (spec: auto-generated city landing CMS).
+model CityContent {
+  id              String   @id @default(cuid())
+  city            String   @unique
+  country         String?
+  headline        String?
+  intro           String?
+  faq             String   @default("[]") // JSON [{ q, a }]
+  metaTitle       String?
+  metaDescription String?
+  published       Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Review {

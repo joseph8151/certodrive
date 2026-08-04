@@ -20,6 +20,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin/rates", label: L ? "환율" : "Rates" },
     { href: "/admin/drivers", label: L ? "기사" : "Drivers" },
     { href: "/admin/settlements", label: L ? "정산" : "Settlements" },
+    { href: "/admin/cms", label: L ? "CMS" : "CMS" },
     { href: "/admin/inbox", label: L ? "문의함" : "Inbox" },
   ];
 

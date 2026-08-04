@@ -245,6 +245,32 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // ---- Booking change requests ----
+      case "APPLY_CHANGE": {
+        const cr = await prisma.bookingChangeRequest.findUnique({ where: { id: body.changeId }, include: { booking: true } });
+        if (!cr) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        if (cr.status !== "PENDING") return NextResponse.json({ error: "Already resolved" }, { status: 409 });
+        const ALLOWED = ["serviceDate", "serviceTime", "pickupLocation", "destination", "passengers", "flightNumber"];
+        const changes = JSON.parse(cr.changes) as Record<string, string | number>;
+        const data: Record<string, string | number> = {};
+        for (const k of ALLOWED) if (k in changes) data[k] = changes[k];
+        await prisma.$transaction([
+          prisma.booking.update({
+            where: { id: cr.bookingId },
+            data: { ...data, statusEvents: { create: { from: cr.booking.status, to: cr.booking.status, actor: `admin:${session.userId}`, note: `Change applied: ${Object.keys(data).join(", ")}` } } },
+          }),
+          prisma.bookingChangeRequest.update({ where: { id: cr.id }, data: { status: "APPLIED", resolvedAt: new Date() } }),
+        ]);
+        await audit(session.userId, "APPLY_CHANGE", "Booking", cr.bookingId, data);
+        await sendNotification({ template: "CHANGE_APPLIED", recipientType: "CUSTOMER", to: cr.booking.customerEmail, bookingId: cr.bookingId, context: { reference: cr.booking.reference, customerName: cr.booking.customerName } });
+        return NextResponse.json({ ok: true });
+      }
+      case "REJECT_CHANGE": {
+        await prisma.bookingChangeRequest.update({ where: { id: body.changeId }, data: { status: "REJECTED", resolvedAt: new Date() } });
+        await audit(session.userId, "REJECT_CHANGE", "BookingChangeRequest", body.changeId);
+        return NextResponse.json({ ok: true });
+      }
+
       // ---- Flight delay notice ----
       case "FLIGHT_DELAY": {
         const { bookingId } = body;
@@ -257,6 +283,30 @@ export async function POST(req: Request) {
           if (driver) await sendNotification({ template: "FLIGHT_DELAY", recipientType: "DRIVER", to: driver.user.email, bookingId, context: ctx });
         }
         await audit(session.userId, "FLIGHT_DELAY", "Booking", bookingId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- City landing CMS ----
+      case "SAVE_CITY_CONTENT": {
+        const c = body.content ?? {};
+        const city = String(c.city ?? "").trim();
+        if (!city) return NextResponse.json({ error: "City is required" }, { status: 400 });
+        // FAQ arrives as "question | answer" lines; store as JSON.
+        const faq = String(c.faqText ?? "")
+          .split("\n").map((l: string) => l.trim()).filter(Boolean)
+          .map((l: string) => { const [q, ...a] = l.split("|"); return { q: q.trim(), a: a.join("|").trim() }; })
+          .filter((x: { q: string; a: string }) => x.q && x.a);
+        const saved = await prisma.cityContent.upsert({
+          where: { city },
+          update: { country: c.country || null, headline: c.headline || null, intro: c.intro || null, faq: JSON.stringify(faq), metaTitle: c.metaTitle || null, metaDescription: c.metaDescription || null, published: c.published !== false },
+          create: { city, country: c.country || null, headline: c.headline || null, intro: c.intro || null, faq: JSON.stringify(faq), metaTitle: c.metaTitle || null, metaDescription: c.metaDescription || null, published: c.published !== false },
+        });
+        await audit(session.userId, "SAVE_CITY_CONTENT", "CityContent", saved.id, { city });
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_CITY_CONTENT": {
+        await prisma.cityContent.delete({ where: { id: body.contentId } });
+        await audit(session.userId, "DELETE_CITY_CONTENT", "CityContent", body.contentId);
         return NextResponse.json({ ok: true });
       }
 

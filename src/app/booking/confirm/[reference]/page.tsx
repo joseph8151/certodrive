@@ -6,6 +6,7 @@ import BookingSummary from "@/components/BookingSummary";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import PayButton from "@/components/PayButton";
 import ReviewForm from "@/components/ReviewForm";
+import ChangeRequestForm from "@/components/ChangeRequestForm";
 import StatusPill from "@/components/StatusPill";
 import { prisma } from "@/lib/db";
 import { getLocale } from "@/lib/locale";
@@ -116,6 +117,10 @@ export default async function ConfirmPage({ params }: { params: Promise<{ refere
                     {locale === "ko" ? "예약 조회" : "Manage booking"}
                   </Link>
                 </div>
+              )}
+
+              {!["COMPLETED", "CANCELLED", "REFUNDED", "NO_SHOW"].includes(booking.status) && (
+                <ChangeRequestForm reference={booking.reference} locale={locale} />
               )}
 
               {booking.status === "COMPLETED" && !booking.review && (

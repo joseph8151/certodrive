@@ -6,6 +6,7 @@ import { safeJson, formatMoney } from "@/lib/utils";
 import BookingSummary from "@/components/BookingSummary";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import AdminBookingActions from "@/components/AdminBookingActions";
+import AdminQuickAction from "@/components/AdminQuickAction";
 import StatusPill from "@/components/StatusPill";
 
 export default async function AdminBookingDetail({ params }: { params: Promise<{ id: string }> }) {
@@ -23,6 +24,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
       statusEvents: { orderBy: { createdAt: "desc" } },
       notifications: { orderBy: { createdAt: "desc" } },
       review: true,
+      changeRequests: { orderBy: { createdAt: "desc" } },
     },
   });
   if (!booking) notFound();
@@ -114,6 +116,38 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
             approvedDrivers={approvedDrivers.map((d) => ({ id: d.id, contactName: d.contactName, businessName: d.businessName, city: d.city, koreanLevel: d.koreanLevel }))}
             locale={locale}
           />
+
+          {/* Change requests */}
+          {booking.changeRequests.length > 0 && (
+            <div className="card p-5">
+              <h3 className="font-semibold mb-3">{L ? "예약 변경 요청" : "Change requests"}</h3>
+              <div className="grid gap-3">
+                {booking.changeRequests.map((cr) => {
+                  const changes = safeJson<Record<string, string>>(cr.changes, {});
+                  return (
+                    <div key={cr.id} className="rounded-lg border border-[var(--color-line)] p-3">
+                      <div className="flex items-center justify-between">
+                        <span className={`pill ${cr.status === "PENDING" ? "pill-amber" : cr.status === "APPLIED" ? "pill-green" : "pill-red"}`}>{cr.status}</span>
+                        <span className="text-xs text-[var(--color-slate)]">{new Date(cr.createdAt).toLocaleString()}</span>
+                      </div>
+                      <ul className="text-sm mt-2 grid gap-0.5">
+                        {Object.entries(changes).map(([k, v]) => (
+                          <li key={k}><span className="text-[var(--color-slate)]">{k}:</span> <b>{v}</b></li>
+                        ))}
+                      </ul>
+                      {cr.note && <p className="text-sm text-[var(--color-slate)] mt-1">“{cr.note}”</p>}
+                      {cr.status === "PENDING" && (
+                        <div className="flex gap-2 mt-3">
+                          <AdminQuickAction body={{ action: "APPLY_CHANGE", changeId: cr.id }} label={L ? "적용" : "Apply"} variant="primary" />
+                          <AdminQuickAction body={{ action: "REJECT_CHANGE", changeId: cr.id }} label={L ? "거절" : "Reject"} variant="ghost" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Timeline */}
           <div className="card p-5">
