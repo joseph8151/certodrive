@@ -245,6 +245,19 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // ---- Inbox: inquiries & corporate applications ----
+      case "RESOLVE_INQUIRY": {
+        await prisma.inquiry.update({ where: { id: body.inquiryId }, data: { status: body.status === "OPEN" ? "OPEN" : "RESOLVED" } });
+        await audit(session.userId, "RESOLVE_INQUIRY", "Inquiry", body.inquiryId);
+        return NextResponse.json({ ok: true });
+      }
+      case "SET_CORPORATE_STATUS": {
+        const status = ["PENDING", "ACTIVE", "REJECTED"].includes(body.status) ? body.status : "PENDING";
+        await prisma.corporateAccount.update({ where: { id: body.corporateId }, data: { status } });
+        await audit(session.userId, "SET_CORPORATE_STATUS", "CorporateAccount", body.corporateId, { status });
+        return NextResponse.json({ ok: true });
+      }
+
       default:
         return NextResponse.json({ error: "Unknown action" }, { status: 400 });
     }

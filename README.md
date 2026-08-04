@@ -59,10 +59,12 @@ Book **Seoul → ICN 인천공항 → 서울 시내, Business Sedan** on the hom
 
 | Area | Path |
 |------|------|
-| Customer | `/`, `/booking/[service]`, `/destinations/[city]`, `/lookup`, `/booking/confirm/[reference]`, `/voucher/[code]` |
+| Customer | `/`, `/booking/[service]`, `/destinations/[city]`, `/lookup`, `/booking/confirm/[reference]` (pay + post-trip review), `/voucher/[code]` |
 | Driver | `/driver` |
-| Admin | `/admin`, `/admin/bookings`, `/admin/pricing`, `/admin/drivers`, `/admin/settlements` |
-| APIs | `/api/bookings`, `/api/payments`, `/api/drivers/*`, `/api/admin/actions`, `/api/auth/*` |
+| Admin | `/admin`, `/admin/bookings`, `/admin/analytics`, `/admin/pricing`, `/admin/promotions`, `/admin/rates`, `/admin/drivers`, `/admin/settlements`, `/admin/inbox` |
+| APIs | `/api/bookings`, `/api/payments`, `/api/reviews`, `/api/drivers/*`, `/api/admin/actions`, `/api/auth/*` |
+
+Promotion codes (PERCENT/FIXED) apply at booking; admins manage promos, exchange rates, inquiries and corporate applications. After a completed trip the customer can leave a **review**, which recomputes the driver's rating. The **analytics** page reports revenue by country/route/driver, average margin and conversion rate, normalizing multi-currency totals to USD.
 
 ## Internationalization & currency
 

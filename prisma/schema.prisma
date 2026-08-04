@@ -76,6 +76,7 @@ model DriverProfile {
   driverQuotes  DriverQuote[]
   bookings      Booking[]     @relation("AssignedDriver")
   settlements   Settlement[]
+  reviews       Review[]
 
   @@index([country, city])
   @@index([approvalStatus])
@@ -246,6 +247,7 @@ model Booking {
   settlement    Settlement?
   notifications Notification[]
   statusEvents  BookingStatusEvent[]
+  review        Review?
 
   @@index([status])
   @@index([pickupCountry, pickupCity])
@@ -359,6 +361,20 @@ model CorporateAccount {
   note         String?
   status       String   @default("PENDING") // PENDING | ACTIVE | REJECTED
   createdAt    DateTime @default(now())
+}
+
+model Review {
+  id              String   @id @default(cuid())
+  bookingId       String   @unique
+  booking         Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  driverProfileId String?
+  driverProfile   DriverProfile? @relation(fields: [driverProfileId], references: [id], onDelete: SetNull)
+  rating          Int      // 1..5
+  comment         String?
+  authorName      String?
+  createdAt       DateTime @default(now())
+
+  @@index([driverProfileId])
 }
 
 model Inquiry {

@@ -22,6 +22,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
       driverQuotes: { include: { driverProfile: { include: { user: true } } }, orderBy: { supplyPrice: "asc" } },
       statusEvents: { orderBy: { createdAt: "desc" } },
       notifications: { orderBy: { createdAt: "desc" } },
+      review: true,
     },
   });
   if (!booking) notFound();
@@ -66,6 +67,15 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
               <span className="text-[var(--color-gold-dark)]">{formatMoney(booking.marginAmount, booking.currency)}</span>
             </div>
           </div>
+
+          {/* Review */}
+          {booking.review && (
+            <div className="card p-5">
+              <h3 className="font-semibold mb-2">{L ? "고객 후기" : "Customer review"}</h3>
+              <div className="text-xl text-[var(--color-gold)]">{"★".repeat(booking.review.rating)}<span className="text-[var(--color-line)]">{"★".repeat(5 - booking.review.rating)}</span></div>
+              {booking.review.comment && <p className="text-sm mt-2 text-[var(--color-slate)]">“{booking.review.comment}”</p>}
+            </div>
+          )}
 
           {/* Vouchers */}
           {booking.vouchers.length > 0 && (
