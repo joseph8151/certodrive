@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { bookingSchema } from "@/lib/validation";
-import { computeCustomerPrice, findRoutePrice } from "@/lib/pricing";
+import { computeCustomerPrice, findRoutePrice, resolvePromotion } from "@/lib/pricing";
 import { generateReference } from "@/lib/utils";
 import { sendNotification } from "@/lib/notifications";
 
@@ -25,15 +25,10 @@ export async function POST(req: Request) {
   const route = `${d.pickupLocation} → ${d.destination}`;
   const dateTime = `${d.serviceDate} ${d.serviceTime}`;
 
-  // Resolve a promotion, if provided.
+  // Resolve a promotion, if provided (PERCENT or FIXED). Invalid codes are ignored.
+  const promo = await resolvePromotion(d.promotionCode);
+  const promoInput = promo ? { discountType: promo.discountType as "PERCENT" | "FIXED", value: promo.value } : undefined;
   let discountAmount = 0;
-  if (d.promotionCode) {
-    const promo = await prisma.promotion.findUnique({ where: { code: d.promotionCode.toUpperCase() } });
-    if (promo && promo.active && (!promo.expiresAt || promo.expiresAt > new Date())) {
-      // Percent discounts are resolved against the computed price below; fixed here.
-      if (promo.discountType === "FIXED") discountAmount = promo.value;
-    }
-  }
 
   // Instant-price path: is this a registered route?
   const rule = await findRoutePrice({
@@ -65,11 +60,13 @@ export async function POST(req: Request) {
       koreanDriverRequired: d.koreanDriverRequired,
       childSeat: d.childSeat,
       airportPicket: d.airportPicket,
-      discountAmount,
+      promo: promoInput,
     });
     supplyPrice = pricing.supplyPrice;
     customerPrice = pricing.customerPrice;
     marginAmount = pricing.marginAmount;
+    // Record the discount line's absolute value for reporting.
+    discountAmount = Math.abs(pricing.lineItems.find((li) => li.key === "discount")?.amount ?? 0);
     priceBreakdown = JSON.stringify(pricing.lineItems);
     currency = pricing.currency;
     status = "AWAITING_CUSTOMER_PAYMENT";
@@ -118,6 +115,11 @@ export async function POST(req: Request) {
       },
     },
   });
+
+  // Count the promotion use once it actually applied a discount (instant path).
+  if (promo && isInstantPriced && discountAmount > 0) {
+    await prisma.promotion.update({ where: { id: promo.id }, data: { usedCount: { increment: 1 } } });
+  }
 
   // Quote-request path: broadcast to approved drivers covering this city/country.
   if (!isInstantPriced) {

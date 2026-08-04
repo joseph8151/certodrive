@@ -198,6 +198,53 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // ---- Promotions ----
+      case "CREATE_PROMO": {
+        const p = body.promo;
+        const promo = await prisma.promotion.create({
+          data: {
+            code: String(p.code).trim().toUpperCase(),
+            description: p.description || null,
+            discountType: p.discountType === "FIXED" ? "FIXED" : "PERCENT",
+            value: Number(p.value),
+            maxUses: p.maxUses ? Number(p.maxUses) : null,
+            expiresAt: p.expiresAt ? new Date(p.expiresAt) : null,
+          },
+        });
+        await audit(session.userId, "CREATE_PROMO", "Promotion", promo.id);
+        return NextResponse.json({ ok: true, id: promo.id });
+      }
+      case "TOGGLE_PROMO": {
+        const promo = await prisma.promotion.findUnique({ where: { id: body.promoId } });
+        if (!promo) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        await prisma.promotion.update({ where: { id: body.promoId }, data: { active: !promo.active } });
+        await audit(session.userId, "TOGGLE_PROMO", "Promotion", body.promoId);
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_PROMO": {
+        await prisma.promotion.delete({ where: { id: body.promoId } });
+        await audit(session.userId, "DELETE_PROMO", "Promotion", body.promoId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- Exchange rates ----
+      case "UPSERT_RATE": {
+        const { base, target, rate } = body;
+        if (!base || !target || !rate) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        const r = await prisma.exchangeRate.upsert({
+          where: { base_target: { base: String(base).toUpperCase(), target: String(target).toUpperCase() } },
+          update: { rate: Number(rate) },
+          create: { base: String(base).toUpperCase(), target: String(target).toUpperCase(), rate: Number(rate) },
+        });
+        await audit(session.userId, "UPSERT_RATE", "ExchangeRate", r.id);
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_RATE": {
+        await prisma.exchangeRate.delete({ where: { id: body.rateId } });
+        await audit(session.userId, "DELETE_RATE", "ExchangeRate", body.rateId);
+        return NextResponse.json({ ok: true });
+      }
+
       default:
         return NextResponse.json({ error: "Unknown action" }, { status: 400 });
     }

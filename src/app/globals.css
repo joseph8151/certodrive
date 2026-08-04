@@ -7,15 +7,19 @@
 --------------------------------------------------------------------------- */
 
 @theme {
-  --color-ink: #0a0e17;          /* near-black text */
-  --color-navy: #0f1b3d;         /* deep navy */
-  --color-navy-700: #16244d;
-  --color-navy-500: #24386e;
-  --color-slate: #5b6472;
-  --color-mist: #f5f6f8;         /* light background */
-  --color-line: #e6e8ec;         /* hairline borders */
-  --color-gold: #c8a86b;         /* premium accent */
-  --color-gold-dark: #a98a4e;
+  /* US rental-car platform palette: charcoal gray + bold red on white. */
+  --color-ink: #17181c;          /* near-black text */
+  --color-navy: #2b2f36;         /* charcoal (dark surfaces / secondary) */
+  --color-navy-700: #3a3f47;
+  --color-navy-500: #52585f;
+  --color-slate: #6b7280;        /* gray body text */
+  --color-mist: #f4f5f6;         /* light gray background */
+  --color-line: #e3e5e8;         /* hairline borders */
+  --color-gold: #d81f2a;         /* brand red accent (token kept for compatibility) */
+  --color-gold-dark: #b3141f;    /* darker red */
+  --color-red: #d81f2a;
+  --color-red-dark: #b3141f;
+  --color-charcoal: #2b2f36;
 
   --font-serif: "Georgia", "Times New Roman", "Nanum Myeongjo", serif;
   --font-sans: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
@@ -70,27 +74,35 @@ body {
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--color-navy);
+  background: var(--color-red);
   color: #fff;
 }
 .btn-primary:hover {
-  background: var(--color-navy-700);
+  background: var(--color-red-dark);
   transform: translateY(-1px);
 }
 .btn-gold {
-  background: var(--color-gold);
-  color: var(--color-ink);
+  background: var(--color-red);
+  color: #fff;
 }
 .btn-gold:hover {
-  background: var(--color-gold-dark);
+  background: var(--color-red-dark);
+}
+/* Neutral charcoal secondary button. */
+.btn-dark {
+  background: var(--color-charcoal);
+  color: #fff;
+}
+.btn-dark:hover {
+  background: var(--color-navy-700);
 }
 .btn-outline {
-  border: 1px solid var(--color-navy);
-  color: var(--color-navy);
+  border: 1px solid var(--color-charcoal);
+  color: var(--color-charcoal);
   background: transparent;
 }
 .btn-outline:hover {
-  background: var(--color-navy);
+  background: var(--color-charcoal);
   color: #fff;
 }
 .btn-ghost {
@@ -203,6 +215,6 @@ body {
 
 .hero-gradient {
   background:
-    linear-gradient(180deg, rgba(15, 27, 61, 0.72) 0%, rgba(10, 14, 23, 0.85) 100%),
-    radial-gradient(1200px 600px at 70% -10%, #24386e 0%, #0f1b3d 55%, #0a0e17 100%);
+    linear-gradient(180deg, rgba(30, 33, 39, 0.70) 0%, rgba(20, 21, 25, 0.90) 100%),
+    radial-gradient(1100px 560px at 78% -20%, #d81f2a 0%, #7a1a20 26%, #2b2f36 60%, #17181c 100%);
 }

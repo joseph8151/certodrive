@@ -15,6 +15,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin", label: L ? "대시보드" : "Dashboard" },
     { href: "/admin/bookings", label: L ? "예약" : "Bookings" },
     { href: "/admin/pricing", label: L ? "가격 관리" : "Pricing" },
+    { href: "/admin/promotions", label: L ? "프로모션" : "Promotions" },
+    { href: "/admin/rates", label: L ? "환율" : "Rates" },
     { href: "/admin/drivers", label: L ? "기사" : "Drivers" },
     { href: "/admin/settlements", label: L ? "정산" : "Settlements" },
   ];
