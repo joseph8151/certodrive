@@ -11,6 +11,8 @@ RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists
 # ---- Dependencies ----
 FROM base AS deps
 COPY package.json package-lock.json ./
+# The `postinstall` script runs `prisma generate`, so the schema must be present.
+COPY prisma ./prisma
 RUN npm ci
 
 # ---- Build ----
