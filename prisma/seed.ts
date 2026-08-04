@@ -125,7 +125,7 @@ async function main() {
     return profile;
   }
 
-  await makeDriver({
+  const seoulDriver = await makeDriver({
     email: "driver.seoul@certodrive.com",
     name: "김민수",
     business: "Seoul Premium Transfers",
@@ -138,7 +138,7 @@ async function main() {
     supply: 80,
     currency: "KRW",
   });
-  await makeDriver({
+  const parisDriver = await makeDriver({
     email: "driver.paris@certodrive.com",
     name: "David Park",
     business: "Paris Korean Chauffeur",
@@ -151,7 +151,7 @@ async function main() {
     supply: 120,
     currency: "EUR",
   });
-  await makeDriver({
+  const tokyoDriver = await makeDriver({
     email: "driver.tokyo@certodrive.com",
     name: "이지훈",
     business: "Tokyo K-Drive",
@@ -164,6 +164,58 @@ async function main() {
     supply: 15000,
     currency: "JPY",
   });
+
+  // --- Completed & reviewed bookings (social proof + analytics data) ---
+  const sampleTrips = [
+    { driver: seoulDriver, country: "대한민국", city: "서울", pickup: "ICN 인천공항", dest: "서울 시내", cat: "Business Sedan", cust: 145.65, supply: 85, cur: "USD", name: "박지연", rating: 5, comment: "입국장에서 피켓 들고 기다려주셔서 바로 찾았어요. 한국어로 편하게 소통하고 아이 카시트까지 준비해주셨습니다." },
+    { driver: parisDriver, country: "프랑스", city: "파리", pickup: "CDG 샤를드골공항", dest: "파리 시내", cat: "Premium Sedan", cust: 210, supply: 145, cur: "EUR", name: "이현우", rating: 5, comment: "파리 도착하자마자 한인 기사님이 맞아주셔서 정말 안심됐어요. 하루 종일 전세로 관광까지 완벽했습니다." },
+    { driver: tokyoDriver, country: "일본", city: "도쿄", pickup: "NRT 나리타공항", dest: "도쿄 시내", cat: "Business Sedan", cust: 180, supply: 120, cur: "USD", name: "최민서", rating: 4, comment: "가족 여행이라 짐이 많았는데 넉넉한 차량으로 편하게 이동했습니다. 시간 정확하고 친절하셨어요." },
+  ];
+  for (const [i, tr] of sampleTrips.entries()) {
+    const ref = `CD-SEED0${i + 1}`;
+    const existing = await prisma.booking.findUnique({ where: { reference: ref } });
+    if (existing) continue;
+    const booking = await prisma.booking.create({
+      data: {
+        reference: ref,
+        customerName: tr.name,
+        customerEmail: `sample${i + 1}@certodrive.com`,
+        customerPhone: "+82 10-0000-0000",
+        serviceType: "AIRPORT_PICKUP",
+        pickupCountry: tr.country,
+        pickupCity: tr.city,
+        pickupLocation: tr.pickup,
+        destination: tr.dest,
+        serviceDate: "2026-07-15",
+        serviceTime: "10:00",
+        vehicleCategory: tr.cat,
+        passengers: 2,
+        adults: 2,
+        luggage: 2,
+        koreanDriverRequired: true,
+        airportPicket: true,
+        currency: tr.cur,
+        supplyPrice: tr.supply,
+        customerPrice: tr.cust,
+        marginAmount: tr.cust - tr.supply,
+        status: "COMPLETED",
+        isInstantPriced: true,
+        assignedDriverId: tr.driver.id,
+        payment: { create: { amount: tr.cust, currency: tr.cur, method: "CARD", status: "COMPLETED", paidAt: new Date() } },
+      },
+    });
+    await prisma.review.create({
+      data: { bookingId: booking.id, driverProfileId: tr.driver.id, rating: tr.rating, comment: tr.comment, authorName: tr.name },
+    });
+    await prisma.settlement.create({
+      data: { bookingId: booking.id, driverProfileId: tr.driver.id, amount: tr.supply, currency: tr.driver.settlementCurrency, status: "PAID", paidAt: new Date() },
+    });
+  }
+  // Refresh driver ratings from seeded reviews.
+  for (const d of [seoulDriver, parisDriver, tokyoDriver]) {
+    const agg = await prisma.review.aggregate({ where: { driverProfileId: d.id }, _avg: { rating: true }, _count: true });
+    await prisma.driverProfile.update({ where: { id: d.id }, data: { rating: agg._avg.rating ?? 0, ratingCount: agg._count } });
+  }
 
   // --- Promotion ---
   await prisma.promotion.upsert({

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
+import FloatingContact from "./FloatingContact";
 
 export default async function SiteFooter() {
   const locale = await getLocale();
@@ -64,6 +65,7 @@ export default async function SiteFooter() {
           <span>서울 · Seoul · Global chauffeur network</span>
         </div>
       </div>
+      <FloatingContact locale={locale} />
     </footer>
   );
 }

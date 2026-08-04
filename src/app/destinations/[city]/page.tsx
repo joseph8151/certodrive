@@ -24,6 +24,11 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   const cityMeta = POPULAR_CITIES[locale].find((c) => c.city === name) ?? POPULAR_CITIES.ko.find((c) => c.city === name);
   const routes = await prisma.priceRule.findMany({ where: { city: name, active: true }, orderBy: { driverSupplyPrice: "asc" } });
+  const reviewRows = await prisma.review.findMany({
+    where: { rating: { gte: 4 }, comment: { not: null }, booking: { pickupCity: name } },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  });
 
   return (
     <>
@@ -75,6 +80,23 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
                   ))}
                 </tbody>
               </table>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {reviewRows.length > 0 && (
+        <section className="section bg-[var(--color-mist)]">
+          <div className="container-cd max-w-3xl">
+            <h2 className="font-display text-2xl font-bold mb-6">{L ? `${name} 이용 후기` : `Reviews in ${name}`}</h2>
+            <div className="grid gap-4">
+              {reviewRows.map((r) => (
+                <figure key={r.id} className="card p-5">
+                  <span className="text-[var(--color-gold)]">{"★".repeat(r.rating)}<span className="text-[var(--color-line)]">{"★".repeat(5 - r.rating)}</span></span>
+                  {r.comment && <blockquote className="mt-2 text-[15px]">“{r.comment}”</blockquote>}
+                  <figcaption className="mt-2 text-sm text-[var(--color-slate)]">{r.authorName ?? (L ? "고객" : "Traveler")}</figcaption>
+                </figure>
+              ))}
             </div>
           </div>
         </section>
