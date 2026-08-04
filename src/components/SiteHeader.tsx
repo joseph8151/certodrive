@@ -4,6 +4,7 @@ import { makeT } from "@/lib/i18n";
 import { getSession } from "@/lib/auth";
 import LocaleToggle from "./LocaleToggle";
 import MobileNav from "./MobileNav";
+import PromoBanner from "./PromoBanner";
 
 export default async function SiteHeader() {
   const locale = await getLocale();
@@ -22,7 +23,9 @@ export default async function SiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-[var(--color-line)]">
+    <>
+      <PromoBanner />
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-[var(--color-line)]">
       <div className="container-cd flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-2">
           <span className="font-display text-xl font-bold tracking-tight text-[var(--color-navy)]">
@@ -58,6 +61,7 @@ export default async function SiteHeader() {
           <MobileNav locale={locale} links={links} />
         </div>
       </div>
-    </header>
+      </header>
+    </>
   );
 }

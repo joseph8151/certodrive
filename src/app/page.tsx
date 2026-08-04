@@ -14,7 +14,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const sp = await searchParams;
 
   // Prefill the booking widget from query params (used by rebook / favorites).
-  const prefillKeys = ["serviceType", "pickupCountry", "pickupCity", "pickupLocation", "destination", "vehicleCategory"] as const;
+  const prefillKeys = ["serviceType", "pickupCountry", "pickupCity", "pickupLocation", "destination", "vehicleCategory", "promotionCode"] as const;
+  if (sp.promo) sp.promotionCode = sp.promo;
   const prefill: Record<string, string> = {};
   for (const k of prefillKeys) if (sp[k]) prefill[k] = String(sp[k]);
   const hasPrefill = Object.keys(prefill).length > 0;
