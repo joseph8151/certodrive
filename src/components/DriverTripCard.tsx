@@ -26,15 +26,28 @@ export default function DriverTripCard({ booking, locale }: { booking: Booking; 
   const L = locale === "ko";
   const [loading, setLoading] = useState(false);
 
-  async function action(action: string) {
+  async function action(action: string, evidenceUrl?: string) {
     setLoading(true);
     const res = await fetch("/api/drivers/trip", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ bookingId: booking.id, action }),
+      body: JSON.stringify({ bookingId: booking.id, action, evidenceUrl }),
     });
     if (res.ok) router.refresh();
     else setLoading(false);
+  }
+
+  async function reportNoShow(e: React.ChangeEvent<HTMLInputElement> | null) {
+    let evidenceUrl: string | undefined;
+    const file = e?.target.files?.[0];
+    if (file) {
+      setLoading(true);
+      const fd = new FormData();
+      fd.append("file", file);
+      const up = await fetch("/api/upload", { method: "POST", body: fd });
+      if (up.ok) evidenceUrl = (await up.json()).url;
+    }
+    await action("NO_SHOW", evidenceUrl);
   }
 
   return (
@@ -67,7 +80,13 @@ export default function DriverTripCard({ booking, locale }: { booking: Booking; 
           <button className="btn btn-gold" disabled={loading} onClick={() => action("COMPLETE")}>{L ? "운행 완료" : "Complete trip"}</button>
         )}
         {["DRIVER_CONFIRMED", "IN_PROGRESS"].includes(booking.status) && (
-          <button className="btn btn-ghost" disabled={loading} onClick={() => action("NO_SHOW")}>{L ? "노쇼 처리" : "Report no-show"}</button>
+          <div className="flex items-center gap-2">
+            <label className="btn btn-ghost cursor-pointer">
+              {L ? "노쇼 증빙 업로드" : "No-show + evidence"}
+              <input type="file" className="hidden" disabled={loading} onChange={(e) => reportNoShow(e)} />
+            </label>
+            <button className="btn btn-ghost text-xs px-2" disabled={loading} onClick={() => reportNoShow(null)}>{L ? "증빙 없이 노쇼" : "No-show only"}</button>
+          </div>
         )}
       </div>
     </div>

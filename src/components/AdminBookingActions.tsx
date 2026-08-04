@@ -21,6 +21,7 @@ type Props = {
   supplyPrice: number | null;
   customerPrice: number | null;
   hasVoucher: boolean;
+  flightNumber: string | null;
   quotes: Quote[];
   approvedDrivers: { id: string; contactName: string; businessName: string; city: string; koreanLevel: string }[];
   locale: Locale;
@@ -40,7 +41,7 @@ async function post(body: unknown) {
 }
 
 export default function AdminBookingActions({
-  bookingId, status, currency, supplyPrice, customerPrice, hasVoucher, quotes, approvedDrivers, locale,
+  bookingId, status, currency, supplyPrice, customerPrice, hasVoucher, flightNumber, quotes, approvedDrivers, locale,
 }: Props) {
   const router = useRouter();
   const L = locale === "ko";
@@ -64,6 +65,7 @@ export default function AdminBookingActions({
   const canConfirmPayment = status === "AWAITING_CUSTOMER_PAYMENT";
   const canAssign = ["PAYMENT_COMPLETED", "DRIVER_ASSIGNMENT_PENDING", "DRIVER_ASSIGNED"].includes(status);
   const canCancel = !["COMPLETED", "CANCELLED", "REFUNDED"].includes(status);
+  const canFlightDelay = !!flightNumber && ["PAYMENT_COMPLETED", "DRIVER_ASSIGNMENT_PENDING", "DRIVER_ASSIGNED", "DRIVER_CONFIRMED", "IN_PROGRESS"].includes(status);
 
   return (
     <div className="grid gap-5">
@@ -151,6 +153,12 @@ export default function AdminBookingActions({
           onClick={() => run(() => post({ action: "GENERATE_VOUCHER", bookingId }), L ? "바우처가 생성되었습니다." : "Vouchers generated.")}>
           {hasVoucher ? (L ? "바우처 재생성/확인" : "Ensure vouchers") : (L ? "예약 바우처 생성" : "Generate vouchers")}
         </button>
+        {canFlightDelay && (
+          <button className="btn btn-outline" disabled={busy}
+            onClick={() => run(() => post({ action: "FLIGHT_DELAY", bookingId }), L ? "항공편 지연 안내를 발송했습니다." : "Flight-delay notice sent.")}>
+            {L ? "항공편 지연 안내 발송" : "Send flight-delay notice"}
+          </button>
+        )}
         {canCancel && (
           <div className="flex gap-2">
             <button className="btn btn-ghost flex-1" disabled={busy}

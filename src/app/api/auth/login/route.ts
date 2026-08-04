@@ -17,6 +17,6 @@ export async function POST(req: Request) {
     email: user.email,
   });
 
-  const redirect = user.role === "ADMIN" ? "/admin" : user.role === "DRIVER" ? "/driver" : "/";
+  const redirect = user.role === "ADMIN" ? "/admin" : user.role === "DRIVER" ? "/driver" : "/account";
   return NextResponse.json({ ok: true, role: user.role, redirect });
 }

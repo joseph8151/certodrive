@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
+import { getSession } from "@/lib/auth";
 import LocaleToggle from "./LocaleToggle";
 import MobileNav from "./MobileNav";
 
 export default async function SiteHeader() {
   const locale = await getLocale();
   const t = makeT(locale);
+  const session = await getSession();
+  const accountHref = session?.role === "ADMIN" ? "/admin" : session?.role === "DRIVER" ? "/driver" : "/account";
 
   const links = [
     { href: "/booking/airport-pickup", label: t("nav.pickup") },
@@ -40,6 +43,15 @@ export default async function SiteHeader() {
           <Link href="/lookup" className="hidden md:inline text-sm font-medium hover:text-[var(--color-gold-dark)]">
             {t("nav.lookup")}
           </Link>
+          {session ? (
+            <Link href={accountHref} className="hidden md:inline text-sm font-medium hover:text-[var(--color-gold-dark)]">
+              {session.role === "CUSTOMER" ? (locale === "ko" ? "내 예약" : "My bookings") : (locale === "ko" ? "대시보드" : "Dashboard")}
+            </Link>
+          ) : (
+            <Link href="/login" className="hidden md:inline text-sm font-medium hover:text-[var(--color-gold-dark)]">
+              {t("nav.login")}
+            </Link>
+          )}
           <Link href="/#book" className="hidden sm:inline btn btn-primary text-sm py-2 px-4">
             {t("nav.book")}
           </Link>

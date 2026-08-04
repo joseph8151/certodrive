@@ -65,6 +65,9 @@ model DriverProfile {
   termsAgreed    Boolean @default(false)
   approvalStatus String  @default("PENDING") // PENDING | APPROVED | REJECTED | SUSPENDED
 
+  acceptingBookings Boolean @default(true)  // driver availability toggle
+  availabilityNote  String?                 // free-text blackout dates / notes
+
   rating       Float   @default(0)
   ratingCount  Int     @default(0)
   cancelRate   Float   @default(0)
@@ -219,6 +222,7 @@ model Booking {
   airportPicket   Boolean @default(false)
   hourlyDuration  Int?    // hours, for HOURLY service
   specialRequest  String?
+  noShowEvidenceUrl String? // uploaded proof when a driver reports a no-show
 
   // Pricing (all stored in booking currency)
   currency        String  @default("USD")

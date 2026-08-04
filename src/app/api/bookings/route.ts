@@ -4,6 +4,7 @@ import { bookingSchema } from "@/lib/validation";
 import { computeCustomerPrice, findRoutePrice, resolvePromotion } from "@/lib/pricing";
 import { generateReference } from "@/lib/utils";
 import { sendNotification } from "@/lib/notifications";
+import { getSession } from "@/lib/auth";
 
 export async function POST(req: Request) {
   let body: unknown;
@@ -73,9 +74,14 @@ export async function POST(req: Request) {
     isInstantPriced = true;
   }
 
+  // Link the booking to a signed-in customer, if any.
+  const session = await getSession();
+  const customerUserId = session?.role === "CUSTOMER" ? session.userId : null;
+
   const booking = await prisma.booking.create({
     data: {
       reference,
+      customerUserId,
       customerName: d.customerName,
       customerEmail: d.customerEmail.toLowerCase(),
       customerPhone: d.customerPhone,
@@ -126,6 +132,7 @@ export async function POST(req: Request) {
     const drivers = await prisma.driverProfile.findMany({
       where: {
         approvalStatus: "APPROVED",
+        acceptingBookings: true,
         country: d.pickupCountry,
         OR: [{ city: d.pickupCity }, { serviceRegions: { contains: d.pickupCity } }],
       },

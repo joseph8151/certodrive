@@ -40,9 +40,9 @@ export default async function HomePage() {
             </h1>
             <p className="mt-5 text-white/75 text-lg max-w-xl">{t("hero.subtitle")}</p>
             <div className="mt-7 flex flex-wrap gap-4 text-sm text-white/70">
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.verified")}</span>
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.fixed")}</span>
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.support")}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "공항 픽업·샌딩" : "Airport pickup & drop-off"}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "한인 택시·하루 종일 전세" : "Korean taxi & full-day hire"}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "24시간 한국어 지원" : "24/7 Korean support"}</span>
             </div>
           </div>
 

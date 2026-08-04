@@ -68,6 +68,14 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
             </div>
           </div>
 
+          {/* No-show evidence */}
+          {booking.noShowEvidenceUrl && (
+            <div className="card p-5">
+              <h3 className="font-semibold mb-2">{L ? "노쇼 증빙" : "No-show evidence"}</h3>
+              <a href={booking.noShowEvidenceUrl} target="_blank" rel="noreferrer" className="btn btn-outline text-sm">{L ? "증빙 파일 보기" : "View evidence"}</a>
+            </div>
+          )}
+
           {/* Review */}
           {booking.review && (
             <div className="card p-5">
@@ -101,6 +109,7 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
             supplyPrice={booking.supplyPrice}
             customerPrice={booking.customerPrice}
             hasVoucher={booking.vouchers.length > 0}
+            flightNumber={booking.flightNumber}
             quotes={quotes}
             approvedDrivers={approvedDrivers.map((d) => ({ id: d.id, contactName: d.contactName, businessName: d.businessName, city: d.city, koreanLevel: d.koreanLevel }))}
             locale={locale}

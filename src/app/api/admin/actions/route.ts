@@ -245,6 +245,21 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // ---- Flight delay notice ----
+      case "FLIGHT_DELAY": {
+        const { bookingId } = body;
+        const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+        if (!booking) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        const ctx = { reference: booking.reference, customerName: booking.customerName, route: `${booking.pickupLocation} → ${booking.destination}` };
+        await sendNotification({ template: "FLIGHT_DELAY", recipientType: "CUSTOMER", to: booking.customerEmail, bookingId, context: ctx });
+        if (booking.assignedDriverId) {
+          const driver = await prisma.driverProfile.findUnique({ where: { id: booking.assignedDriverId }, include: { user: true } });
+          if (driver) await sendNotification({ template: "FLIGHT_DELAY", recipientType: "DRIVER", to: driver.user.email, bookingId, context: ctx });
+        }
+        await audit(session.userId, "FLIGHT_DELAY", "Booking", bookingId);
+        return NextResponse.json({ ok: true });
+      }
+
       // ---- Inbox: inquiries & corporate applications ----
       case "RESOLVE_INQUIRY": {
         await prisma.inquiry.update({ where: { id: body.inquiryId }, data: { status: body.status === "OPEN" ? "OPEN" : "RESOLVED" } });
