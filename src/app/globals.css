@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+/* --------------------------------------------------------------------------
+   Certo Drive design system
+   White / Black / Deep Navy. Serif display headings + clean sans body.
+   Generous whitespace, premium travel-tech feel.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #0a0e17;          /* near-black text */
+  --color-navy: #0f1b3d;         /* deep navy */
+  --color-navy-700: #16244d;
+  --color-navy-500: #24386e;
+  --color-slate: #5b6472;
+  --color-mist: #f5f6f8;         /* light background */
+  --color-line: #e6e8ec;         /* hairline borders */
+  --color-gold: #c8a86b;         /* premium accent */
+  --color-gold-dark: #a98a4e;
+
+  --font-serif: "Georgia", "Times New Roman", "Nanum Myeongjo", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
+    "Malgun Gothic", "Noto Sans KR", Roboto, sans-serif;
+
+  --radius-xl: 1rem;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+/* Utility: subtle premium card */
+.card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+}
+
+.card-shadow {
+  box-shadow: 0 1px 2px rgba(10, 14, 23, 0.04), 0 12px 32px -12px rgba(10, 14, 23, 0.12);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  border-radius: 0.7rem;
+  padding: 0.8rem 1.4rem;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--color-navy);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--color-navy-700);
+  transform: translateY(-1px);
+}
+.btn-gold {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+.btn-gold:hover {
+  background: var(--color-gold-dark);
+}
+.btn-outline {
+  border: 1px solid var(--color-navy);
+  color: var(--color-navy);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--color-navy);
+  color: #fff;
+}
+.btn-ghost {
+  color: var(--color-ink);
+}
+.btn-ghost:hover {
+  background: var(--color-mist);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Form controls */
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-slate);
+  margin-bottom: 0.35rem;
+  text-transform: none;
+}
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  border-radius: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  background: #fff;
+  color: var(--color-ink);
+  font-size: 0.95rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus,
+.select:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-navy-500);
+  box-shadow: 0 0 0 3px rgba(36, 56, 110, 0.12);
+}
+.input::placeholder,
+.textarea::placeholder {
+  color: #aeb4bf;
+}
+
+/* Status pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill-amber { background: #fdf3e0; color: #9a6a12; }
+.pill-blue  { background: #e8eefc; color: #1e3a8a; }
+.pill-green { background: #e6f5ec; color: #16794a; }
+.pill-red   { background: #fdeaea; color: #a52626; }
+.pill-slate { background: #eef0f3; color: #47505e; }
+
+/* Section rhythm */
+.section {
+  padding: 5rem 0;
+}
+@media (max-width: 768px) {
+  .section { padding: 3rem 0; }
+}
+
+.container-cd {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-dark);
+}
+
+/* Admin/driver table */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.tbl th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-slate);
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.tbl td {
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: middle;
+}
+.tbl tr:hover td { background: var(--color-mist); }
+
+.hero-gradient {
+  background:
+    linear-gradient(180deg, rgba(15, 27, 61, 0.72) 0%, rgba(10, 14, 23, 0.85) 100%),
+    radial-gradient(1200px 600px at 70% -10%, #24386e 0%, #0f1b3d 55%, #0a0e17 100%);
+}

@@ -1,0 +1,386 @@
+// Certo Drive — global Korean airport pickup & private chauffeur booking platform.
+// SQLite for the MVP (zero external dependencies). Enums are modelled as strings
+// with documented allowed values (SQLite has no native enum support).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Identity & access — customer / driver / admin share one User table, role-gated.
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("CUSTOMER") // CUSTOMER | DRIVER | ADMIN
+  name         String
+  phone        String?
+  locale       String   @default("ko") // ko | en
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  driverProfile DriverProfile?
+  bookings      Booking[]      @relation("CustomerBookings")
+  auditLogs     AuditLog[]
+}
+
+// ---------------------------------------------------------------------------
+// Driver partners
+// ---------------------------------------------------------------------------
+
+model DriverProfile {
+  id            String  @id @default(cuid())
+  userId        String  @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  partnerType   String  @default("INDIVIDUAL") // INDIVIDUAL | COMPANY
+  businessName  String
+  contactName   String
+  country       String
+  city          String
+  airports      String  @default("[]") // JSON array of airport codes/names
+  serviceRegions String @default("[]") // JSON array of covered regions
+
+  // Uploaded documents (stored file paths / references)
+  transportLicenseUrl String?
+  driverLicenseUrl    String?
+  insuranceUrl        String?
+  vehicleRegUrl       String?
+  vehiclePhotosUrl    String  @default("[]") // JSON array
+
+  koreanLevel   String  @default("NONE") // NONE | BASIC | CONVERSATIONAL | FLUENT | NATIVE
+  englishLevel  String  @default("NONE") // NONE | BASIC | CONVERSATIONAL | FLUENT | NATIVE
+
+  bankAccount        String?
+  settlementCurrency String  @default("USD")
+  baseSupplyPrice    Float?
+
+  termsAgreed    Boolean @default(false)
+  approvalStatus String  @default("PENDING") // PENDING | APPROVED | REJECTED | SUSPENDED
+
+  rating       Float   @default(0)
+  ratingCount  Int     @default(0)
+  cancelRate   Float   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vehicles      Vehicle[]
+  driverQuotes  DriverQuote[]
+  bookings      Booking[]     @relation("AssignedDriver")
+  settlements   Settlement[]
+
+  @@index([country, city])
+  @@index([approvalStatus])
+}
+
+model Vehicle {
+  id              String @id @default(cuid())
+  driverProfileId String
+  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+
+  category      String // Economy Sedan | Business Sedan | Premium Sedan | Standard Van | Premium Van | Minibus | VIP Chauffeur | Hourly Hire
+  makeModel     String?
+  year          Int?
+  maxPassengers Int    @default(3)
+  maxLuggage    Int    @default(2)
+  photosUrl     String @default("[]")
+  registrationUrl String?
+
+  createdAt DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Pricing configuration
+// ---------------------------------------------------------------------------
+
+// A registered route with a known driver supply price → instant customer price.
+model PriceRule {
+  id              String  @id @default(cuid())
+  country         String
+  city            String
+  pickupLocation  String  // airport code or place name
+  destination     String  // destination area / zone
+  vehicleCategory String
+  driverSupplyPrice Float
+  currency        String  @default("USD")
+  estimatedMinutes Int?
+  active          Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([country, city, vehicleCategory, active])
+}
+
+// Commission rate & minimum booking fee, scoped by country or specific route.
+// The most specific matching policy wins (route > city > country > global).
+model CommissionPolicy {
+  id             String  @id @default(cuid())
+  scope          String  @default("GLOBAL") // GLOBAL | COUNTRY | CITY | ROUTE
+  country        String?
+  city           String?
+  pickupLocation String?
+  destination    String?
+  commissionRate Float   @default(0.20) // fraction, e.g. 0.20 = 20%
+  minBookingFee  Float   @default(15)   // in USD, floor on platform margin
+  currency       String  @default("USD")
+  active         Boolean @default(true)
+  priority       Int     @default(0)    // higher wins on ties
+
+  createdAt DateTime @default(now())
+}
+
+// Global surcharge & fee configuration (single active row).
+model PricingConfig {
+  id                  String  @id @default("default")
+  koreanDriverFee     Float   @default(20)   // fixed add-on for Korean-speaking driver
+  nightSurchargeRate  Float   @default(0.15) // % applied when pickup in night window
+  nightStartHour      Int     @default(22)
+  nightEndHour        Int     @default(6)
+  holidaySurchargeRate Float  @default(0.10)
+  urgentSurchargeRate Float   @default(0.15) // booking within urgentWindowHours
+  urgentWindowHours   Int     @default(24)
+  childSeatFee        Float   @default(12)
+  airportPicketFee    Float   @default(15)
+  extraWaitingFeePerHour Float @default(25)
+  paymentFeeRate      Float   @default(0.029) // card processing
+  paymentFeeFixed     Float   @default(0.30)
+  defaultCurrency     String  @default("USD")
+  updatedAt           DateTime @updatedAt
+}
+
+model ExchangeRate {
+  id        String   @id @default(cuid())
+  base      String   // e.g. USD
+  target    String   // e.g. KRW
+  rate      Float
+  updatedAt DateTime @updatedAt
+
+  @@unique([base, target])
+}
+
+model Promotion {
+  id           String   @id @default(cuid())
+  code         String   @unique
+  description  String?
+  discountType String   @default("PERCENT") // PERCENT | FIXED
+  value        Float
+  active       Boolean  @default(true)
+  maxUses      Int?
+  usedCount    Int      @default(0)
+  expiresAt    DateTime?
+  createdAt    DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Bookings — central entity linking customer, pricing, driver, payment.
+// ---------------------------------------------------------------------------
+
+model Booking {
+  id           String @id @default(cuid())
+  reference    String @unique // human-friendly code, e.g. CD-8F3K2A
+
+  // Customer (may be a registered user or a guest)
+  customerUserId String?
+  customer       User?   @relation("CustomerBookings", fields: [customerUserId], references: [id])
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  messenger      String? // KakaoTalk / WhatsApp handle
+
+  // Trip details
+  serviceType     String  @default("AIRPORT_PICKUP") // AIRPORT_PICKUP | AIRPORT_DROPOFF | INTERCITY | HOURLY | VIP
+  tripType        String  @default("ONE_WAY")        // ONE_WAY | ROUND_TRIP
+  pickupCountry   String
+  pickupCity      String
+  pickupLocation  String
+  destination     String
+  serviceDate     String  // ISO date
+  serviceTime     String  // HH:mm
+  returnDate      String?
+  returnTime      String?
+  flightNumber    String?
+  passengers      Int     @default(1)
+  adults          Int     @default(1)
+  children        Int     @default(0)
+  luggage         Int     @default(0)
+  vehicleCategory String
+  koreanDriverRequired Boolean @default(false)
+  childSeat       Boolean @default(false)
+  airportPicket   Boolean @default(false)
+  hourlyDuration  Int?    // hours, for HOURLY service
+  specialRequest  String?
+
+  // Pricing (all stored in booking currency)
+  currency        String  @default("USD")
+  supplyPrice     Float?  // driver supply price (cost)
+  customerPrice   Float?  // final price shown to customer
+  marginAmount    Float?  // customerPrice - supplyPrice
+  priceBreakdown  String? // JSON of the computed line items
+  promotionCode   String?
+  discountAmount  Float   @default(0)
+
+  status       String   @default("QUOTE_REQUESTED")
+  // QUOTE_REQUESTED | QUOTE_RECEIVED | AWAITING_CUSTOMER_PAYMENT | PAYMENT_COMPLETED
+  // | DRIVER_ASSIGNMENT_PENDING | DRIVER_ASSIGNED | DRIVER_CONFIRMED | IN_PROGRESS
+  // | COMPLETED | CANCELLED | REFUNDED | NO_SHOW
+  isInstantPriced Boolean @default(false)
+
+  assignedDriverId String?
+  assignedDriver   DriverProfile? @relation("AssignedDriver", fields: [assignedDriverId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driverQuotes  DriverQuote[]
+  payment       Payment?
+  vouchers      Voucher[]
+  settlement    Settlement?
+  notifications Notification[]
+  statusEvents  BookingStatusEvent[]
+
+  @@index([status])
+  @@index([pickupCountry, pickupCity])
+  @@index([assignedDriverId])
+  @@index([serviceDate])
+}
+
+model BookingStatusEvent {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  from      String?
+  to        String
+  note      String?
+  actor     String? // system | admin:<id> | driver:<id> | customer
+  createdAt DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+// A booking request broadcast to a driver, and the driver's supply-price offer.
+model DriverQuote {
+  id              String  @id @default(cuid())
+  bookingId       String
+  booking         Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  driverProfileId String
+  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [id], onDelete: Cascade)
+
+  status      String  @default("REQUESTED") // REQUESTED | OFFERED | DECLINED | EXPIRED
+  supplyPrice Float?
+  currency    String  @default("USD")
+  available   Boolean?
+  note        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([bookingId, driverProfileId])
+  @@index([driverProfileId, status])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  bookingId     String   @unique
+  booking       Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  amount        Float
+  currency      String   @default("USD")
+  method        String   @default("CARD") // CARD | PAYPAL | BANK_TRANSFER
+  status        String   @default("PENDING") // PENDING | COMPLETED | FAILED | REFUNDED
+  transactionRef String?
+  paidAt        DateTime?
+  refundedAt    DateTime?
+  createdAt     DateTime @default(now())
+}
+
+model Voucher {
+  id        String   @id @default(cuid())
+  bookingId String
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  type      String   @default("CUSTOMER") // CUSTOMER | DRIVER
+  code      String   @unique
+  issuedAt  DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+model Settlement {
+  id              String   @id @default(cuid())
+  bookingId       String   @unique
+  booking         Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  driverProfileId String
+  driverProfile   DriverProfile @relation(fields: [driverProfileId], references: [id])
+  amount          Float
+  currency        String   @default("USD")
+  status          String   @default("PENDING") // PENDING | PAID
+  note            String?
+  paidAt          DateTime?
+  createdAt       DateTime @default(now())
+
+  @@index([driverProfileId, status])
+}
+
+model Notification {
+  id           String   @id @default(cuid())
+  bookingId    String?
+  booking      Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  recipientType String  // CUSTOMER | DRIVER | ADMIN
+  channel      String   @default("EMAIL") // EMAIL | KAKAO | WHATSAPP
+  template     String   // e.g. QUOTE_RECEIVED, PAYMENT_REQUEST, DRIVER_ASSIGNED
+  to           String
+  subject      String
+  body         String
+  status       String   @default("SENT") // QUEUED | SENT | FAILED
+  createdAt    DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+// ---------------------------------------------------------------------------
+// Corporate / travel-agency partners & customer support
+// ---------------------------------------------------------------------------
+
+model CorporateAccount {
+  id           String   @id @default(cuid())
+  companyName  String
+  contactName  String
+  email        String
+  phone        String?
+  partnerType  String   @default("CORPORATE") // CORPORATE | TRAVEL_AGENCY
+  country      String?
+  note         String?
+  status       String   @default("PENDING") // PENDING | ACTIVE | REJECTED
+  createdAt    DateTime @default(now())
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  category  String   @default("GENERAL")
+  subject   String
+  message   String
+  status    String   @default("OPEN") // OPEN | RESOLVED
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  meta      String?  // JSON
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+}

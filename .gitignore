@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+build
+*.log
+.env
+.env*.local
+prisma/*.db
+prisma/*.db-journal
+.DS_Store
+*.pem
+next-env.d.ts
+.vercel
+
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
