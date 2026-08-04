@@ -29,6 +29,24 @@ model User {
   driverProfile DriverProfile?
   bookings      Booking[]      @relation("CustomerBookings")
   auditLogs     AuditLog[]
+  favorites     FavoriteRoute[]
+}
+
+// A customer's saved route for quick rebooking.
+model FavoriteRoute {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label           String?
+  serviceType     String   @default("AIRPORT_PICKUP")
+  pickupCountry   String
+  pickupCity      String
+  pickupLocation  String
+  destination     String
+  vehicleCategory String   @default("Business Sedan")
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
 }
 
 // ---------------------------------------------------------------------------

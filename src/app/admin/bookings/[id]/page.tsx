@@ -8,6 +8,8 @@ import PriceBreakdown from "@/components/PriceBreakdown";
 import AdminBookingActions from "@/components/AdminBookingActions";
 import AdminQuickAction from "@/components/AdminQuickAction";
 import StatusPill from "@/components/StatusPill";
+import { recommendDrivers } from "@/lib/recommend";
+import { formatMoney as fmt } from "@/lib/utils";
 
 export default async function AdminBookingDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -34,6 +36,9 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
     orderBy: { rating: "desc" },
     take: 100,
   });
+
+  const canAssign = ["PAYMENT_COMPLETED", "DRIVER_ASSIGNMENT_PENDING", "DRIVER_ASSIGNED"].includes(booking.status);
+  const recommendations = canAssign ? await recommendDrivers(booking.id, locale) : [];
 
   const items = safeJson<{ key: string; labelKo: string; labelEn: string; amount: number }[]>(booking.priceBreakdown, []);
   const quotes = booking.driverQuotes
@@ -104,6 +109,35 @@ export default async function AdminBookingDetail({ params }: { params: Promise<{
         </div>
 
         <div className="grid gap-6">
+          {/* Recommended drivers */}
+          {recommendations.length > 0 && (
+            <div className="card p-5">
+              <h3 className="font-semibold mb-1">{L ? "추천 기사 (자동)" : "Recommended drivers (auto)"}</h3>
+              <p className="text-xs text-[var(--color-slate)] mb-3">{L ? "지역·언어·차량·평점·견적을 종합해 추천합니다." : "Ranked by region, language, vehicle, rating and quotes."}</p>
+              <div className="grid gap-2">
+                {recommendations.map((r, i) => (
+                  <div key={r.driverProfileId} className="flex items-start justify-between gap-3 rounded-lg border border-[var(--color-line)] p-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        {i === 0 && <span className="pill pill-green">{L ? "최적" : "Top"}</span>}
+                        <span className="font-medium text-sm">{r.name}</span>
+                        <span className="text-xs text-[var(--color-slate)]">· {r.city} · ★{r.rating.toFixed(1)}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {r.reasons.slice(0, 3).map((reason) => <span key={reason} className="pill pill-slate">{reason}</span>)}
+                      </div>
+                      {r.offeredPrice != null && <div className="text-xs text-[var(--color-slate)] mt-1">{L ? "견적" : "Quote"}: {fmt(r.offeredPrice, r.currency)}</div>}
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="text-xs text-[var(--color-slate)]">{L ? "점수" : "Score"} {r.score}</span>
+                      <AdminQuickAction body={{ action: "ASSIGN_DRIVER", bookingId: booking.id, driverProfileId: r.driverProfileId }} label={L ? "배정" : "Assign"} variant="primary" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <AdminBookingActions
             bookingId={booking.id}
             status={booking.status}
