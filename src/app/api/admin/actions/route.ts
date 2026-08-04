@@ -198,6 +198,131 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
+      // ---- Promotions ----
+      case "CREATE_PROMO": {
+        const p = body.promo;
+        const promo = await prisma.promotion.create({
+          data: {
+            code: String(p.code).trim().toUpperCase(),
+            description: p.description || null,
+            discountType: p.discountType === "FIXED" ? "FIXED" : "PERCENT",
+            value: Number(p.value),
+            maxUses: p.maxUses ? Number(p.maxUses) : null,
+            expiresAt: p.expiresAt ? new Date(p.expiresAt) : null,
+          },
+        });
+        await audit(session.userId, "CREATE_PROMO", "Promotion", promo.id);
+        return NextResponse.json({ ok: true, id: promo.id });
+      }
+      case "TOGGLE_PROMO": {
+        const promo = await prisma.promotion.findUnique({ where: { id: body.promoId } });
+        if (!promo) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        await prisma.promotion.update({ where: { id: body.promoId }, data: { active: !promo.active } });
+        await audit(session.userId, "TOGGLE_PROMO", "Promotion", body.promoId);
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_PROMO": {
+        await prisma.promotion.delete({ where: { id: body.promoId } });
+        await audit(session.userId, "DELETE_PROMO", "Promotion", body.promoId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- Exchange rates ----
+      case "UPSERT_RATE": {
+        const { base, target, rate } = body;
+        if (!base || !target || !rate) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+        const r = await prisma.exchangeRate.upsert({
+          where: { base_target: { base: String(base).toUpperCase(), target: String(target).toUpperCase() } },
+          update: { rate: Number(rate) },
+          create: { base: String(base).toUpperCase(), target: String(target).toUpperCase(), rate: Number(rate) },
+        });
+        await audit(session.userId, "UPSERT_RATE", "ExchangeRate", r.id);
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_RATE": {
+        await prisma.exchangeRate.delete({ where: { id: body.rateId } });
+        await audit(session.userId, "DELETE_RATE", "ExchangeRate", body.rateId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- Booking change requests ----
+      case "APPLY_CHANGE": {
+        const cr = await prisma.bookingChangeRequest.findUnique({ where: { id: body.changeId }, include: { booking: true } });
+        if (!cr) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        if (cr.status !== "PENDING") return NextResponse.json({ error: "Already resolved" }, { status: 409 });
+        const ALLOWED = ["serviceDate", "serviceTime", "pickupLocation", "destination", "passengers", "flightNumber"];
+        const changes = JSON.parse(cr.changes) as Record<string, string | number>;
+        const data: Record<string, string | number> = {};
+        for (const k of ALLOWED) if (k in changes) data[k] = changes[k];
+        await prisma.$transaction([
+          prisma.booking.update({
+            where: { id: cr.bookingId },
+            data: { ...data, statusEvents: { create: { from: cr.booking.status, to: cr.booking.status, actor: `admin:${session.userId}`, note: `Change applied: ${Object.keys(data).join(", ")}` } } },
+          }),
+          prisma.bookingChangeRequest.update({ where: { id: cr.id }, data: { status: "APPLIED", resolvedAt: new Date() } }),
+        ]);
+        await audit(session.userId, "APPLY_CHANGE", "Booking", cr.bookingId, data);
+        await sendNotification({ template: "CHANGE_APPLIED", recipientType: "CUSTOMER", to: cr.booking.customerEmail, bookingId: cr.bookingId, context: { reference: cr.booking.reference, customerName: cr.booking.customerName } });
+        return NextResponse.json({ ok: true });
+      }
+      case "REJECT_CHANGE": {
+        await prisma.bookingChangeRequest.update({ where: { id: body.changeId }, data: { status: "REJECTED", resolvedAt: new Date() } });
+        await audit(session.userId, "REJECT_CHANGE", "BookingChangeRequest", body.changeId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- Flight delay notice ----
+      case "FLIGHT_DELAY": {
+        const { bookingId } = body;
+        const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+        if (!booking) return NextResponse.json({ error: "Not found" }, { status: 404 });
+        const ctx = { reference: booking.reference, customerName: booking.customerName, route: `${booking.pickupLocation} → ${booking.destination}` };
+        await sendNotification({ template: "FLIGHT_DELAY", recipientType: "CUSTOMER", to: booking.customerEmail, bookingId, context: ctx });
+        if (booking.assignedDriverId) {
+          const driver = await prisma.driverProfile.findUnique({ where: { id: booking.assignedDriverId }, include: { user: true } });
+          if (driver) await sendNotification({ template: "FLIGHT_DELAY", recipientType: "DRIVER", to: driver.user.email, bookingId, context: ctx });
+        }
+        await audit(session.userId, "FLIGHT_DELAY", "Booking", bookingId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- City landing CMS ----
+      case "SAVE_CITY_CONTENT": {
+        const c = body.content ?? {};
+        const city = String(c.city ?? "").trim();
+        if (!city) return NextResponse.json({ error: "City is required" }, { status: 400 });
+        // FAQ arrives as "question | answer" lines; store as JSON.
+        const faq = String(c.faqText ?? "")
+          .split("\n").map((l: string) => l.trim()).filter(Boolean)
+          .map((l: string) => { const [q, ...a] = l.split("|"); return { q: q.trim(), a: a.join("|").trim() }; })
+          .filter((x: { q: string; a: string }) => x.q && x.a);
+        const saved = await prisma.cityContent.upsert({
+          where: { city },
+          update: { country: c.country || null, headline: c.headline || null, intro: c.intro || null, faq: JSON.stringify(faq), metaTitle: c.metaTitle || null, metaDescription: c.metaDescription || null, published: c.published !== false },
+          create: { city, country: c.country || null, headline: c.headline || null, intro: c.intro || null, faq: JSON.stringify(faq), metaTitle: c.metaTitle || null, metaDescription: c.metaDescription || null, published: c.published !== false },
+        });
+        await audit(session.userId, "SAVE_CITY_CONTENT", "CityContent", saved.id, { city });
+        return NextResponse.json({ ok: true });
+      }
+      case "DELETE_CITY_CONTENT": {
+        await prisma.cityContent.delete({ where: { id: body.contentId } });
+        await audit(session.userId, "DELETE_CITY_CONTENT", "CityContent", body.contentId);
+        return NextResponse.json({ ok: true });
+      }
+
+      // ---- Inbox: inquiries & corporate applications ----
+      case "RESOLVE_INQUIRY": {
+        await prisma.inquiry.update({ where: { id: body.inquiryId }, data: { status: body.status === "OPEN" ? "OPEN" : "RESOLVED" } });
+        await audit(session.userId, "RESOLVE_INQUIRY", "Inquiry", body.inquiryId);
+        return NextResponse.json({ ok: true });
+      }
+      case "SET_CORPORATE_STATUS": {
+        const status = ["PENDING", "ACTIVE", "REJECTED"].includes(body.status) ? body.status : "PENDING";
+        await prisma.corporateAccount.update({ where: { id: body.corporateId }, data: { status } });
+        await audit(session.userId, "SET_CORPORATE_STATUS", "CorporateAccount", body.corporateId, { status });
+        return NextResponse.json({ ok: true });
+      }
+
       default:
         return NextResponse.json({ error: "Unknown action" }, { status: 400 });
     }

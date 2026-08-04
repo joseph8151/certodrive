@@ -5,6 +5,8 @@ import SiteFooter from "@/components/SiteFooter";
 import BookingSummary from "@/components/BookingSummary";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import PayButton from "@/components/PayButton";
+import ReviewForm from "@/components/ReviewForm";
+import ChangeRequestForm from "@/components/ChangeRequestForm";
 import StatusPill from "@/components/StatusPill";
 import { prisma } from "@/lib/db";
 import { getLocale } from "@/lib/locale";
@@ -15,7 +17,7 @@ export default async function ConfirmPage({ params }: { params: Promise<{ refere
   const locale = await getLocale();
   const booking = await prisma.booking.findUnique({
     where: { reference },
-    include: { payment: true, vouchers: true },
+    include: { payment: true, vouchers: true, review: true },
   });
   if (!booking) notFound();
 
@@ -114,6 +116,21 @@ export default async function ConfirmPage({ params }: { params: Promise<{ refere
                   <Link href={`/lookup?ref=${booking.reference}`} className="btn btn-ghost w-full mt-2">
                     {locale === "ko" ? "예약 조회" : "Manage booking"}
                   </Link>
+                </div>
+              )}
+
+              {!["COMPLETED", "CANCELLED", "REFUNDED", "NO_SHOW"].includes(booking.status) && (
+                <ChangeRequestForm reference={booking.reference} locale={locale} />
+              )}
+
+              {booking.status === "COMPLETED" && !booking.review && (
+                <ReviewForm reference={booking.reference} locale={locale} />
+              )}
+              {booking.review && (
+                <div className="card p-6">
+                  <div className="text-sm text-[var(--color-slate)]">{locale === "ko" ? "내 후기" : "Your review"}</div>
+                  <div className="text-2xl text-[var(--color-gold)] mt-1">{"★".repeat(booking.review.rating)}<span className="text-[var(--color-line)]">{"★".repeat(5 - booking.review.rating)}</span></div>
+                  {booking.review.comment && <p className="text-sm mt-2">{booking.review.comment}</p>}
                 </div>
               )}
             </div>

@@ -19,9 +19,12 @@ export default async function AdminSettlements() {
 
   return (
     <div className="grid gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="font-display text-2xl font-bold">{L ? "기사 정산" : "Driver settlements"}</h1>
-        <div className="text-sm text-[var(--color-slate)]">{L ? "정산 예정 합계" : "Pending total"}: <b className="text-[var(--color-ink)]">{formatMoney(pendingTotal, "USD")}</b></div>
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-[var(--color-slate)]">{L ? "정산 예정 합계" : "Pending total"}: <b className="text-[var(--color-ink)]">{formatMoney(pendingTotal, "USD")}</b></div>
+          <a href="/api/admin/settlements/export" className="btn btn-outline text-sm py-1.5 px-3">{L ? "CSV 내보내기" : "Export CSV"}</a>
+        </div>
       </div>
 
       <div className="card overflow-hidden">

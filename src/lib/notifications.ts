@@ -22,6 +22,8 @@ export type NotificationTemplate =
   | "TRIP_COMPLETED"
   | "REVIEW_REQUEST"
   | "CANCELLED_REFUND"
+  | "CHANGE_REQUESTED"
+  | "CHANGE_APPLIED"
   | "NEW_BOOKING_REQUEST"; // to driver
 
 interface TemplateContext {
@@ -85,6 +87,14 @@ const TEMPLATES: Record<
   CANCELLED_REFUND: (c) => ({
     subject: `[Certo Drive] 취소 및 환불 안내 (${c.reference})`,
     body: `${c.customerName}님, 예약이 취소되었습니다. 환불 규정에 따라 처리해 드리겠습니다.`,
+  }),
+  CHANGE_REQUESTED: (c) => ({
+    subject: `[Certo Drive] 예약 변경 요청이 접수되었습니다 (${c.reference})`,
+    body: `${c.customerName}님, ${c.route} 예약의 변경 요청이 접수되었습니다. 담당 매니저가 확인 후 반영 여부를 안내드립니다.`,
+  }),
+  CHANGE_APPLIED: (c) => ({
+    subject: `[Certo Drive] 예약이 변경되었습니다 (${c.reference})`,
+    body: `${c.customerName}님, 요청하신 변경 사항이 예약에 반영되었습니다. 예약 조회에서 확인해 주세요.`,
   }),
   NEW_BOOKING_REQUEST: (c) => ({
     subject: `[Certo Drive Partner] 신규 예약 요청 (${c.reference})`,

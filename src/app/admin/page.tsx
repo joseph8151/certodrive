@@ -3,6 +3,7 @@ import { getLocale } from "@/lib/locale";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
 import StatusPill from "@/components/StatusPill";
+import RunRemindersButton from "@/components/RunRemindersButton";
 
 export default async function AdminDashboard() {
   const locale = await getLocale();
@@ -45,7 +46,10 @@ export default async function AdminDashboard() {
 
   return (
     <div className="grid gap-8">
-      <h1 className="font-display text-2xl font-bold">{L ? "관리자 대시보드" : "Admin dashboard"}</h1>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h1 className="font-display text-2xl font-bold">{L ? "관리자 대시보드" : "Admin dashboard"}</h1>
+        <RunRemindersButton locale={locale} />
+      </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {cards.map((c) => (

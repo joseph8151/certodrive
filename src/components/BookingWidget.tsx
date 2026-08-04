@@ -47,6 +47,7 @@ type Form = {
   dialCode: string;
   phone: string;
   messenger: string;
+  promotionCode: string;
 };
 
 export default function BookingWidget({
@@ -92,6 +93,7 @@ export default function BookingWidget({
     dialCode: "+82",
     phone: "",
     messenger: "",
+    promotionCode: "",
   });
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
@@ -180,7 +182,7 @@ export default function BookingWidget({
           <div key={s.n} className="flex items-center gap-2 flex-1">
             <div
               className={`h-6 w-6 shrink-0 rounded-full flex items-center justify-center text-xs font-bold ${
-                step >= s.n ? "bg-[var(--color-gold)] text-[var(--color-ink)]" : "bg-[var(--color-mist)] text-[var(--color-slate)]"
+                step >= s.n ? "bg-[var(--color-gold)] text-white" : "bg-[var(--color-mist)] text-[var(--color-slate)]"
               }`}
             >
               {s.n}
@@ -417,6 +419,10 @@ export default function BookingWidget({
           <div>
             <label className="field-label">{t("book.messenger")} <span className="text-[var(--color-slate)] font-normal">({t("common.optional")})</span></label>
             <input className="input" value={form.messenger} onChange={(e) => set("messenger", e.target.value)} placeholder="KakaoTalk ID / WhatsApp" />
+          </div>
+          <div>
+            <label className="field-label">{locale === "ko" ? "프로모션 코드" : "Promotion code"} <span className="text-[var(--color-slate)] font-normal">({t("common.optional")})</span></label>
+            <input className="input uppercase" value={form.promotionCode} onChange={(e) => set("promotionCode", e.target.value.toUpperCase())} placeholder="WELCOME10" />
           </div>
           <p className="text-xs text-[var(--color-slate)]">
             {locale === "ko"

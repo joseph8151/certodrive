@@ -2,13 +2,42 @@ import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import BookingWidget from "@/components/BookingWidget";
+import Testimonials, { type PublicReview } from "@/components/Testimonials";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
+import { prisma } from "@/lib/db";
 import { VEHICLE_CATEGORIES, VEHICLE_META, POPULAR_CITIES } from "@/lib/constants";
 
 export default async function HomePage() {
   const locale = await getLocale();
   const t = makeT(locale);
+
+  const reviewRows = await prisma.review.findMany({
+    where: { rating: { gte: 4 }, comment: { not: null } },
+    orderBy: { createdAt: "desc" },
+    take: 6,
+    include: { booking: { select: { pickupCity: true } }, driverProfile: { select: { contactName: true } } },
+  });
+  const reviews: PublicReview[] = reviewRows.map((r) => ({
+    id: r.id,
+    rating: r.rating,
+    comment: r.comment,
+    authorName: r.authorName,
+    city: r.booking.pickupCity,
+    driverName: r.driverProfile?.contactName ?? null,
+  }));
+
+  const pillars = locale === "ko"
+    ? [
+        { icon: "🛬", t: "공항 픽업·샌딩", d: "입국장에서 피켓으로 맞이하고, 공항까지 정시에 모십니다.", href: "/booking/airport-pickup" },
+        { icon: "🚕", t: "한인 택시·시내 이동", d: "한국어가 통하는 기사와 도시 안에서 편하게 이동하세요.", href: "/booking/intercity" },
+        { icon: "🕐", t: "하루 종일 기사·차량 전세", d: "관광·비즈니스·골프까지, 기사와 차량을 시간 단위로 전세.", href: "/booking/hourly" },
+      ]
+    : [
+        { icon: "🛬", t: "Airport pickup & drop-off", d: "Met at arrivals with a name board; on-time rides to the airport.", href: "/booking/airport-pickup" },
+        { icon: "🚕", t: "Korean taxi · in-city rides", d: "Get around the city with a driver who speaks your language.", href: "/booking/intercity" },
+        { icon: "🕐", t: "Full-day driver + vehicle", d: "Sightseeing, business or golf — hire a chauffeur and car by the hour.", href: "/booking/hourly" },
+      ];
 
   const values = [
     { icon: "🛡️", title: t("value.verified"), desc: t("value.verified.d") },
@@ -40,14 +69,38 @@ export default async function HomePage() {
             </h1>
             <p className="mt-5 text-white/75 text-lg max-w-xl">{t("hero.subtitle")}</p>
             <div className="mt-7 flex flex-wrap gap-4 text-sm text-white/70">
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.verified")}</span>
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.fixed")}</span>
-              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {t("value.support")}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "공항 픽업·샌딩" : "Airport pickup & drop-off"}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "한인 택시·하루 종일 전세" : "Korean taxi & full-day hire"}</span>
+              <span className="flex items-center gap-2"><span className="text-[var(--color-gold)]">✓</span> {locale === "ko" ? "24시간 한국어 지원" : "24/7 Korean support"}</span>
             </div>
           </div>
 
           <div id="book" className="scroll-mt-20">
             <BookingWidget locale={locale} />
+          </div>
+        </div>
+      </section>
+
+      {/* Service pillars */}
+      <section className="section">
+        <div className="container-cd">
+          <div className="text-center max-w-2xl mx-auto">
+            <p className="eyebrow">{locale === "ko" ? "서비스" : "Services"}</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">
+              {locale === "ko" ? "공항부터 하루 종일까지, 한 번에" : "From the airport to your whole day"}
+            </h2>
+          </div>
+          <div className="mt-12 grid md:grid-cols-3 gap-5">
+            {pillars.map((p) => (
+              <Link key={p.t} href={p.href} className="card p-7 hover:card-shadow transition-shadow group">
+                <div className="text-3xl">{p.icon}</div>
+                <h3 className="mt-4 font-semibold text-lg group-hover:text-[var(--color-gold-dark)]">{p.t}</h3>
+                <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{p.d}</p>
+                <span className="mt-4 inline-block text-sm font-medium text-[var(--color-gold-dark)]">
+                  {locale === "ko" ? "예약하기 →" : "Book now →"}
+                </span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -148,6 +201,9 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      <Testimonials reviews={reviews} locale={locale} />
 
       {/* CTA */}
       <section className="section">

@@ -25,6 +25,9 @@ export interface PricingInput {
   tollAndParking?: number;
   isHoliday?: boolean;
   discountAmount?: number;
+  // Optional promotion applied to the pre-payment-fee subtotal. PERCENT is
+  // resolved here (needs the subtotal); FIXED can also be passed via discountAmount.
+  promo?: { discountType: "PERCENT" | "FIXED"; value: number };
 }
 
 export interface PriceLineItem {
@@ -177,8 +180,15 @@ export async function computeCustomerPrice(input: PricingInput): Promise<Pricing
     subtotal += input.tollAndParking;
   }
 
-  // Promotion discount
-  const discount = Math.min(input.discountAmount ?? 0, subtotal);
+  // Promotion discount — resolve percent against the current subtotal.
+  let promoAmount = input.discountAmount ?? 0;
+  if (input.promo) {
+    promoAmount =
+      input.promo.discountType === "PERCENT"
+        ? subtotal * (input.promo.value / 100)
+        : input.promo.value;
+  }
+  const discount = Math.min(promoAmount, subtotal);
   if (discount > 0) {
     lineItems.push({ key: "discount", labelKo: "프로모션 할인", labelEn: "Promotion discount", amount: -discount });
     subtotal -= discount;
@@ -201,6 +211,17 @@ export async function computeCustomerPrice(input: PricingInput): Promise<Pricing
     minBookingFee,
     lineItems: rounded,
   };
+}
+
+// Resolve and validate a promotion code. Returns null if missing/invalid/expired
+// or fully used, so callers can silently ignore bad codes.
+export async function resolvePromotion(code: string | null | undefined) {
+  if (!code) return null;
+  const promo = await prisma.promotion.findUnique({ where: { code: code.trim().toUpperCase() } });
+  if (!promo || !promo.active) return null;
+  if (promo.expiresAt && promo.expiresAt < new Date()) return null;
+  if (promo.maxUses != null && promo.usedCount >= promo.maxUses) return null;
+  return promo;
 }
 
 // Look up a registered route price for the instant-quote path.

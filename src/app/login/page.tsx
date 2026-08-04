@@ -21,7 +21,12 @@ export default async function LoginPage() {
             <LoginForm locale={locale} />
           </div>
           <p className="text-center text-sm text-[var(--color-slate)] mt-4">
-            {locale === "ko" ? "기사 파트너 가입을 원하시나요? " : "Want to become a driver partner? "}
+            {locale === "ko" ? "고객 회원가입 " : "New customer? "}
+            <Link href="/register" className="text-[var(--color-navy)] font-medium underline">
+              {locale === "ko" ? "회원가입" : "Create an account"}
+            </Link>
+            {" · "}
+            {locale === "ko" ? "기사 파트너 " : "Driver? "}
             <Link href="/partners" className="text-[var(--color-navy)] font-medium underline">
               {locale === "ko" ? "파트너 지원" : "Apply here"}
             </Link>

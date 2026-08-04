@@ -59,10 +59,16 @@ Book **Seoul → ICN 인천공항 → 서울 시내, Business Sedan** on the hom
 
 | Area | Path |
 |------|------|
-| Customer | `/`, `/booking/[service]`, `/destinations/[city]`, `/lookup`, `/booking/confirm/[reference]`, `/voucher/[code]` |
-| Driver | `/driver` |
-| Admin | `/admin`, `/admin/bookings`, `/admin/pricing`, `/admin/drivers`, `/admin/settlements` |
-| APIs | `/api/bookings`, `/api/payments`, `/api/drivers/*`, `/api/admin/actions`, `/api/auth/*` |
+| Customer | `/`, `/register`, `/account` (my bookings), `/booking/[service]`, `/destinations/[city]`, `/lookup`, `/booking/confirm/[reference]` (pay + post-trip review), `/voucher/[code]` |
+| Driver | `/driver`, `/driver/profile` (profile, vehicles, documents, availability) |
+| Admin | `/admin`, `/admin/bookings`, `/admin/analytics`, `/admin/pricing`, `/admin/promotions`, `/admin/rates`, `/admin/drivers`, `/admin/settlements` (+ CSV export), `/admin/cms`, `/admin/inbox` |
+| APIs | `/api/bookings`, `/api/bookings/change`, `/api/payments`, `/api/reviews`, `/api/drivers/*`, `/api/admin/actions`, `/api/auth/*` |
+
+Promotion codes (PERCENT/FIXED) apply at booking; admins manage promos, exchange rates, inquiries and corporate applications. After a completed trip the customer can leave a **review**, which recomputes the driver's rating. The **analytics** page reports revenue by country/route/driver, average margin and conversion rate, normalizing multi-currency totals to USD.
+
+**Booking changes** — from the confirmation page a customer can request changes (date/time/pickup/destination/passengers/flight), verified by email; an admin applies or rejects them and the booking updates in place. **City landing CMS** — admins edit per-city headline, intro, FAQ and SEO at `/admin/cms`; published content overrides the default city page and renders an FAQ section. **Settlement CSV export** — `/api/admin/settlements/export` streams all settlements as CSV.
+
+**Customer accounts** — sign up at `/register`, then `/account` lists your upcoming and past bookings (guest bookings made with the same email are adopted on sign-up). **Driver self-service** — `/driver/profile` edits service areas, languages, settlement details, availability (accepting-bookings toggle + notes), vehicles (add/remove) and document re-uploads; drivers can attach **no-show evidence** when reporting a no-show. **Automated notifications** — `POST/GET /api/cron/reminders` sends idempotent day-before reminders (run it from a scheduler with `?secret=$CRON_SECRET`, or from the admin dashboard button); admins can send a **flight-delay** notice for any booking with a flight number.
 
 ## Internationalization & currency
 

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   if (!profile) return NextResponse.json({ error: "No profile" }, { status: 403 });
 
   const body = await req.json().catch(() => null);
-  const { bookingId, action } = body ?? {};
+  const { bookingId, action, evidenceUrl } = body ?? {};
   const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
   if (!booking || booking.assignedDriverId !== profile.id) return NextResponse.json({ error: "Booking not found" }, { status: 404 });
 
@@ -36,7 +36,11 @@ export async function POST(req: Request) {
 
   await prisma.booking.update({
     where: { id: booking.id },
-    data: { status: tr.to, statusEvents: { create: { from: booking.status, to: tr.to, actor: `driver:${profile.id}` } } },
+    data: {
+      status: tr.to,
+      ...(action === "NO_SHOW" && evidenceUrl ? { noShowEvidenceUrl: String(evidenceUrl) } : {}),
+      statusEvents: { create: { from: booking.status, to: tr.to, actor: `driver:${profile.id}`, note: action === "NO_SHOW" && evidenceUrl ? "No-show evidence uploaded" : null } },
+    },
   });
 
   if (action === "CONFIRM") {

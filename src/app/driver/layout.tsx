@@ -15,10 +15,16 @@ export default async function DriverLayout({ children }: { children: React.React
     <div className="min-h-screen bg-[var(--color-mist)]">
       <header className="bg-white border-b border-[var(--color-line)]">
         <div className="container-cd h-16 flex items-center justify-between">
-          <Link href="/driver" className="flex items-center gap-2">
-            <span className="font-display text-lg font-bold text-[var(--color-navy)]">Certo<span className="text-[var(--color-gold)]"> Drive</span></span>
-            <span className="pill pill-slate">{L ? "기사 파트너" : "Partner"}</span>
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link href="/driver" className="flex items-center gap-2">
+              <span className="font-display text-lg font-bold text-[var(--color-navy)]">Certo<span className="text-[var(--color-gold)]"> Drive</span></span>
+              <span className="pill pill-slate">{L ? "기사 파트너" : "Partner"}</span>
+            </Link>
+            <nav className="flex items-center gap-1 text-sm">
+              <Link href="/driver" className="px-3 py-1.5 rounded-md text-[var(--color-slate)] hover:bg-[var(--color-mist)]">{L ? "대시보드" : "Dashboard"}</Link>
+              <Link href="/driver/profile" className="px-3 py-1.5 rounded-md text-[var(--color-slate)] hover:bg-[var(--color-mist)]">{L ? "프로필·차량" : "Profile"}</Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-4 text-sm">
             <span className="text-[var(--color-slate)] hidden sm:inline">{session.name}</span>
             <LogoutButton locale={locale} />

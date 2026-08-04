@@ -5,7 +5,7 @@ export type Locale = "ko" | "en";
 
 export const dict = {
   // Global / nav
-  "brand.tagline": { ko: "검증된 한인·한국어 기사 프리미엄 차량 예약", en: "Premium chauffeur booking with verified Korean drivers" },
+  "brand.tagline": { ko: "해외에서 만나는 검증된 한인 기사 — 공항 픽업·한인 택시·하루 종일 전세", en: "Verified Korean chauffeurs abroad — airport transfers, Korean taxi & full-day hire" },
   "nav.pickup": { ko: "공항 픽업", en: "Airport Pickup" },
   "nav.dropoff": { ko: "공항 샌딩", en: "Airport Drop-off" },
   "nav.intercity": { ko: "도시 간 이동", en: "Intercity" },
@@ -19,8 +19,8 @@ export const dict = {
   "nav.book": { ko: "예약하기", en: "Book now" },
 
   // Hero
-  "hero.title": { ko: "전 세계 어디서나,\n한국어가 통하는 프리미엄 차량", en: "A premium chauffeur who speaks your language,\nanywhere in the world" },
-  "hero.subtitle": { ko: "검증된 한인 및 한국어 가능 기사가 공항에서 직접 맞이합니다. 정찰제 요금, 출발 전 기사 확정, 24시간 한국어 지원.", en: "Verified Korean-speaking chauffeurs meet you at the airport. Fixed pricing, driver confirmed before departure, 24/7 Korean support." },
+  "hero.title": { ko: "해외에서 만나는 한인 기사\n공항 픽업부터 하루 종일 전세까지", en: "Your Korean chauffeur abroad —\nfrom airport pickup to full-day hire" },
+  "hero.subtitle": { ko: "해외여행·출장 중 한국어가 통하는 검증된 한인 기사를 예약하세요. 공항 픽업·샌딩은 물론, 도시 간 이동과 하루 종일 기사·차량 전세까지. 정찰제 요금, 출발 전 기사 확정, 24시간 한국어 지원.", en: "Book a verified Korean-speaking chauffeur while you travel abroad. Airport pickup & drop-off, intercity rides, and full-day driver + vehicle hire. Fixed pricing, driver confirmed before departure, 24/7 Korean support." },
 
   // Booking widget
   "book.title": { ko: "차량 예약", en: "Book your ride" },

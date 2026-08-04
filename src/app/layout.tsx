@@ -4,12 +4,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Certo Drive — 검증된 한인·한국어 기사 프리미엄 차량 예약",
+    default: "Certo Drive — 해외 한인 기사·공항 픽업·한인 택시·하루 종일 전세",
     template: "%s · Certo Drive",
   },
   description:
-    "전 세계 주요 도시에서 검증된 한인 및 한국어 가능 기사를 예약하세요. 공항 픽업, 샌딩, 도시 간 이동, 시간제 차량, VIP 의전. 정찰제 요금과 24시간 한국어 지원.",
-  keywords: ["한인 기사", "공항 픽업", "airport transfer", "Korean chauffeur", "private car", "Certo Drive"],
+    "해외여행·출장 중 한국어가 통하는 검증된 한인 기사를 예약하세요. 공항 픽업·샌딩, 한인 택시, 도시 간 이동, 하루 종일 기사·차량 전세, VIP 의전. 정찰제 요금과 24시간 한국어 지원.",
+  keywords: ["해외 한인 기사", "한인 택시", "공항 픽업", "하루 종일 전세 차량", "airport transfer", "Korean chauffeur abroad", "Korean taxi", "Certo Drive"],
   openGraph: {
     title: "Certo Drive",
     description: "Premium chauffeur booking with verified Korean-speaking drivers worldwide.",
