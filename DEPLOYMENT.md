@@ -18,21 +18,23 @@ Health check: `GET /api/health` returns `{ status: "ok" }` when the DB is reacha
 
 ---
 
-## Option A — Container host (Railway / Render / Fly.io) — SQLite or Postgres
+## Option A — Railway (recommended) — deploys as-is with SQLite
 
-A `Dockerfile` is included. The container runs `prisma db push` on start, then
-serves on port 3000.
+`railway.json` and the `Dockerfile` are included, so Railway builds and runs the
+app with no code changes. The container runs `prisma db push` on start and the
+health check hits `/api/health`.
 
-1. Create a service from this repo (or `docker build -t certodrive .`).
-2. Set `DATABASE_URL` and `AUTH_SECRET`.
-3. **To keep SQLite data across restarts**, mount a persistent volume and point
-   `DATABASE_URL` at it, e.g. `file:/data/prod.db` with a volume at `/data`.
-   Without a volume the SQLite file is ephemeral.
-4. Deploy. Seed demo data once (optional): run `npm run db:seed` in a shell on
-   the instance.
+1. **railway.app → New Project → Deploy from GitHub repo** → select this repo.
+2. **Variables** — add:
+   - `AUTH_SECRET` = output of `openssl rand -base64 48`
+   - `DATABASE_URL` = `file:/data/prod.db`
+3. **Volume** — create one and mount it at `/data` (persists the SQLite file
+   across restarts/redeploys; without it the data is ephemeral).
+4. Deploy. Railway assigns a public domain automatically.
+5. Optional demo data: open a shell on the service and run `npm run db:seed`.
 
-Fly.io: `fly launch` (it detects the Dockerfile), then `fly volumes create data`
-and mount it at `/data`.
+Render and Fly.io work the same way via the `Dockerfile` (on Fly, create a
+volume with `fly volumes create data` and mount at `/data`).
 
 ---
 
