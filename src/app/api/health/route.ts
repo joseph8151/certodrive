@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
 
-// Lightweight health check for load balancers / uptime monitors.
-export async function GET() {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    return NextResponse.json({ status: "ok", db: "up" });
-  } catch {
-    return NextResponse.json({ status: "degraded", db: "down" }, { status: 503 });
-  }
+// Liveness check for Railway / load balancers. Returns 200 as soon as the
+// server is up — deliberately does NOT depend on the database so a transient
+// DB hiccup can't fail the deploy's health check.
+export const dynamic = "force-dynamic";
+
+export function GET() {
+  return NextResponse.json({ status: "ok" });
 }

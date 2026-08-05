@@ -24,7 +24,6 @@ RUN npx prisma generate && npm run build
 # ---- Runner ----
 FROM base AS runner
 ENV NODE_ENV=production
-ENV PORT=3000
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
@@ -33,5 +32,6 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.ts ./next.config.ts
 
 EXPOSE 3000
-# Ensure the schema exists (SQLite) or is in sync (Postgres) before starting.
-CMD ["sh", "-c", "npx prisma db push --skip-generate && npm run start"]
+# Ensure the schema exists (SQLite) or is in sync (Postgres), then bind to
+# Railway's injected $PORT on all interfaces.
+CMD ["sh", "-c", "npx prisma db push --skip-generate && npx next start -H 0.0.0.0 -p ${PORT:-3000}"]
