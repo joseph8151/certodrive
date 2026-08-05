@@ -2,6 +2,7 @@ import { getLocale } from "@/lib/locale";
 import { prisma } from "@/lib/db";
 import { formatMoney, safeJson } from "@/lib/utils";
 import AdminQuickAction from "@/components/AdminQuickAction";
+import AdminDriverForm from "@/components/AdminDriverForm";
 
 export default async function AdminDrivers() {
   const locale = await getLocale();
@@ -17,6 +18,8 @@ export default async function AdminDrivers() {
   return (
     <div className="grid gap-6">
       <h1 className="font-display text-2xl font-bold">{L ? "기사 파트너" : "Driver partners"}</h1>
+
+      <AdminDriverForm locale={locale} />
 
       <div className="grid gap-4">
         {drivers.map((d) => {

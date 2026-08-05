@@ -4,6 +4,7 @@ import { getSession } from "@/lib/auth";
 import { computeCustomerPrice } from "@/lib/pricing";
 import { sendNotification } from "@/lib/notifications";
 import { generateVoucherCode } from "@/lib/utils";
+import bcrypt from "bcryptjs";
 
 async function audit(actorId: string, action: string, entity: string, entityId: string, meta?: unknown) {
   await prisma.auditLog.create({
@@ -160,6 +161,60 @@ export async function POST(req: Request) {
         ]);
         await audit(session.userId, "CONFIRM_PAYMENT", "Booking", bookingId);
         return NextResponse.json({ ok: true });
+      }
+
+      // ---- Staff: register a driver on their behalf (auto-approved) ----
+      case "CREATE_DRIVER": {
+        const d = body.driver ?? {};
+        const email = String(d.email ?? "").trim().toLowerCase();
+        const contactName = String(d.contactName ?? "").trim();
+        const country = String(d.country ?? "").trim();
+        const city = String(d.city ?? "").trim();
+        if (!email || !contactName || !country || !city) {
+          return NextResponse.json({ error: "Email, name, country and city are required" }, { status: 400 });
+        }
+        if (await prisma.user.findUnique({ where: { email } })) {
+          return NextResponse.json({ error: "A user with that email already exists" }, { status: 409 });
+        }
+        // Split comma/newline separated lists into JSON arrays.
+        const toArr = (s: unknown) =>
+          String(s ?? "").split(/[,\n]/).map((x) => x.trim()).filter(Boolean);
+        const pw = await bcrypt.hash(String(d.password || "password123"), 10);
+        const user = await prisma.user.create({
+          data: { email, passwordHash: pw, role: "DRIVER", name: contactName, phone: d.phone || null },
+        });
+        const profile = await prisma.driverProfile.create({
+          data: {
+            userId: user.id,
+            partnerType: d.partnerType === "COMPANY" ? "COMPANY" : "INDIVIDUAL",
+            businessName: String(d.businessName || contactName).trim(),
+            contactName,
+            country,
+            city,
+            airports: JSON.stringify(toArr(d.airports)),
+            serviceRegions: JSON.stringify(toArr(d.serviceRegions)),
+            koreanLevel: d.koreanLevel || "NATIVE",
+            englishLevel: d.englishLevel || "CONVERSATIONAL",
+            settlementCurrency: String(d.settlementCurrency || "USD").toUpperCase(),
+            baseSupplyPrice: d.baseSupplyPrice ? Number(d.baseSupplyPrice) : null,
+            termsAgreed: true,
+            approvalStatus: "APPROVED",
+          },
+        });
+        if (d.vehicleCategory) {
+          await prisma.vehicle.create({
+            data: {
+              driverProfileId: profile.id,
+              category: String(d.vehicleCategory),
+              makeModel: String(d.vehicleModel || "").trim() || "—",
+              year: d.vehicleYear ? Number(d.vehicleYear) : null,
+              maxPassengers: d.maxPassengers ? Number(d.maxPassengers) : 3,
+              maxLuggage: d.maxLuggage ? Number(d.maxLuggage) : 3,
+            },
+          });
+        }
+        await audit(session.userId, "CREATE_DRIVER", "DriverProfile", profile.id, { email });
+        return NextResponse.json({ ok: true, id: profile.id });
       }
 
       // ---- Approve / reject a driver ----
