@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
+import { BUSINESS } from "@/lib/business";
 import FloatingContact from "./FloatingContact";
 import Icon from "./Icon";
 
@@ -73,6 +74,24 @@ export default async function SiteFooter() {
               </ul>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Business info (legal disclosure) */}
+      <div className="border-t border-white/10">
+        <div className="container-cd py-8 text-xs text-white/45 leading-relaxed">
+          <div className="font-semibold text-white/60 mb-2">{L ? "사업자 정보" : "Business information"}</div>
+          <div className="flex flex-wrap gap-x-5 gap-y-1">
+            <span>{L ? "상호" : "Company"}: {L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
+            <span>{L ? "대표" : "Representative"}: {BUSINESS.representative}</span>
+            <span>{L ? "사업자등록번호" : "Business reg. no."}: {BUSINESS.registrationNo}</span>
+            {BUSINESS.mailOrderNo && <span>{L ? "통신판매업신고" : "Mail-order no."}: {BUSINESS.mailOrderNo}</span>}
+          </div>
+          <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1">
+            <span>{L ? "주소" : "Address"}: {L ? BUSINESS.addressKo : BUSINESS.addressEn}</span>
+            <span>{L ? "이메일" : "Email"}: {BUSINESS.email}</span>
+            {BUSINESS.phone && <span>{L ? "전화" : "Phone"}: {BUSINESS.phone}</span>}
+          </div>
         </div>
       </div>
 

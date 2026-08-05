@@ -11,6 +11,7 @@ import StatusPill from "@/components/StatusPill";
 import { prisma } from "@/lib/db";
 import { getLocale } from "@/lib/locale";
 import { safeJson, formatMoney } from "@/lib/utils";
+import { paymentConfig } from "@/lib/payments";
 
 export default async function ConfirmPage({ params }: { params: Promise<{ reference: string }> }) {
   const { reference } = await params;
@@ -79,7 +80,17 @@ export default async function ConfirmPage({ params }: { params: Promise<{ refere
                 <PriceBreakdown items={items} total={booking.customerPrice} currency={booking.currency} locale={locale} />
               )}
 
-              {awaitingPayment && <PayButton reference={booking.reference} locale={locale} />}
+              {awaitingPayment && (
+                <PayButton
+                  reference={booking.reference}
+                  locale={locale}
+                  amount={booking.customerPrice ?? 0}
+                  currency={booking.currency}
+                  config={paymentConfig()}
+                  customerName={booking.customerName}
+                  customerEmail={booking.customerEmail}
+                />
+              )}
 
               {quoteRequested && (
                 <div className="card p-6">
