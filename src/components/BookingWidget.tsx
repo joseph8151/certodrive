@@ -6,6 +6,7 @@ import type { Locale } from "@/lib/i18n";
 import { makeT } from "@/lib/i18n";
 import { formatMoney } from "@/lib/utils";
 import AddressAutocomplete from "./AddressAutocomplete";
+import MapPreview from "./MapPreview";
 import {
   VEHICLE_CATEGORIES,
   VEHICLE_META,
@@ -70,6 +71,9 @@ export default function BookingWidget({
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  type Pt = { lat: number; lon: number } | null;
+  const [pickupPt, setPickupPt] = useState<Pt>(null);
+  const [destPt, setDestPt] = useState<Pt>(null);
   const [form, setForm] = useState<Form>({
     serviceType,
     tripType: "ONE_WAY",
@@ -295,7 +299,8 @@ export default function BookingWidget({
               <AddressAutocomplete
                 locale={locale}
                 value={form.pickupLocation}
-                onChange={(v) => set("pickupLocation", v)}
+                onChange={(v) => { set("pickupLocation", v); setPickupPt(null); }}
+                onSelect={(s) => setPickupPt(s.lat != null && s.lon != null ? { lat: s.lat, lon: s.lon } : null)}
                 quickOptions={selectedCity?.airports ?? []}
                 placeholder={locale === "ko" ? "공항 또는 정확한 주소 검색" : "Airport or exact address"}
               />
@@ -306,7 +311,8 @@ export default function BookingWidget({
                 <AddressAutocomplete
                   locale={locale}
                   value={form.destination}
-                  onChange={(v) => set("destination", v)}
+                  onChange={(v) => { set("destination", v); setDestPt(null); }}
+                  onSelect={(s) => setDestPt(s.lat != null && s.lon != null ? { lat: s.lat, lon: s.lon } : null)}
                   placeholder={locale === "ko" ? "호텔 또는 정확한 주소 검색" : "Hotel or exact address"}
                 />
               </div>
@@ -348,6 +354,15 @@ export default function BookingWidget({
               </div>
             </div>
           )}
+
+          {/* Real map preview of the trip */}
+          <MapPreview
+            locale={locale}
+            pickup={pickupPt}
+            destination={destPt}
+            pickupLabel={form.pickupLocation}
+            destLabel={isHourly ? "" : form.destination}
+          />
         </div>
       )}
 

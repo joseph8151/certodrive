@@ -11,12 +11,14 @@ type Sug = { label: string; lat?: number; lon?: number };
 export default function AddressAutocomplete({
   value,
   onChange,
+  onSelect,
   placeholder,
   locale,
   quickOptions = [],
 }: {
   value: string;
   onChange: (v: string) => void;
+  onSelect?: (s: { label: string; lat?: number; lon?: number }) => void;
   placeholder?: string;
   locale: string;
   quickOptions?: string[];
@@ -61,9 +63,10 @@ export default function AddressAutocomplete({
     : [];
   const list: Sug[] = value.trim().length < 3 ? quick : sugs;
 
-  function pick(label: string) {
+  function pick(s: Sug) {
     justPicked.current = true;
-    onChange(label);
+    onChange(s.label);
+    onSelect?.(s);
     setOpen(false);
     setSugs([]);
     setActive(-1);
@@ -82,7 +85,7 @@ export default function AddressAutocomplete({
           if (!open || list.length === 0) return;
           if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => Math.min(list.length - 1, a + 1)); }
           else if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => Math.max(0, a - 1)); }
-          else if (e.key === "Enter" && active >= 0) { e.preventDefault(); pick(list[active].label); }
+          else if (e.key === "Enter" && active >= 0) { e.preventDefault(); pick(list[active]); }
           else if (e.key === "Escape") setOpen(false);
         }}
       />
@@ -97,7 +100,7 @@ export default function AddressAutocomplete({
             <button
               key={`${s.label}-${i}`}
               type="button"
-              onMouseDown={(e) => { e.preventDefault(); pick(s.label); }}
+              onMouseDown={(e) => { e.preventDefault(); pick(s); }}
               onMouseEnter={() => setActive(i)}
               className={`w-full text-left px-3 py-2 text-sm flex items-start gap-2 ${i === active ? "bg-[var(--color-mist)]" : "hover:bg-[var(--color-mist)]"}`}
             >
