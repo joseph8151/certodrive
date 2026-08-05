@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { getLocale } from "@/lib/locale";
+import { paymentConfig } from "@/lib/payments";
 
 export default async function AdminGuide() {
   const locale = await getLocale();
   const L = locale === "ko";
+  const pay = paymentConfig();
+  const payStatus = [
+    { key: "PayPal", on: pay.paypal, note: L ? "해외 카드·페이팔" : "International" },
+    { key: L ? "한국 결제 (PortOne)" : "Korean (PortOne)", on: pay.portone, note: L ? "카카오·네이버·토스·카드" : "KakaoPay/Naver/Toss" },
+    { key: L ? "계좌이체·데모" : "Manual", on: pay.allowManual, note: L ? "게이트웨이 미설정 시 대체" : "Fallback" },
+  ];
 
   // Korean-first operations manual for staff. English kept minimal.
   return (
@@ -57,6 +64,28 @@ export default async function AdminGuide() {
           <p className="text-[var(--color-slate)] mt-1 leading-relaxed">
             {L ? <>기사는 자신의 이메일/비밀번호로 <Link href="/login" className="text-[var(--color-navy)] underline">로그인</Link> 후 <b>기사 대시보드</b>(/driver)에서 배정된 예약을 확인하고, /driver/profile 에서 수락 가능 여부를 켜고 끕니다. 정산 내역은 /driver/earnings 에서 봅니다.</> : "Drivers log in and use /driver, /driver/profile and /driver/earnings."}
           </p>
+        </div>
+      </section>
+
+      {/* Payment status */}
+      <section className="card p-6">
+        <h2 className="font-display text-xl font-bold">{L ? "결제 연동 상태" : "Payment integrations"}</h2>
+        <p className="text-sm text-[var(--color-slate)] mt-2">
+          {L ? "Vercel 환경변수에 키를 넣고 재배포하면 자동으로 켜집니다." : "Add keys to Vercel env vars and redeploy to enable."}
+        </p>
+        <div className="mt-4 grid gap-2">
+          {payStatus.map((p) => (
+            <div key={p.key} className="flex items-center justify-between rounded-lg border border-[var(--color-line)] px-4 py-3">
+              <div>
+                <span className="font-semibold text-sm">{p.key}</span>
+                <span className="text-xs text-[var(--color-slate)] ml-2">{p.note}</span>
+              </div>
+              <span className={`pill ${p.on ? "pill-green" : "pill-slate"}`}>{p.on ? (L ? "활성" : "Active") : (L ? "미설정" : "Off")}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 rounded-lg bg-[var(--color-mist)] p-4 text-xs text-[var(--color-slate)] leading-relaxed">
+          <b>PayPal</b> {L ? "설정: Vercel 환경변수에" : "setup — add to Vercel env:"} <code>PAYPAL_CLIENT_ID</code>, <code>PAYPAL_CLIENT_SECRET</code>, <code>PAYPAL_ENV=live</code> {L ? "추가 후 재배포." : "then redeploy."}
         </div>
       </section>
 
