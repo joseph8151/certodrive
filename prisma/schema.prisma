@@ -76,6 +76,10 @@ model DriverProfile {
   koreanLevel   String  @default("NONE") // NONE | BASIC | CONVERSATIONAL | FLUENT | NATIVE
   englishLevel  String  @default("NONE") // NONE | BASIC | CONVERSATIONAL | FLUENT | NATIVE
 
+  // Transport operating licence (required for domestic/Korea operation).
+  licenseType        String? // TAXI | RENTAL_CAR | CHARTER_BUS | PLATFORM | OTHER | NONE
+  transportLicenseNo String? // licence / business-registration number
+
   bankAccount        String?
   settlementCurrency String  @default("USD")
   baseSupplyPrice    Float?

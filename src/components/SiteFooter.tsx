@@ -92,6 +92,11 @@ export default async function SiteFooter() {
             <span>{L ? "이메일" : "Email"}: {BUSINESS.email}</span>
             {BUSINESS.phone && <span>{L ? "전화" : "Phone"}: {BUSINESS.phone}</span>}
           </div>
+          {L && (
+            <p className="mt-3 text-white/40">
+              체르토 드라이브는 통신판매중개자로서 예약을 중개하며, 실제 운송은 각 운송면허를 보유한 기사·사업자가 제공합니다. 개별 운송 서비스에 대한 책임은 해당 사업자에게 있습니다.
+            </p>
+          )}
         </div>
       </div>
 

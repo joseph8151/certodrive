@@ -23,6 +23,7 @@ export default function AdminDriverForm({ locale }: { locale: Locale }) {
     partnerType: "INDIVIDUAL", businessName: "",
     country: "", city: "", airports: "", serviceRegions: "",
     koreanLevel: "NATIVE", englishLevel: "CONVERSATIONAL",
+    licenseType: "", transportLicenseNo: "",
     settlementCurrency: "USD", baseSupplyPrice: "",
     vehicleCategory: "Business Sedan", vehicleModel: "", vehicleYear: "",
   };
@@ -96,6 +97,20 @@ export default function AdminDriverForm({ locale }: { locale: Locale }) {
           {inp("city", L ? "도시 *" : "City *", { required: true })}
           {inp("airports", L ? "담당 공항" : "Airports", { ph: L ? "쉼표로 구분" : "comma separated" })}
           {inp("serviceRegions", L ? "서비스 지역" : "Regions", { ph: L ? "쉼표로 구분" : "comma separated" })}
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="field-label">{L ? "운송면허 종류 (국내 필수)" : "Licence type (KR required)"}</label>
+            <select className="select" value={f.licenseType} onChange={(e) => set("licenseType", e.target.value)}>
+              <option value="">{L ? "선택/해당없음" : "None"}</option>
+              <option value="TAXI">{L ? "택시운송사업" : "Taxi"}</option>
+              <option value="RENTAL_CAR">{L ? "렌터카(대여사업)" : "Car rental"}</option>
+              <option value="CHARTER_BUS">{L ? "전세버스" : "Charter bus"}</option>
+              <option value="PLATFORM">{L ? "플랫폼운송·가맹" : "Platform"}</option>
+              <option value="OTHER">{L ? "기타" : "Other"}</option>
+            </select>
+          </div>
+          {inp("transportLicenseNo", L ? "운송면허/등록번호" : "Licence no.", { ph: L ? "국내 기사 필수" : "required for KR" })}
         </div>
         <div className="grid sm:grid-cols-4 gap-3">
           <div>

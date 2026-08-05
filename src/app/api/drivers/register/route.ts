@@ -33,6 +33,8 @@ export async function POST(req: Request) {
           serviceRegions: JSON.stringify(d.serviceRegions),
           koreanLevel: d.koreanLevel,
           englishLevel: d.englishLevel,
+          licenseType: d.licenseType ?? null,
+          transportLicenseNo: d.transportLicenseNo ?? null,
           bankAccount: d.bankAccount ?? null,
           settlementCurrency: d.settlementCurrency,
           baseSupplyPrice: d.baseSupplyPrice ?? null,

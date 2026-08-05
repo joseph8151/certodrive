@@ -13,6 +13,17 @@ const LEVEL_LABELS: Record<string, { ko: string; en: string }> = {
   NATIVE: { ko: "원어민", en: "Native" },
 };
 
+export const LICENSE_TYPES: { value: string; ko: string; en: string }[] = [
+  { value: "TAXI", ko: "택시운송사업 면허", en: "Taxi licence" },
+  { value: "RENTAL_CAR", ko: "렌터카(자동차대여사업)", en: "Car rental business" },
+  { value: "CHARTER_BUS", ko: "전세버스운송사업", en: "Charter bus" },
+  { value: "PLATFORM", ko: "플랫폼운송·가맹사업", en: "Platform transport/franchise" },
+  { value: "OTHER", ko: "기타 운송 자격", en: "Other" },
+  { value: "NONE", ko: "해당 없음 (해외 등)", en: "Not applicable (overseas)" },
+];
+
+const KOREA = /대한민국|한국|south\s*korea|korea|^kr$/i;
+
 function DocUpload({ label, onDone }: { label: string; onDone: (url: string) => void }) {
   const [status, setStatus] = useState<"idle" | "uploading" | "done">("idle");
   async function handle(e: React.ChangeEvent<HTMLInputElement>) {
@@ -63,6 +74,8 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
     vehicleCategory: "Business Sedan",
     maxPassengers: 3,
     maxLuggage: 3,
+    licenseType: "",
+    transportLicenseNo: "",
     termsAgreed: false,
   });
   const set = (k: string, v: unknown) => setF((p) => ({ ...p, [k]: v }));
@@ -71,6 +84,9 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!f.termsAgreed) return setError(L ? "이용약관에 동의해주세요." : "Please agree to the terms.");
+    if (KOREA.test(f.country) && (!f.licenseType || f.licenseType === "NONE" || f.transportLicenseNo.trim().length < 3)) {
+      return setError(L ? "국내 운행은 운송면허 종류와 번호가 필수입니다." : "A transport licence type and number are required for Korea.");
+    }
     setLoading(true);
     setError(null);
     try {
@@ -122,6 +138,31 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
           <div><label className="field-label">{L ? "서비스 가능 공항 (쉼표로 구분)" : "Airports (comma separated)"}</label><input className="input" value={f.airports} onChange={(e) => set("airports", e.target.value)} placeholder="ICN, GMP" /></div>
         </div>
         <div><label className="field-label">{L ? "서비스 가능 지역 (쉼표로 구분)" : "Service regions (comma separated)"}</label><input className="input" value={f.serviceRegions} onChange={(e) => set("serviceRegions", e.target.value)} placeholder={L ? "서울, 인천, 경기" : "Seoul, Incheon"} /></div>
+      </section>
+
+      <section className="grid gap-4">
+        <h3 className="font-semibold">
+          {L ? "운송 자격" : "Transport licence"}
+          {KOREA.test(f.country) && <span className="text-[#a52626] ml-1">*</span>}
+        </h3>
+        <p className="text-xs text-[var(--color-slate)] -mt-2">
+          {L
+            ? "체르토 드라이브는 예약을 중개하는 플랫폼입니다. 국내(한국) 운행은 「여객자동차 운수사업법」에 따라 운송면허를 보유한 기사·사업자만 등록할 수 있습니다."
+            : "Certo Drive is a booking brokerage. For domestic (Korea) service, only drivers holding a valid transport licence may register."}
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="field-label">{L ? "운송면허 종류" : "Licence type"}</label>
+            <select className="select" value={f.licenseType} onChange={(e) => set("licenseType", e.target.value)}>
+              <option value="">{L ? "선택하세요" : "Select"}</option>
+              {LICENSE_TYPES.map((l) => <option key={l.value} value={l.value}>{L ? l.ko : l.en}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="field-label">{L ? "운송면허/등록번호" : "Licence / registration no."}</label>
+            <input className="input" value={f.transportLicenseNo} onChange={(e) => set("transportLicenseNo", e.target.value)} placeholder={L ? "예: 서울-택시-12345" : "e.g. licence no."} />
+          </div>
+        </div>
       </section>
 
       <section className="grid gap-4">

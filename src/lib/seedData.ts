@@ -42,7 +42,7 @@ export async function seedDatabase() {
   ];
   for (const r of rules) await prisma.priceRule.create({ data: r });
 
-  async function makeDriver(o: { email: string; name: string; business: string; country: string; city: string; airports: string[]; regions: string[]; korean: string; category: string; supply: number; currency: string }) {
+  async function makeDriver(o: { email: string; name: string; business: string; country: string; city: string; airports: string[]; regions: string[]; korean: string; category: string; supply: number; currency: string; licenseType?: string; licenseNo?: string }) {
     const user = await prisma.user.upsert({ where: { email: o.email }, update: {}, create: { email: o.email, passwordHash: pw, role: "DRIVER", name: o.name } });
     const profile = await prisma.driverProfile.upsert({
       where: { userId: user.id },
@@ -50,6 +50,7 @@ export async function seedDatabase() {
       create: {
         userId: user.id, partnerType: "INDIVIDUAL", businessName: o.business, contactName: o.name, country: o.country, city: o.city,
         airports: JSON.stringify(o.airports), serviceRegions: JSON.stringify(o.regions), koreanLevel: o.korean, englishLevel: "CONVERSATIONAL",
+        licenseType: o.licenseType ?? null, transportLicenseNo: o.licenseNo ?? null,
         settlementCurrency: o.currency, baseSupplyPrice: o.supply, termsAgreed: true, approvalStatus: "APPROVED", rating: 4.9, ratingCount: 42,
         driverLicenseUrl: "uploads/sample-license.pdf", insuranceUrl: "uploads/sample-insurance.pdf",
       },
@@ -59,7 +60,7 @@ export async function seedDatabase() {
     return profile;
   }
 
-  const seoul = await makeDriver({ email: "driver.seoul@certodrive.com", name: "김민수", business: "Seoul Premium Transfers", country: "대한민국", city: "서울", airports: ["ICN 인천공항", "GMP 김포공항"], regions: ["서울", "인천", "경기"], korean: "NATIVE", category: "Business Sedan", supply: 80, currency: "KRW" });
+  const seoul = await makeDriver({ email: "driver.seoul@certodrive.com", name: "김민수", business: "Seoul Premium Transfers", country: "대한민국", city: "서울", airports: ["ICN 인천공항", "GMP 김포공항"], regions: ["서울", "인천", "경기"], korean: "NATIVE", category: "Business Sedan", supply: 80, currency: "KRW", licenseType: "RENTAL_CAR", licenseNo: "서울-대여-01234" });
   const paris = await makeDriver({ email: "driver.paris@certodrive.com", name: "David Park", business: "Paris Korean Chauffeur", country: "프랑스", city: "파리", airports: ["CDG 샤를드골공항", "ORY 오를리공항"], regions: ["파리", "베르사유"], korean: "FLUENT", category: "Premium Sedan", supply: 120, currency: "EUR" });
   const tokyo = await makeDriver({ email: "driver.tokyo@certodrive.com", name: "이지훈", business: "Tokyo K-Drive", country: "일본", city: "도쿄", airports: ["NRT 나리타공항", "HND 하네다공항"], regions: ["도쿄", "요코하마"], korean: "NATIVE", category: "Business Sedan", supply: 15000, currency: "JPY" });
 

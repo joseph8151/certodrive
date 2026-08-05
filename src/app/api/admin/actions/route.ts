@@ -173,6 +173,10 @@ export async function POST(req: Request) {
         if (!email || !contactName || !country || !city) {
           return NextResponse.json({ error: "Email, name, country and city are required" }, { status: 400 });
         }
+        // Brokerage compliance: domestic (Korea) drivers must hold a transport licence.
+        if (/대한민국|한국|south\s*korea|korea|^kr$/i.test(country.trim()) && (!d.licenseType || d.licenseType === "NONE" || !d.transportLicenseNo)) {
+          return NextResponse.json({ error: "국내 기사는 운송면허 종류와 번호가 필요합니다." }, { status: 400 });
+        }
         if (await prisma.user.findUnique({ where: { email } })) {
           return NextResponse.json({ error: "A user with that email already exists" }, { status: 409 });
         }
@@ -195,6 +199,8 @@ export async function POST(req: Request) {
             serviceRegions: JSON.stringify(toArr(d.serviceRegions)),
             koreanLevel: d.koreanLevel || "NATIVE",
             englishLevel: d.englishLevel || "CONVERSATIONAL",
+            licenseType: d.licenseType || null,
+            transportLicenseNo: d.transportLicenseNo || null,
             settlementCurrency: String(d.settlementCurrency || "USD").toUpperCase(),
             baseSupplyPrice: d.baseSupplyPrice ? Number(d.baseSupplyPrice) : null,
             termsAgreed: true,

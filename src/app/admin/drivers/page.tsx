@@ -42,6 +42,11 @@ export default async function AdminDrivers() {
                   <div className="text-sm text-[var(--color-slate)] mt-1">
                     {d.city}, {d.country} · {d.partnerType} · {d.user.email}
                   </div>
+                  {(d.licenseType || d.transportLicenseNo) && (
+                    <div className="text-xs mt-1">
+                      <span className="pill pill-blue">{L ? "면허" : "Licence"}: {d.licenseType ?? "—"}{d.transportLicenseNo ? ` · ${d.transportLicenseNo}` : ""}</span>
+                    </div>
+                  )}
                   <div className="text-sm text-[var(--color-slate)] mt-1">
                     {L ? "한국어" : "Korean"} {d.koreanLevel} · {L ? "영어" : "English"} {d.englishLevel} · ★{d.rating.toFixed(1)} ({d.ratingCount})
                     {airports.length > 0 && ` · ${airports.join(", ")}`}

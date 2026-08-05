@@ -50,5 +50,19 @@ export const driverRegistrationSchema = z.object({
   vehicleCategory: z.string().min(1),
   maxPassengers: z.coerce.number().int().min(1).default(3),
   maxLuggage: z.coerce.number().int().min(0).default(2),
+  licenseType: z.string().optional().nullable(),
+  transportLicenseNo: z.string().optional().nullable(),
   termsAgreed: z.boolean().refine((v) => v, { message: "Terms must be agreed" }),
+}).superRefine((d, ctx) => {
+  // Certo Drive is a brokerage — a domestic (Korea) driver must hold their own
+  // transport licence, so licence type + number are required for Korea.
+  const domestic = /대한민국|한국|south\s*korea|korea|^kr$/i.test(d.country.trim());
+  if (domestic) {
+    if (!d.licenseType || d.licenseType === "NONE") {
+      ctx.addIssue({ path: ["licenseType"], code: z.ZodIssueCode.custom, message: "국내 운영은 운송면허가 필요합니다." });
+    }
+    if (!d.transportLicenseNo || d.transportLicenseNo.trim().length < 3) {
+      ctx.addIssue({ path: ["transportLicenseNo"], code: z.ZodIssueCode.custom, message: "운송면허/등록번호를 입력하세요." });
+    }
+  }
 });
