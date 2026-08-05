@@ -136,15 +136,15 @@ export default async function SiteFooter() {
       {/* Popular destinations */}
       <div className="border-t border-white/10">
         <div className="container-cd py-12">
-          <h4 className="text-white/50 font-semibold text-xs uppercase tracking-wider mb-4">
+          <h4 className="text-white/50 font-semibold text-xs uppercase tracking-wider mb-6">
             {L ? "인기 도시" : "Popular cities"}
           </h4>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-5">
             {cities.map((city) => (
               <Link
                 key={city}
                 href={`/destinations/${encodeURIComponent(city)}`}
-                className="group relative h-20 rounded-lg overflow-hidden ring-1 ring-white/10"
+                className="lift group relative h-28 rounded-xl overflow-hidden ring-1 ring-white/10"
                 style={{
                   backgroundColor: "var(--color-navy)",
                   backgroundImage: `linear-gradient(180deg, rgba(15,24,41,0.15) 0%, rgba(15,24,41,0.82) 100%), url("${cityImage(city)}")`,
@@ -152,7 +152,7 @@ export default async function SiteFooter() {
                   backgroundPosition: "center",
                 }}
               >
-                <span className="absolute inset-x-0 bottom-0 p-2 text-xs font-semibold group-hover:text-[var(--color-gold)] transition-colors">
+                <span className="absolute inset-x-0 bottom-0 p-3 text-sm font-semibold group-hover:text-[var(--color-gold)] transition-colors">
                   {city}
                 </span>
               </Link>

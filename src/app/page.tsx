@@ -45,32 +45,32 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       icon: "arrival", href: "/booking/airport-pickup",
       t: L ? "공항 픽업·샌딩" : "Airport pickup & drop-off",
       d: L
-        ? "낯선 공항, 긴 비행 뒤 가장 반가운 건 이름이 적힌 피켓입니다. 검증된 한인 기사가 입국장에서 기다렸다가 짐을 함께 옮기고, 예약하신 차량으로 목적지까지 모십니다. 항공편은 자동으로 확인되어 지연되어도 추가 요금 없이 대기하며, 요금에는 통행료와 공항 주차비까지 포함됩니다."
-        : "After a long flight, nothing beats seeing your name on a board. A verified Korean driver waits at arrivals, helps with your bags, and takes you door to door. We track your flight automatically — delays mean no extra charge — and the fare already covers tolls and airport parking.",
+        ? "입국장에서 피켓으로 맞이하고, 항공편 지연도 무료로 대기합니다. 통행료·주차 포함 정찰제."
+        : "Met at arrivals with a name board, free waiting on delays. Tolls and parking included.",
     },
     {
       icon: "car", href: "/booking/intercity",
       t: L ? "한인 택시·시내 이동" : "Korean taxi · in-city",
       d: L
-        ? "언어 때문에 목적지를 설명하느라 진땀 빼는 일은 이제 없습니다. 한국어가 완벽하게 통하는 기사와 함께 시내 어디든 편하게 이동하고, 맛집이나 동선까지 현지 팁을 얻으세요. 미터기 바가지 걱정 없이 예약 시 요금이 확정되어 마음이 편합니다."
-        : "No more struggling to explain where you're going. Ride anywhere in the city with a driver who speaks fluent Korean, and pick up local tips on food and routes along the way. The fare is fixed when you book — no meter surprises, no haggling.",
+        ? "한국어가 통하는 기사와 시내 어디든 편하게. 미터기 바가지 없이 요금이 확정됩니다."
+        : "Ride anywhere with a Korean-speaking driver — a fixed fare, no meter surprises.",
     },
     {
       icon: "clock", href: "/booking/hourly",
       t: L ? "하루 종일 기사·차량 전세" : "Full-day driver + vehicle",
       d: L
-        ? "관광, 비즈니스 미팅, 골프 라운딩, 웨딩 촬영까지 — 하루 일정 전체를 기사와 차량이 함께합니다. 여러 목적지를 자유롭게 돌고, 필요할 때 대기하며, 다음 장소로 매끄럽게 이동하세요. 시간 단위로 예약하고, 일정은 그날그날 유연하게 조정할 수 있습니다."
-        : "Sightseeing, business meetings, a round of golf, a wedding shoot — one chauffeur and car for the whole day. Roam between stops freely, keep the car waiting when you need it, and glide to the next place. Booked by the hour, with an itinerary you can adjust on the day.",
+        ? "관광·비즈니스·골프까지, 기사와 차량을 시간 단위로 전세. 여러 목적지를 자유롭게."
+        : "A chauffeur and car by the hour — sightseeing, business or golf, multi-stop and free.",
     },
   ];
 
   const values = [
-    { icon: "shield", title: L ? "검증된 한인 기사" : "Verified Korean drivers", desc: L ? "운전면허, 영업·보험 서류, 신원 확인을 모두 통과한 기사만 배정됩니다. 한국어 가능 수준도 직접 검증해 낯선 나라에서도 믿고 맡길 수 있습니다." : "Only drivers who pass license, insurance and identity checks are assigned — and we verify their Korean level ourselves, so you can trust every ride abroad." },
-    { icon: "badge", title: L ? "관리자가 확인하는 배차" : "Human-confirmed dispatch", desc: L ? "자동 매칭이 아니라, 담당자가 요청과 기사를 직접 확인해 배정합니다. 문제가 생기면 체르토 드라이브가 중간에서 책임지고 대응합니다." : "Not blind auto-matching — a real coordinator reviews each request and driver. If anything goes wrong, Certo Drive steps in and takes responsibility." },
-    { icon: "tag", title: L ? "정찰제 투명 요금" : "Fixed, transparent fares", desc: L ? "예약하는 순간 최종 금액이 확정됩니다. 등록된 노선은 즉시 가격이 나오고, 통행료·주차·대기까지 포함해 도착 후 추가 청구가 없습니다." : "The final price is locked the moment you book. Registered routes price instantly, with tolls, parking and waiting included — never a surprise charge on arrival." },
-    { icon: "plane", title: L ? "항공편 실시간 확인" : "Live flight tracking", desc: L ? "입국 항공편을 자동으로 모니터링해 지연·조기 도착에 맞춰 기사님이 대기합니다. 비행이 늦어져도 추가 요금 없이 여유롭게 기다립니다." : "We monitor your inbound flight and adjust pickup for delays or early landings. Even a late arrival means the driver waits — at no extra cost." },
-    { icon: "board", title: L ? "입국장 미팅·피켓" : "Meet & greet service", desc: L ? "복잡한 입국장에서 헤맬 필요 없이, 성함이 적힌 피켓을 든 기사님을 바로 찾을 수 있습니다. 연락처도 미리 공유되어 안심입니다." : "No wandering a crowded arrivals hall — find your driver instantly by the name board, with contact details shared in advance." },
-    { icon: "chat", title: L ? "24시간 한국어 지원" : "24/7 Korean support", desc: L ? "예약 전 문의부터 이동 중 변경까지, 한국어로 언제든 도와드립니다. 시차 걱정 없이 필요한 순간에 바로 연락하세요." : "From pre-booking questions to mid-trip changes, we help in Korean around the clock — reach us the moment you need us, no time-zone worries." },
+    { icon: "shield", title: L ? "검증된 한인 기사" : "Verified Korean drivers", desc: L ? "면허·보험·신원 확인을 통과한 기사만. 한국어 수준까지 검증합니다." : "License, insurance and identity checked — with verified Korean too." },
+    { icon: "badge", title: L ? "관리자 확인 배차" : "Human-confirmed dispatch", desc: L ? "자동 매칭이 아닌, 담당자가 직접 확인해 배정합니다." : "A real coordinator reviews each request — not blind matching." },
+    { icon: "tag", title: L ? "정찰제 투명 요금" : "Fixed, transparent fares", desc: L ? "예약 시 금액 확정. 통행료·주차·대기 포함, 추가 청구 없음." : "Price locked at booking — tolls, parking and waiting included." },
+    { icon: "plane", title: L ? "항공편 실시간 확인" : "Live flight tracking", desc: L ? "지연·조기 도착을 자동 확인해 추가 요금 없이 대기합니다." : "Delays and early arrivals handled — the driver waits, free." },
+    { icon: "board", title: L ? "입국장 미팅·피켓" : "Meet & greet service", desc: L ? "성함이 적힌 피켓으로 바로 만나고, 연락처는 미리 공유됩니다." : "Find your driver by name board, contact shared in advance." },
+    { icon: "chat", title: L ? "24시간 한국어 지원" : "24/7 Korean support", desc: L ? "예약부터 이동 중 변경까지, 한국어로 언제든 도와드립니다." : "Help in Korean around the clock, from booking to mid-trip." },
   ];
 
   const steps = [
@@ -91,40 +91,43 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     <>
       <SiteHeader />
 
-      {/* Hero */}
+      {/* Hero — cinematic */}
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div
-          className="absolute inset-0"
-          style={photoBg(IMG.hero, "linear-gradient(105deg, rgba(11,17,28,0.94) 0%, rgba(13,21,37,0.80) 42%, rgba(13,21,37,0.50) 100%)")}
-        />
-        <div className="container-cd relative py-14 md:py-24 grid lg:grid-cols-2 gap-10 items-center">
+        {/* Slow-zoom photo layer (video-like motion) */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 hero-anim" style={photoBg(IMG.hero, "linear-gradient(100deg, rgba(9,14,24,0.92) 0%, rgba(11,17,28,0.72) 45%, rgba(11,17,28,0.42) 100%)")} />
+        </div>
+        {/* Bottom fade for depth */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-navy)] to-transparent" />
+
+        <div className="container-cd relative py-16 md:py-28 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] leading-[1.08] font-bold mt-4 whitespace-pre-line">
+            <p className="eyebrow text-[var(--color-gold)] reveal">CERTO DRIVE</p>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.04] font-extrabold mt-4 whitespace-pre-line reveal">
               {t("hero.title")}
             </h1>
-            <p className="mt-5 text-white/80 text-lg max-w-xl">{t("hero.subtitle")}</p>
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/75">
-              {[L ? "공항 픽업·샌딩" : "Airport pickup & drop-off", L ? "한인 택시·하루 종일 전세" : "Korean taxi & full-day hire", L ? "24시간 한국어 지원" : "24/7 Korean support"].map((x) => (
-                <span key={x} className="flex items-center gap-2"><Icon name="badge" size={16} className="text-[var(--color-gold)]" /> {x}</span>
-              ))}
-            </div>
+            <p className="mt-6 text-white/85 text-lg md:text-xl max-w-lg reveal-2">{t("hero.subtitle")}</p>
             {/* Social-proof glass chip */}
-            <div className="mt-8 inline-flex items-center gap-4 glass rounded-full pl-4 pr-5 py-2.5">
-              <div className="flex -space-x-2">
+            <div className="mt-8 inline-flex items-center gap-4 glass rounded-full pl-4 pr-6 py-3 reveal-3">
+              <div className="flex -space-x-2.5">
                 {[IMG.meet, IMG.family, IMG.vipBand].map((src) => (
-                  <span key={src} className="h-8 w-8 rounded-full ring-2 ring-white/70 bg-cover bg-center" style={{ backgroundImage: `url(${src})` }} />
+                  <span key={src} className="h-9 w-9 rounded-full ring-2 ring-white/70 bg-cover bg-center" style={{ backgroundImage: `url(${src})` }} />
                 ))}
               </div>
               <div className="text-sm leading-tight">
-                <div className="font-semibold text-[var(--color-gold)]">★★★★★ 4.9/5</div>
+                <div className="font-semibold text-[var(--color-gold)]">★★★★★ 4.9 / 5</div>
                 <div className="text-white/70 text-xs">{L ? "전 세계 여행자들이 신뢰합니다" : "Trusted by travelers worldwide"}</div>
               </div>
             </div>
           </div>
-          <div id="book" className="scroll-mt-24">
+          <div id="book" className="scroll-mt-24 reveal-2">
             <BookingWidget locale={locale} prefill={hasPrefill ? prefill : undefined} />
           </div>
+        </div>
+
+        {/* Scroll cue */}
+        <div className="relative z-10 hidden md:flex justify-center pb-6 text-white/50">
+          <span className="bob"><Icon name="arrival" size={22} /></span>
         </div>
       </section>
 

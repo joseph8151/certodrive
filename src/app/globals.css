@@ -234,6 +234,31 @@ body {
 }
 .tbl tr:hover td { background: var(--color-mist); }
 
+/* Cinematic hero motion — slow Ken Burns zoom reads like ambient video. */
+@keyframes heroZoom {
+  from { transform: scale(1.06); }
+  to { transform: scale(1.2); }
+}
+.hero-anim {
+  animation: heroZoom 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: none; }
+}
+.reveal { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.reveal-2 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
+.reveal-3 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
+.bob { animation: bob 2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim, .reveal, .reveal-2, .reveal-3, .bob { animation: none; }
+}
+
 .hero-gradient {
   background:
     linear-gradient(180deg, rgba(15, 24, 41, 0.55) 0%, rgba(9, 14, 25, 0.86) 100%),
