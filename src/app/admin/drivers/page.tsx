@@ -33,13 +33,13 @@ export default async function AdminDrivers() {
           return (
             <div key={d.id} className="card p-5">
               <div className="flex items-start justify-between gap-4 flex-wrap">
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-semibold">{d.contactName}</span>
                     <span className="text-sm text-[var(--color-slate)]">· {d.businessName}</span>
                     <span className={`pill pill-${toneFor(d.approvalStatus)}`}>{d.approvalStatus}</span>
                   </div>
-                  <div className="text-sm text-[var(--color-slate)] mt-1">
+                  <div className="text-sm text-[var(--color-slate)] mt-1 break-words">
                     {d.city}, {d.country} · {d.partnerType} · {d.user.email}
                   </div>
                   {(d.licenseType || d.transportLicenseNo) && (

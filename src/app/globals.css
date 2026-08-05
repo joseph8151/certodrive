@@ -46,6 +46,7 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden; /* guard against right-side cutoff on narrow screens */
 }
 
 .font-display {

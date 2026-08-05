@@ -51,13 +51,15 @@ export default function AdminDriverForm({ locale }: { locale: Locale }) {
   if (!open) {
     return (
       <div className="card p-5 flex items-center justify-between gap-4 flex-wrap">
-        <div>
+        <div className="min-w-0">
           <div className="font-semibold">{L ? "기사 직접 등록" : "Register a driver"}</div>
           <div className="text-sm text-[var(--color-slate)]">
             {L ? "직원이 기사를 대신 등록하고 즉시 승인합니다." : "Add a driver on their behalf and approve instantly."}
           </div>
         </div>
-        <button className="btn btn-primary" onClick={() => setOpen(true)}>{L ? "새 기사 추가" : "Add driver"}</button>
+        <button className="btn btn-gold w-full sm:w-auto text-base" onClick={() => setOpen(true)}>
+          + {L ? "새 기사 추가" : "Add driver"}
+        </button>
       </div>
     );
   }

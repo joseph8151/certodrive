@@ -50,7 +50,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </nav>
       </header>
-      <main className="container-cd py-8">{children}</main>
+      <main className="container-cd py-8 overflow-x-hidden">{children}</main>
     </div>
   );
 }
