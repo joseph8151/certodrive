@@ -87,6 +87,12 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
     if (KOREA.test(f.country) && (!f.licenseType || f.licenseType === "NONE" || f.transportLicenseNo.trim().length < 3)) {
       return setError(L ? "국내 운행은 운송면허 종류와 번호가 필수입니다." : "A transport licence type and number are required for Korea.");
     }
+    if (KOREA.test(f.country) && !docs.transportLicense) {
+      return setError(L ? "국내 운행은 운송면허증 파일 첨부가 필수입니다." : "A transport-licence document is required for Korea.");
+    }
+    if (KOREA.test(f.country) && !docs.insurance) {
+      return setError(L ? "국내 운행은 (유상운송) 보험증서 첨부가 필수입니다." : "An insurance document is required for Korea.");
+    }
     setLoading(true);
     setError(null);
     try {
@@ -212,10 +218,15 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
 
       <section className="grid gap-4">
         <h3 className="font-semibold">{L ? "서류 업로드" : "Documents"}</h3>
+        {KOREA.test(f.country) && (
+          <p className="text-xs text-[var(--color-slate)] -mt-2">
+            {L ? "국내 기사는 운송면허증과 보험증서 첨부가 필수입니다." : "Domestic (Korea) drivers must attach a transport licence and insurance."}
+          </p>
+        )}
         <div className="grid sm:grid-cols-2 gap-4">
-          <DocUpload label={L ? "운송사업 면허" : "Transport license"} onDone={(u) => setDocs((d) => ({ ...d, transportLicense: u }))} />
+          <DocUpload label={`${L ? "운송사업 면허증" : "Transport license"}${KOREA.test(f.country) ? " *" : ""}${docs.transportLicense ? " ✓" : ""}`} onDone={(u) => setDocs((d) => ({ ...d, transportLicense: u }))} />
+          <DocUpload label={`${L ? "보험증서" : "Insurance"}${KOREA.test(f.country) ? " *" : ""}${docs.insurance ? " ✓" : ""}`} onDone={(u) => setDocs((d) => ({ ...d, insurance: u }))} />
           <DocUpload label={L ? "기사 면허" : "Driver license"} onDone={(u) => setDocs((d) => ({ ...d, driverLicense: u }))} />
-          <DocUpload label={L ? "보험증서" : "Insurance"} onDone={(u) => setDocs((d) => ({ ...d, insurance: u }))} />
           <DocUpload label={L ? "차량등록증" : "Vehicle registration"} onDone={(u) => setDocs((d) => ({ ...d, vehicleReg: u }))} />
           <DocUpload label={L ? "차량 사진" : "Vehicle photo"} onDone={(u) => setDocs((d) => ({ ...d, vehiclePhotos: u }))} />
         </div>

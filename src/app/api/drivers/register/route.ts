@@ -16,6 +16,13 @@ export async function POST(req: Request) {
 
   const docs = (body?.documents ?? {}) as Record<string, string>;
 
+  // Brokerage compliance: domestic (Korea) drivers must attach a transport
+  // licence and insurance document, not just a licence number.
+  const domestic = /대한민국|한국|south\s*korea|korea|^kr$/i.test(d.country.trim());
+  if (domestic && (!docs.transportLicense || !docs.insurance)) {
+    return NextResponse.json({ error: "국내 기사는 운송면허증과 보험증서 파일 첨부가 필수입니다." }, { status: 400 });
+  }
+
   const user = await prisma.user.create({
     data: {
       email: d.email.toLowerCase(),
