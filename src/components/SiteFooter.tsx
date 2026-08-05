@@ -12,6 +12,7 @@ export default async function SiteFooter() {
       title: t("footer.company"),
       links: [
         { href: "/how-it-works", label: t("nav.help") },
+        { href: "/reviews", label: locale === "ko" ? "고객 후기" : "Reviews" },
         { href: "/destinations", label: t("nav.cities") },
         { href: "/vip", label: t("nav.vip") },
         { href: "/support", label: t("footer.support") },

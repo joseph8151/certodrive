@@ -20,6 +20,7 @@ export default async function SiteHeader() {
     { href: "/vip", label: t("nav.vip") },
     { href: "/destinations", label: t("nav.cities") },
     { href: "/how-it-works", label: t("nav.help") },
+    { href: "/reviews", label: locale === "ko" ? "후기" : "Reviews" },
   ];
 
   return (

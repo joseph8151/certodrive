@@ -9,6 +9,10 @@ export const IMG = {
   hero: u("1503376780353-7e6692767b70", 2000), // sleek car, dusk road
   editorial: u("1449965408869-eaa3f722e40d", 2000), // classic luxury car
   vipBand: u("1511919884226-fd3cad34687c", 2000), // chauffeur / executive
+  airport: u("1436491865332-7a61a109cc05", 2000), // airplane / travel
+  meet: u("1560250097-0b93528c311a", 1600), // suited chauffeur / executive
+  reviews: u("1520340356584-f9917d1eb98a", 2000), // scenic road trip
+  family: u("1502920917128-1aa500764cbd", 1600), // travel / arrival
 };
 
 // City → photo. Both Korean and English names map to the same image.
