@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/i18n";
 import { makeT } from "@/lib/i18n";
+import { formatMoney } from "@/lib/utils";
 import {
   VEHICLE_CATEGORIES,
   VEHICLE_META,
@@ -103,6 +104,39 @@ export default function BookingWidget({
 
   const selectedCity = cities.find((c) => c.city === form.pickupCity);
   const isHourly = form.serviceType === "HOURLY";
+
+  // Live price preview (debounced) once the route + vehicle are known.
+  const [estimate, setEstimate] = useState<null | { available: boolean; reason?: string; customerPrice?: number; currency?: string }>(null);
+  const [estimating, setEstimating] = useState(false);
+  useEffect(() => {
+    if (isHourly || !form.pickupCountry || !form.pickupCity || !form.pickupLocation || !form.destination || !form.vehicleCategory) {
+      setEstimate(null);
+      return;
+    }
+    let cancelled = false;
+    setEstimating(true);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/price-estimate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            pickupCountry: form.pickupCountry, pickupCity: form.pickupCity, pickupLocation: form.pickupLocation, destination: form.destination,
+            vehicleCategory: form.vehicleCategory, koreanDriverRequired: form.koreanDriverRequired, childSeat: form.childSeat,
+            airportPicket: form.airportPicket, serviceDate: form.serviceDate, serviceTime: form.serviceTime,
+          }),
+        });
+        const data = await res.json();
+        if (!cancelled) setEstimate(data);
+      } catch {
+        if (!cancelled) setEstimate(null);
+      } finally {
+        if (!cancelled) setEstimating(false);
+      }
+    }, 450);
+    return () => { cancelled = true; clearTimeout(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.pickupCountry, form.pickupCity, form.pickupLocation, form.destination, form.vehicleCategory, form.koreanDriverRequired, form.childSeat, form.airportPicket, form.serviceDate, form.serviceTime, isHourly]);
 
   function validateStep1(): string | null {
     if (!form.pickupCountry) return locale === "ko" ? "픽업 국가를 선택하세요." : "Select a pickup country.";
@@ -433,6 +467,32 @@ export default function BookingWidget({
               : "On submit, registered routes show an instant price. Other areas are received as a quote request and we'll send you the final price."}
           </p>
         </div>
+      )}
+
+      {/* Live price preview (steps 2–3) */}
+      {step > 1 && estimate && (
+        <div className="mt-5 rounded-xl border border-[var(--color-line)] overflow-hidden">
+          {estimate.available ? (
+            <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-mist)]">
+              <div>
+                <div className="text-xs text-[var(--color-slate)]">{locale === "ko" ? "예상 요금 (정찰제)" : "Estimated fixed price"}</div>
+                <div className="text-[11px] text-[var(--color-slate)]">{locale === "ko" ? "선택 옵션 반영 · 결제 전 최종 확인" : "Includes options · confirmed before payment"}</div>
+              </div>
+              <div className="font-display text-2xl font-bold text-[var(--color-navy)]">
+                {formatMoney(estimate.customerPrice, estimate.currency)}
+              </div>
+            </div>
+          ) : estimate.reason === "quote" ? (
+            <div className="px-4 py-3 bg-[var(--color-mist)] text-sm text-[var(--color-slate)]">
+              {locale === "ko"
+                ? "이 노선은 맞춤 견적 지역입니다 — 제출하시면 파트너 기사 확인 후 최종 가격을 빠르게 안내드립니다."
+                : "This route is quoted individually — submit and we'll confirm the final price with a partner driver shortly."}
+            </div>
+          ) : null}
+        </div>
+      )}
+      {step > 1 && estimating && !estimate && (
+        <div className="mt-5 text-xs text-[var(--color-slate)] text-center">{locale === "ko" ? "예상 요금 계산 중..." : "Estimating price..."}</div>
       )}
 
       {/* Nav buttons */}

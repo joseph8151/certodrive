@@ -8,19 +8,20 @@
 --------------------------------------------------------------------------- */
 
 @theme {
-  --color-ink: #1b1a17;          /* warm near-black text */
-  --color-navy: #16233a;         /* deep midnight navy (primary dark) */
-  --color-navy-700: #223251;
-  --color-navy-500: #35496b;
-  --color-slate: #6b625b;        /* warm gray body text */
-  --color-mist: #f5f1ea;         /* warm cream (light sections) */
-  --color-line: #e7e1d5;         /* warm hairline borders */
-  --color-gold: #c2a15f;         /* champagne / brass accent */
-  --color-gold-dark: #9c7d3f;    /* deeper brass */
-  /* Legacy tokens repointed to the elegant dark so older components stay on-brand. */
-  --color-red: #16233a;
-  --color-red-dark: #0f1a2c;
-  --color-charcoal: #16233a;
+  /* American premium: deep navy blue + golden-yellow accent on crisp light. */
+  --color-ink: #171a22;          /* near-black, cool */
+  --color-navy: #14294f;         /* deep navy blue (primary dark) */
+  --color-navy-700: #1d3a6b;
+  --color-navy-500: #33538c;
+  --color-slate: #5b6272;        /* cool gray body text */
+  --color-mist: #eef1f6;         /* soft cool light (light sections) */
+  --color-line: #dde2ea;         /* cool hairline borders */
+  --color-gold: #e6b53f;         /* golden yellow accent */
+  --color-gold-dark: #a9781a;    /* amber — readable on light backgrounds */
+  /* Legacy tokens repointed to navy so older components stay on-brand. */
+  --color-red: #14294f;
+  --color-red-dark: #0f1f3d;
+  --color-charcoal: #14294f;
 
   /* Latin display/body from next/font; Korean glyphs fall back to system serifs/sans. */
   --font-serif: var(--font-display), "Georgia", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
@@ -39,7 +40,7 @@ html {
 }
 
 body {
-  background: #fbf9f4; /* warm ivory */
+  background: #f8fafc; /* crisp cool white */
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
