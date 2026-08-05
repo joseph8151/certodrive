@@ -253,6 +253,21 @@ body {
 .reveal { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .reveal-2 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
 .reveal-3 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
+/* Continuous marquee — "live" scrolling city/trust ticker. */
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee 32s linear infinite; }
+.marquee-mask { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+
+/* Live pulse dot. */
+@keyframes livePulse { 0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.55); } 70% { box-shadow: 0 0 0 8px rgba(46,204,113,0); } 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); } }
+.live-dot { animation: livePulse 2s ease-out infinite; }
+
+/* Animated route line — mobility-platform motif. */
+@keyframes dashFlow { to { stroke-dashoffset: -220; } }
+.route-dash { stroke-dasharray: 5 9; animation: dashFlow 5s linear infinite; }
+@keyframes pulseDot { 0%, 100% { r: 5; opacity: 1; } 50% { r: 8; opacity: 0.55; } }
+.pulse-dot { animation: pulseDot 2.4s ease-in-out infinite; }
+
 @keyframes bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(7px); }

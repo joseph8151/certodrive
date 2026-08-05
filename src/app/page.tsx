@@ -5,6 +5,9 @@ import BookingWidget from "@/components/BookingWidget";
 import Testimonials, { type PublicReview } from "@/components/Testimonials";
 import Icon from "@/components/Icon";
 import CarArt from "@/components/CarArt";
+import RouteMap from "@/components/RouteMap";
+import CountUp from "@/components/CountUp";
+import { safeJson } from "@/lib/utils";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
 import { prisma } from "@/lib/db";
@@ -39,6 +42,17 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     id: r.id, rating: r.rating, comment: r.comment, authorName: r.authorName,
     city: r.booking.pickupCity, driverName: r.driverProfile?.contactName ?? null,
   }));
+
+  const driverRows = await prisma.driverProfile.findMany({
+    where: { approvalStatus: "APPROVED" },
+    orderBy: [{ rating: "desc" }, { ratingCount: "desc" }],
+    take: 4,
+    include: { vehicles: true },
+  });
+  const LANG_LABEL: Record<string, { ko: string; en: string }> = {
+    NATIVE: { ko: "원어민", en: "Native" }, FLUENT: { ko: "유창", en: "Fluent" },
+    CONVERSATIONAL: { ko: "회화가능", en: "Conversational" }, BASIC: { ko: "기초", en: "Basic" }, NONE: { ko: "", en: "" },
+  };
 
   const pillars = [
     {
@@ -102,7 +116,13 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         <div className="container-cd relative py-16 md:py-28 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="eyebrow text-[var(--color-gold)] reveal">CERTO DRIVE</p>
+            <div className="flex items-center gap-4 reveal">
+              <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
+              <span className="inline-flex items-center gap-2 text-xs text-white/75">
+                <span className="h-2 w-2 rounded-full bg-[#2ecc71] live-dot" />
+                {L ? "지금 예약 접수 중" : "Taking bookings now"}
+              </span>
+            </div>
             <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.12] font-bold mt-4 whitespace-pre-line reveal">
               {t("hero.title")}
             </h1>
@@ -133,18 +153,39 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       {/* Stats band */}
       <section className="border-b border-[var(--color-line)] bg-white">
-        <div className="container-cd py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div className="container-cd py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {[
-            { n: "40+", l: L ? "서비스 도시" : "Cities served" },
-            { n: "100%", l: L ? "검증된 한인 기사" : "Verified Korean drivers" },
-            { n: "4.9★", l: L ? "평균 만족도" : "Average rating" },
-            { n: "24/7", l: L ? "한국어 지원" : "Korean support" },
+            { node: <CountUp value={40} suffix="+" />, l: L ? "서비스 도시" : "Cities served" },
+            { node: <CountUp value={100} suffix="%" />, l: L ? "검증된 한인 기사" : "Verified Korean drivers" },
+            { node: <CountUp value={4.9} decimals={1} suffix="★" />, l: L ? "평균 만족도" : "Average rating" },
+            { node: <>24/7</>, l: L ? "한국어 지원" : "Korean support" },
           ].map((s) => (
             <div key={s.l}>
-              <div className="font-display text-3xl md:text-4xl font-bold text-[var(--color-navy)]">{s.n}</div>
-              <div className="mt-1 text-xs md:text-sm text-[var(--color-slate)]">{s.l}</div>
+              <div className="font-display text-4xl md:text-5xl font-extrabold text-[var(--color-navy)]">{s.node}</div>
+              <div className="mt-2 text-xs md:text-sm text-[var(--color-slate)]">{s.l}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Live city marquee */}
+      <section className="bg-[var(--color-navy)] text-white py-4 overflow-hidden">
+        <div className="marquee-mask">
+          <div className="flex w-max marquee-track">
+            {[0, 1].map((dup) => (
+              <div key={dup} className="flex items-center gap-8 pr-8 text-sm text-white/70 whitespace-nowrap" aria-hidden={dup === 1}>
+                {(L
+                  ? ["서울", "인천공항", "도쿄", "오사카", "파리", "런던", "뉴욕", "LA", "로마", "바르셀로나", "방콕", "싱가포르", "프랑크푸르트", "밴쿠버"]
+                  : ["Seoul", "Incheon", "Tokyo", "Osaka", "Paris", "London", "New York", "LA", "Rome", "Barcelona", "Bangkok", "Singapore", "Frankfurt", "Vancouver"]
+                ).map((c) => (
+                  <span key={c} className="flex items-center gap-8">
+                    <span className="flex items-center gap-2"><Icon name="globe" size={14} className="text-[var(--color-gold)]" /> {c}</span>
+                    <span className="text-white/20">•</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -244,6 +285,41 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
+      {/* Live route / managed dispatch band */}
+      <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
+        <div className="absolute inset-0 hero-gradient opacity-90" />
+        <div className="container-cd relative py-16 md:py-24 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="eyebrow text-[var(--color-gold)]">{L ? "관리형 배차" : "Managed dispatch"}</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold mt-3 leading-tight">
+              {L ? "길에서 잡는 택시가 아닙니다" : "Not a taxi you hail on the street"}
+            </h2>
+            <p className="mt-4 text-white/75 leading-relaxed max-w-lg">
+              {L
+                ? "출발 전에 검증된 한인 기사가 배정되고, 픽업 위치·시간·차량이 확정됩니다. 경로와 요금이 예약 순간 정해져, 도착해서 헤맬 일도 흥정할 일도 없습니다."
+                : "A verified Korean driver is assigned before departure, with pickup, time and vehicle locked in. Route and fare are set at booking — no wandering, no haggling on arrival."}
+            </p>
+            <div className="mt-7 grid sm:grid-cols-3 gap-4">
+              {[
+                { icon: "shield", t: L ? "사전 확정" : "Pre-confirmed" },
+                { icon: "route", t: L ? "경로 지정" : "Set route" },
+                { icon: "clock", t: L ? "정시 배차" : "On-time" },
+              ].map((x) => (
+                <div key={x.t} className="glass rounded-xl px-4 py-3 flex items-center gap-2.5">
+                  <Icon name={x.icon} size={18} className="text-[var(--color-gold)]" />
+                  <span className="text-sm font-medium">{x.t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <RouteMap
+            from={L ? "인천공항 (ICN)" : "Incheon (ICN)"}
+            to={L ? "서울 시내 호텔" : "Seoul city hotel"}
+            className="aspect-[4/3] w-full"
+          />
+        </div>
+      </section>
+
       {/* Editorial band */}
       <section className="relative text-white" style={{ backgroundColor: "var(--color-navy)" }}>
         <div className="absolute inset-0" style={photoBg(IMG.editorial, "linear-gradient(90deg, rgba(11,17,28,0.92) 0%, rgba(13,21,37,0.72) 55%, rgba(13,21,37,0.45) 100%)")} />
@@ -339,6 +415,60 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </div>
         </div>
       </section>
+
+      {/* Verified drivers */}
+      {driverRows.length > 0 && (
+        <section className="section">
+          <div className="container-cd">
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <div>
+                <p className="eyebrow">{L ? "검증된 기사" : "Verified drivers"}</p>
+                <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "믿을 수 있는 한인 기사 네트워크" : "A trusted Korean-driver network"}</h2>
+              </div>
+              <Link href="/partners" className="btn btn-outline text-sm">{L ? "기사로 합류하기" : "Become a driver"}</Link>
+            </div>
+            <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {driverRows.map((d) => {
+                const initial = d.contactName?.trim()?.[0] ?? "C";
+                const langs = [
+                  { l: L ? "한국어" : "Korean", v: LANG_LABEL[d.koreanLevel]?.[locale] },
+                  { l: L ? "영어" : "English", v: LANG_LABEL[d.englishLevel]?.[locale] },
+                ].filter((x) => x.v);
+                const car = d.vehicles[0];
+                const regions = safeJson<string[]>(d.serviceRegions, []);
+                return (
+                  <div key={d.id} className="card lift p-6">
+                    <div className="flex items-center gap-3">
+                      <span className="h-12 w-12 rounded-full grid place-items-center font-display font-bold text-lg text-white" style={{ background: "linear-gradient(140deg,#1d3a6b,#14294f)" }}>
+                        {initial}
+                      </span>
+                      <div>
+                        <div className="font-semibold leading-tight">{d.contactName}</div>
+                        <div className="text-xs text-[var(--color-slate)]">{d.city}, {d.country}</div>
+                      </div>
+                    </div>
+                    <div className="mt-3 flex items-center gap-1.5 text-sm">
+                      <span className="text-[var(--color-gold)]">★</span>
+                      <span className="font-semibold">{d.rating.toFixed(1)}</span>
+                      <span className="text-xs text-[var(--color-slate)]">({d.ratingCount})</span>
+                      <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-[#16794a]"><Icon name="shield" size={13} /> {L ? "인증" : "Verified"}</span>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {langs.map((x) => (
+                        <span key={x.l} className="pill pill-slate text-[11px]">{x.l} · {x.v}</span>
+                      ))}
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-[var(--color-line)] text-xs text-[var(--color-slate)] flex items-center gap-2">
+                      <Icon name="car" size={15} className="text-[var(--color-navy)]" />
+                      {car ? `${car.category}${car.makeModel && car.makeModel !== "—" ? ` · ${car.makeModel}` : ""}` : (regions[0] ?? (L ? "프리미엄 차량" : "Premium vehicle"))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Testimonials */}
       <Testimonials reviews={reviews} locale={locale} />

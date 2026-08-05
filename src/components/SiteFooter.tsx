@@ -39,9 +39,9 @@ export default async function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-20 text-white" style={{ backgroundColor: "var(--color-navy)" }}>
+    <footer className="mt-24 text-white" style={{ backgroundColor: "var(--color-navy)" }}>
       {/* Main */}
-      <div className="container-cd py-16 md:py-20 grid gap-12 md:grid-cols-12">
+      <div className="container-cd py-20 md:py-28 grid gap-16 md:grid-cols-12">
         {/* Brand + contact */}
         <div className="md:col-span-5">
           <div className="font-display text-2xl font-bold">
@@ -78,7 +78,7 @@ export default async function SiteFooter() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="container-cd py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
+        <div className="container-cd py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Certo Drive. {t("footer.rights")}</span>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
