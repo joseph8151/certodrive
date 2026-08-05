@@ -10,7 +10,8 @@ jobs:
     name: Typecheck & build
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "file:./dev.db"
+      # Placeholder — tsc and `next build` don't connect to the database.
+      DATABASE_URL: "postgresql://user:pass@localhost:5432/db"
       AUTH_SECRET: "ci-placeholder-secret-not-used-in-production-000000000"
     steps:
       - uses: actions/checkout@v4
@@ -25,9 +26,6 @@ jobs:
 
       - name: Generate Prisma client
         run: npx prisma generate
-
-      - name: Create database schema
-        run: npx prisma db push --skip-generate
 
       - name: Typecheck
         run: npx tsc --noEmit
