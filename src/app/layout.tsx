@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { Playfair_Display, Inter } from "next/font/google";
 import { getLocale } from "@/lib/locale";
 import "./globals.css";
+
+// Premium type pairing: an editorial serif for display, a clean sans for body.
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600", "700"], variable: "--font-display", display: "swap" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 export const metadata: Metadata = {
   title: {
@@ -20,7 +25,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${playfair.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

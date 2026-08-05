@@ -22,9 +22,10 @@
   --color-red-dark: #0f1a2c;
   --color-charcoal: #16233a;
 
-  --font-serif: "Georgia", "Times New Roman", "Nanum Myeongjo", serif;
-  --font-sans: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
-    "Malgun Gothic", "Noto Sans KR", Roboto, sans-serif;
+  /* Latin display/body from next/font; Korean glyphs fall back to system serifs/sans. */
+  --font-serif: var(--font-display), "Georgia", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
+  --font-sans: var(--font-body), system-ui, -apple-system, "Segoe UI",
+    "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", Roboto, sans-serif;
 
   --radius-xl: 1rem;
 }

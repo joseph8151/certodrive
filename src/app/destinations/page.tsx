@@ -1,7 +1,9 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
+import Icon from "@/components/Icon";
 import { getLocale } from "@/lib/locale";
 import { POPULAR_CITIES } from "@/lib/constants";
+import { cityImage } from "@/lib/images";
 
 export default async function Destinations() {
   const locale = await getLocale();
@@ -23,9 +25,15 @@ export default async function Destinations() {
             <h2 className="font-display text-xl font-bold mb-4">{country}</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {list.map((c) => (
-                <Link key={c.city} href={`/destinations/${encodeURIComponent(c.city)}`} className="card p-5 hover:card-shadow transition-shadow">
-                  <div className="font-display text-lg font-bold">{c.city}</div>
-                  <div className="text-xs text-[var(--color-slate)] mt-1">{c.airports.join(" · ")}</div>
+                <Link
+                  key={c.city}
+                  href={`/destinations/${encodeURIComponent(c.city)}`}
+                  className="relative rounded-2xl overflow-hidden aspect-[3/2] flex flex-col justify-end p-5 text-white group"
+                  style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(12,18,30,0.1) 0%, rgba(11,17,28,0.85) 80%), url(${cityImage(c.city)})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                >
+                  <div className="font-display text-xl font-bold">{c.city}</div>
+                  <div className="text-[11px] text-white/65 mt-1">{c.airports.join(" · ")}</div>
+                  <span className="absolute top-4 right-4 text-[var(--color-gold)] opacity-0 group-hover:opacity-100 transition-opacity"><Icon name="arrival" size={18} /></span>
                 </Link>
               ))}
             </div>

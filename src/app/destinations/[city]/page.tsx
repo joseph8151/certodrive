@@ -6,6 +6,7 @@ import { getLocale } from "@/lib/locale";
 import { prisma } from "@/lib/db";
 import { formatMoney, safeJson } from "@/lib/utils";
 import { POPULAR_CITIES } from "@/lib/constants";
+import { cityImage } from "@/lib/images";
 
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const { city } = await params;
@@ -37,8 +38,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   return (
     <>
       <SiteHeader />
-      <section className="hero-gradient text-white">
-        <div className="container-cd py-12 md:py-16 grid lg:grid-cols-2 gap-10 items-center">
+      <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
+        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(11,17,28,0.93) 0%, rgba(13,21,37,0.78) 45%, rgba(13,21,37,0.5) 100%), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="container-cd relative py-12 md:py-16 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">{cityMeta?.country ?? ""}</p>
             <h1 className="font-display text-3xl md:text-5xl font-bold mt-3">
