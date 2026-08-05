@@ -9,27 +9,27 @@
 --------------------------------------------------------------------------- */
 
 @theme {
-  /* American premium: deep navy blue + golden-yellow accent on crisp light. */
-  --color-ink: #171a22;          /* near-black, cool */
-  --color-navy: #14294f;         /* deep navy blue (primary dark) */
-  --color-navy-700: #1d3a6b;
-  --color-navy-500: #33538c;
-  --color-slate: #5b6272;        /* cool gray body text */
-  --color-mist: #eef1f6;         /* soft cool light (light sections) */
-  --color-line: #dde2ea;         /* cool hairline borders */
-  --color-gold: #e6b53f;         /* golden yellow accent */
-  --color-gold-dark: #a9781a;    /* amber — readable on light backgrounds */
+  /* Warm luxury — boutique-hotel: warm ivory, deep navy, champagne gold. */
+  --color-ink: #211d18;          /* warm near-black text */
+  --color-navy: #12233f;         /* deep navy (primary dark) */
+  --color-navy-700: #1e3a63;
+  --color-navy-500: #35548a;
+  --color-slate: #6f6a61;        /* warm gray body text */
+  --color-mist: #efe9df;         /* warm ivory light (light sections) */
+  --color-line: #e6ded1;         /* warm hairline borders */
+  --color-gold: #b8944e;         /* champagne gold accent (refined) */
+  --color-gold-dark: #8c6a2c;    /* deep champagne — readable on ivory */
   /* Legacy tokens repointed to navy so older components stay on-brand. */
-  --color-red: #14294f;
-  --color-red-dark: #0f1f3d;
-  --color-charcoal: #14294f;
+  --color-red: #12233f;
+  --color-red-dark: #0d1a30;
+  --color-charcoal: #12233f;
 
-  /* Pretendard everywhere — clean modern Korean gothic (headings + body). */
+  /* Body: Pretendard (clean Korean gothic). Headings: editorial serif. */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", Roboto, sans-serif;
-  --font-serif: var(--font-sans);
+  --font-serif: "Cormorant Garamond", "Nanum Myeongjo", Georgia, "Apple SD Gothic Neo", "Nanum Myeongjo", serif;
 
-  --radius-xl: 1rem;
+  --radius-xl: 0.9rem;
 }
 
 * {
@@ -41,7 +41,7 @@ html {
 }
 
 body {
-  background: #f8fafc; /* crisp cool white */
+  background: #f6f2ea; /* warm ivory */
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -53,7 +53,8 @@ body {
 
 .font-display {
   font-family: var(--font-serif);
-  letter-spacing: -0.025em; /* tighter tracking reads modern in Pretendard */
+  letter-spacing: -0.005em; /* elegant serif — near-natural tracking */
+  font-weight: 600;
 }
 
 /* Utility: elevated premium card — resting shadow gives everything depth. */
@@ -89,11 +90,12 @@ body {
   justify-content: center;
   gap: 0.5rem;
   font-weight: 600;
-  border-radius: 0.7rem;
-  padding: 0.8rem 1.4rem;
+  border-radius: 0.55rem;
+  padding: 0.85rem 1.6rem;
   transition: all 0.18s ease;
   cursor: pointer;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 .btn-primary {
   background: var(--color-navy);
@@ -210,9 +212,9 @@ html { scroll-padding-top: 5rem; }
 }
 
 .eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--color-gold-dark);
 }

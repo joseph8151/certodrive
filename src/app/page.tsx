@@ -161,7 +161,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             { node: <>24/7</>, l: L ? "한국어 지원" : "Korean support" },
           ].map((s) => (
             <div key={s.l}>
-              <div className="font-display text-4xl md:text-5xl font-extrabold text-[var(--color-navy)]">{s.node}</div>
+              <div className="font-display text-5xl md:text-6xl font-bold text-[var(--color-navy)]">{s.node}</div>
               <div className="mt-2 text-xs md:text-sm text-[var(--color-slate)]">{s.l}</div>
             </div>
           ))}
