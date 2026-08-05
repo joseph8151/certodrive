@@ -2,11 +2,14 @@ import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import RegisterForm from "@/components/RegisterForm";
+import SocialButtons from "@/components/SocialButtons";
 import { getLocale } from "@/lib/locale";
+import { authProviders } from "@/lib/oauth";
 
 export default async function RegisterPage() {
   const locale = await getLocale();
   const L = locale === "ko";
+  const providers = authProviders();
   return (
     <>
       <SiteHeader />
@@ -18,7 +21,10 @@ export default async function RegisterPage() {
               {L ? "예약을 한곳에서 관리하고 더 빠르게 예약하세요." : "Manage your bookings in one place and book faster."}
             </p>
           </div>
-          <div className="card p-6"><RegisterForm locale={locale} /></div>
+          <div className="card p-6 grid gap-4">
+            <RegisterForm locale={locale} />
+            <SocialButtons providers={providers} locale={locale} />
+          </div>
           <p className="text-center text-sm text-[var(--color-slate)] mt-4">
             {L ? "이미 계정이 있으신가요? " : "Already have an account? "}
             <Link href="/login" className="text-[var(--color-navy)] font-medium underline">{L ? "로그인" : "Sign in"}</Link>
