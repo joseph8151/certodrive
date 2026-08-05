@@ -41,18 +41,36 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   }));
 
   const pillars = [
-    { icon: "arrival", href: "/booking/airport-pickup", t: L ? "공항 픽업·샌딩" : "Airport pickup & drop-off", d: L ? "입국장에서 피켓으로 맞이하고, 공항까지 정시에 모십니다." : "Met at arrivals with a name board; on-time rides to the airport." },
-    { icon: "car", href: "/booking/intercity", t: L ? "한인 택시·시내 이동" : "Korean taxi · in-city", d: L ? "한국어가 통하는 기사와 도시 안에서 편하게 이동하세요." : "Get around the city with a driver who speaks your language." },
-    { icon: "clock", href: "/booking/hourly", t: L ? "하루 종일 기사·차량 전세" : "Full-day driver + vehicle", d: L ? "관광·비즈니스·골프까지, 기사와 차량을 시간 단위로 전세." : "Sightseeing, business or golf — a chauffeur and car by the hour." },
+    {
+      icon: "arrival", href: "/booking/airport-pickup",
+      t: L ? "공항 픽업·샌딩" : "Airport pickup & drop-off",
+      d: L
+        ? "낯선 공항, 긴 비행 뒤 가장 반가운 건 이름이 적힌 피켓입니다. 검증된 한인 기사가 입국장에서 기다렸다가 짐을 함께 옮기고, 예약하신 차량으로 목적지까지 모십니다. 항공편은 자동으로 확인되어 지연되어도 추가 요금 없이 대기하며, 요금에는 통행료와 공항 주차비까지 포함됩니다."
+        : "After a long flight, nothing beats seeing your name on a board. A verified Korean driver waits at arrivals, helps with your bags, and takes you door to door. We track your flight automatically — delays mean no extra charge — and the fare already covers tolls and airport parking.",
+    },
+    {
+      icon: "car", href: "/booking/intercity",
+      t: L ? "한인 택시·시내 이동" : "Korean taxi · in-city",
+      d: L
+        ? "언어 때문에 목적지를 설명하느라 진땀 빼는 일은 이제 없습니다. 한국어가 완벽하게 통하는 기사와 함께 시내 어디든 편하게 이동하고, 맛집이나 동선까지 현지 팁을 얻으세요. 미터기 바가지 걱정 없이 예약 시 요금이 확정되어 마음이 편합니다."
+        : "No more struggling to explain where you're going. Ride anywhere in the city with a driver who speaks fluent Korean, and pick up local tips on food and routes along the way. The fare is fixed when you book — no meter surprises, no haggling.",
+    },
+    {
+      icon: "clock", href: "/booking/hourly",
+      t: L ? "하루 종일 기사·차량 전세" : "Full-day driver + vehicle",
+      d: L
+        ? "관광, 비즈니스 미팅, 골프 라운딩, 웨딩 촬영까지 — 하루 일정 전체를 기사와 차량이 함께합니다. 여러 목적지를 자유롭게 돌고, 필요할 때 대기하며, 다음 장소로 매끄럽게 이동하세요. 시간 단위로 예약하고, 일정은 그날그날 유연하게 조정할 수 있습니다."
+        : "Sightseeing, business meetings, a round of golf, a wedding shoot — one chauffeur and car for the whole day. Roam between stops freely, keep the car waiting when you need it, and glide to the next place. Booked by the hour, with an itinerary you can adjust on the day.",
+    },
   ];
 
   const values = [
-    { icon: "shield", title: t("value.verified"), desc: t("value.verified.d") },
-    { icon: "badge", title: t("value.confirmed"), desc: t("value.confirmed.d") },
-    { icon: "tag", title: t("value.fixed"), desc: t("value.fixed.d") },
-    { icon: "plane", title: t("value.flight"), desc: t("value.flight.d") },
-    { icon: "board", title: t("value.meet"), desc: t("value.meet.d") },
-    { icon: "chat", title: t("value.support"), desc: t("value.support.d") },
+    { icon: "shield", title: L ? "검증된 한인 기사" : "Verified Korean drivers", desc: L ? "운전면허, 영업·보험 서류, 신원 확인을 모두 통과한 기사만 배정됩니다. 한국어 가능 수준도 직접 검증해 낯선 나라에서도 믿고 맡길 수 있습니다." : "Only drivers who pass license, insurance and identity checks are assigned — and we verify their Korean level ourselves, so you can trust every ride abroad." },
+    { icon: "badge", title: L ? "관리자가 확인하는 배차" : "Human-confirmed dispatch", desc: L ? "자동 매칭이 아니라, 담당자가 요청과 기사를 직접 확인해 배정합니다. 문제가 생기면 체르토 드라이브가 중간에서 책임지고 대응합니다." : "Not blind auto-matching — a real coordinator reviews each request and driver. If anything goes wrong, Certo Drive steps in and takes responsibility." },
+    { icon: "tag", title: L ? "정찰제 투명 요금" : "Fixed, transparent fares", desc: L ? "예약하는 순간 최종 금액이 확정됩니다. 등록된 노선은 즉시 가격이 나오고, 통행료·주차·대기까지 포함해 도착 후 추가 청구가 없습니다." : "The final price is locked the moment you book. Registered routes price instantly, with tolls, parking and waiting included — never a surprise charge on arrival." },
+    { icon: "plane", title: L ? "항공편 실시간 확인" : "Live flight tracking", desc: L ? "입국 항공편을 자동으로 모니터링해 지연·조기 도착에 맞춰 기사님이 대기합니다. 비행이 늦어져도 추가 요금 없이 여유롭게 기다립니다." : "We monitor your inbound flight and adjust pickup for delays or early landings. Even a late arrival means the driver waits — at no extra cost." },
+    { icon: "board", title: L ? "입국장 미팅·피켓" : "Meet & greet service", desc: L ? "복잡한 입국장에서 헤맬 필요 없이, 성함이 적힌 피켓을 든 기사님을 바로 찾을 수 있습니다. 연락처도 미리 공유되어 안심입니다." : "No wandering a crowded arrivals hall — find your driver instantly by the name board, with contact details shared in advance." },
+    { icon: "chat", title: L ? "24시간 한국어 지원" : "24/7 Korean support", desc: L ? "예약 전 문의부터 이동 중 변경까지, 한국어로 언제든 도와드립니다. 시차 걱정 없이 필요한 순간에 바로 연락하세요." : "From pre-booking questions to mid-trip changes, we help in Korean around the clock — reach us the moment you need us, no time-zone worries." },
   ];
 
   const steps = [
@@ -91,6 +109,18 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
                 <span key={x} className="flex items-center gap-2"><Icon name="badge" size={16} className="text-[var(--color-gold)]" /> {x}</span>
               ))}
             </div>
+            {/* Social-proof glass chip */}
+            <div className="mt-8 inline-flex items-center gap-4 glass rounded-full pl-4 pr-5 py-2.5">
+              <div className="flex -space-x-2">
+                {[IMG.meet, IMG.family, IMG.vipBand].map((src) => (
+                  <span key={src} className="h-8 w-8 rounded-full ring-2 ring-white/70 bg-cover bg-center" style={{ backgroundImage: `url(${src})` }} />
+                ))}
+              </div>
+              <div className="text-sm leading-tight">
+                <div className="font-semibold text-[var(--color-gold)]">★★★★★ 4.9/5</div>
+                <div className="text-white/70 text-xs">{L ? "전 세계 여행자들이 신뢰합니다" : "Trusted by travelers worldwide"}</div>
+              </div>
+            </div>
           </div>
           <div id="book" className="scroll-mt-24">
             <BookingWidget locale={locale} prefill={hasPrefill ? prefill : undefined} />
@@ -124,7 +154,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </div>
           <div className="mt-12 grid md:grid-cols-3 gap-6">
             {pillars.map((p) => (
-              <Link key={p.t} href={p.href} className="card p-7 hover:card-shadow transition-shadow group">
+              <Link key={p.t} href={p.href} className="card lift p-7 hover:card-shadow transition-shadow group">
                 <div className="h-12 w-12 rounded-full border border-[var(--color-gold)]/40 text-[var(--color-gold-dark)] flex items-center justify-center">
                   <Icon name={p.icon} size={22} />
                 </div>
@@ -146,7 +176,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </div>
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {values.map((v) => (
-              <div key={v.title} className="card p-7 hover:card-shadow transition-shadow">
+              <div key={v.title} className="card lift p-7 hover:card-shadow transition-shadow">
                 <div className="h-12 w-12 rounded-full bg-[var(--color-navy)] text-[var(--color-gold)] flex items-center justify-center">
                   <Icon name={v.icon} size={22} />
                 </div>
@@ -174,7 +204,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               { img: IMG.airport, t: L ? "효도 관광" : "Parents & seniors", d: L ? "부모님도 언어 걱정 없이. 문 앞까지 세심하게 모십니다." : "No language worries for parents — door-to-door care." },
               { img: cityImage(L ? "서울" : "Seoul"), t: L ? "유학생·장기 체류" : "Students & long stays", d: L ? "입국·이사·정착까지, 든든한 한인 기사가 도와드립니다." : "Arrivals, moving and settling in — a Korean driver who helps." },
             ].map((u) => (
-              <div key={u.t} className="card overflow-hidden hover:card-shadow transition-shadow">
+              <div key={u.t} className="card lift overflow-hidden hover:card-shadow transition-shadow">
                 <div className="aspect-[16/9]" style={photoBg(u.img, "linear-gradient(180deg, rgba(11,17,28,0.08) 0%, rgba(11,17,28,0.35) 100%)")} />
                 <div className="p-6">
                   <h3 className="font-display text-xl font-bold">{u.t}</h3>
@@ -199,7 +229,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               { icon: "shield", t: L ? "검증된 신원과 안전" : "Vetted & safe", d: L ? "면허·보험·신원 확인을 마친 기사만 배정됩니다." : "Only drivers with verified license, insurance and identity." },
               { icon: "tag", t: L ? "투명한 사전 요금" : "Transparent fares", d: L ? "현지 택시 바가지 걱정 없이 예약 시 금액 확정." : "No taxi surprises — the price is fixed when you book." },
             ].map((x) => (
-              <div key={x.t} className="card p-7">
+              <div key={x.t} className="card lift p-7">
                 <div className="h-12 w-12 rounded-full bg-[var(--color-navy)] text-[var(--color-gold)] flex items-center justify-center">
                   <Icon name={x.icon} size={22} />
                 </div>
@@ -258,7 +288,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             {VEHICLE_CATEGORIES.map((v) => {
               const m = VEHICLE_META[v];
               return (
-                <div key={v} className="card overflow-hidden flex flex-col hover:card-shadow transition-shadow">
+                <div key={v} className="card lift overflow-hidden flex flex-col hover:card-shadow transition-shadow">
                   <div className="aspect-[16/10] bg-gradient-to-br from-[#1d2c48] to-[var(--color-ink)] flex items-center justify-center px-4">
                     <CarArt type={carType(v)} className="w-full max-w-[220px]" />
                   </div>

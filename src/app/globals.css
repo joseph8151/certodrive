@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* Pretendard (the modern Korean web standard) is loaded via <link> in layout.tsx. */
 
 /* --------------------------------------------------------------------------
    Certo Drive design system — "Midnight & Champagne"
@@ -23,10 +24,10 @@
   --color-red-dark: #0f1f3d;
   --color-charcoal: #14294f;
 
-  /* Latin display/body from next/font; Korean glyphs fall back to system serifs/sans. */
-  --font-serif: var(--font-display), "Georgia", "Nanum Myeongjo", "Apple SD Gothic Neo", serif;
-  --font-sans: var(--font-body), system-ui, -apple-system, "Segoe UI",
-    "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", Roboto, sans-serif;
+  /* Pretendard everywhere — clean modern Korean gothic (headings + body). */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", Roboto, sans-serif;
+  --font-serif: var(--font-sans);
 
   --radius-xl: 1rem;
 }
@@ -49,18 +50,33 @@ body {
 
 .font-display {
   font-family: var(--font-serif);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em; /* tighter tracking reads modern in Pretendard */
 }
 
-/* Utility: subtle premium card */
+/* Utility: elevated premium card — resting shadow gives everything depth. */
 .card {
   background: #fff;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-xl);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 14px -6px rgba(16, 24, 40, 0.10);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+/* Cards inside marketing surfaces lift on hover for a tactile, Uber-like feel. */
+.lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(16, 24, 40, 0.05), 0 26px 48px -18px rgba(16, 24, 40, 0.28);
 }
 
 .card-shadow {
-  box-shadow: 0 1px 2px rgba(10, 14, 23, 0.04), 0 12px 32px -12px rgba(10, 14, 23, 0.12);
+  box-shadow: 0 2px 6px rgba(10, 14, 23, 0.05), 0 20px 44px -16px rgba(10, 14, 23, 0.22);
+}
+
+/* Soft depth for hero/CTA glass panels. */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Buttons */
