@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
 /* --------------------------------------------------------------------------
-   Certo Drive design system
-   White / Black / Deep Navy. Serif display headings + clean sans body.
-   Generous whitespace, premium travel-tech feel.
+   Certo Drive design system — "Midnight & Champagne"
+   American premium travel-luxury: deep midnight navy, champagne gold accent,
+   warm ivory backgrounds. Serif display headings + clean sans body,
+   generous whitespace.
 --------------------------------------------------------------------------- */
 
 @theme {
-  /* US rental-car platform palette: charcoal gray + bold red on white. */
-  --color-ink: #17181c;          /* near-black text */
-  --color-navy: #2b2f36;         /* charcoal (dark surfaces / secondary) */
-  --color-navy-700: #3a3f47;
-  --color-navy-500: #52585f;
-  --color-slate: #6b7280;        /* gray body text */
-  --color-mist: #f4f5f6;         /* light gray background */
-  --color-line: #e3e5e8;         /* hairline borders */
-  --color-gold: #d81f2a;         /* brand red accent (token kept for compatibility) */
-  --color-gold-dark: #b3141f;    /* darker red */
-  --color-red: #d81f2a;
-  --color-red-dark: #b3141f;
-  --color-charcoal: #2b2f36;
+  --color-ink: #1b1a17;          /* warm near-black text */
+  --color-navy: #16233a;         /* deep midnight navy (primary dark) */
+  --color-navy-700: #223251;
+  --color-navy-500: #35496b;
+  --color-slate: #6b625b;        /* warm gray body text */
+  --color-mist: #f5f1ea;         /* warm cream (light sections) */
+  --color-line: #e7e1d5;         /* warm hairline borders */
+  --color-gold: #c2a15f;         /* champagne / brass accent */
+  --color-gold-dark: #9c7d3f;    /* deeper brass */
+  /* Legacy tokens repointed to the elegant dark so older components stay on-brand. */
+  --color-red: #16233a;
+  --color-red-dark: #0f1a2c;
+  --color-charcoal: #16233a;
 
   --font-serif: "Georgia", "Times New Roman", "Nanum Myeongjo", serif;
   --font-sans: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
@@ -37,7 +38,7 @@ html {
 }
 
 body {
-  background: #ffffff;
+  background: #fbf9f4; /* warm ivory */
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -74,19 +75,21 @@ body {
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--color-red);
+  background: var(--color-navy);
   color: #fff;
 }
 .btn-primary:hover {
-  background: var(--color-red-dark);
+  background: var(--color-navy-700);
   transform: translateY(-1px);
 }
+/* Champagne-gold statement button (dark ink text reads elegant on gold). */
 .btn-gold {
-  background: var(--color-red);
-  color: #fff;
+  background: var(--color-gold);
+  color: var(--color-ink);
 }
 .btn-gold:hover {
-  background: var(--color-red-dark);
+  background: var(--color-gold-dark);
+  color: #fff;
 }
 /* Neutral charcoal secondary button. */
 .btn-dark {
@@ -215,6 +218,8 @@ body {
 
 .hero-gradient {
   background:
-    linear-gradient(180deg, rgba(30, 33, 39, 0.70) 0%, rgba(20, 21, 25, 0.90) 100%),
-    radial-gradient(1100px 560px at 78% -20%, #d81f2a 0%, #7a1a20 26%, #2b2f36 60%, #17181c 100%);
+    linear-gradient(180deg, rgba(15, 24, 41, 0.55) 0%, rgba(9, 14, 25, 0.86) 100%),
+    radial-gradient(1200px 620px at 76% -25%, #35496b 0%, #1c2c48 42%, #16233a 62%, #0c1424 100%);
 }
+/* Subtle champagne hairline under dark hero sections for a couture edge. */
+.hero-gradient::after { content: none; }

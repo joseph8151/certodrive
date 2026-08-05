@@ -185,7 +185,7 @@ export default function BookingWidget({
           <div key={s.n} className="flex items-center gap-2 flex-1">
             <div
               className={`h-6 w-6 shrink-0 rounded-full flex items-center justify-center text-xs font-bold ${
-                step >= s.n ? "bg-[var(--color-gold)] text-white" : "bg-[var(--color-mist)] text-[var(--color-slate)]"
+                step >= s.n ? "bg-[var(--color-gold)] text-[var(--color-ink)]" : "bg-[var(--color-mist)] text-[var(--color-slate)]"
               }`}
             >
               {s.n}
