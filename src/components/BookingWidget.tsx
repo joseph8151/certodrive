@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/i18n";
 import { makeT } from "@/lib/i18n";
 import { formatMoney } from "@/lib/utils";
+import AddressAutocomplete from "./AddressAutocomplete";
 import {
   VEHICLE_CATEGORIES,
   VEHICLE_META,
@@ -291,25 +292,22 @@ export default function BookingWidget({
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="field-label">{t("book.pickup")}</label>
-              <input
-                className="input"
-                list="pickup-options"
+              <AddressAutocomplete
+                locale={locale}
                 value={form.pickupLocation}
-                onChange={(e) => set("pickupLocation", e.target.value)}
-                placeholder={locale === "ko" ? "공항 또는 주소" : "Airport or address"}
+                onChange={(v) => set("pickupLocation", v)}
+                quickOptions={selectedCity?.airports ?? []}
+                placeholder={locale === "ko" ? "공항 또는 정확한 주소 검색" : "Airport or exact address"}
               />
-              <datalist id="pickup-options">
-                {selectedCity?.airports.map((a) => <option key={a} value={a} />)}
-              </datalist>
             </div>
             {!isHourly && (
               <div>
                 <label className="field-label">{t("book.destination")}</label>
-                <input
-                  className="input"
+                <AddressAutocomplete
+                  locale={locale}
                   value={form.destination}
-                  onChange={(e) => set("destination", e.target.value)}
-                  placeholder={locale === "ko" ? "호텔 또는 목적지 주소" : "Hotel or destination address"}
+                  onChange={(v) => set("destination", v)}
+                  placeholder={locale === "ko" ? "호텔 또는 정확한 주소 검색" : "Hotel or exact address"}
                 />
               </div>
             )}
