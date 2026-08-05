@@ -34,4 +34,4 @@ COPY --from=build /app/next.config.ts ./next.config.ts
 EXPOSE 3000
 # Ensure the schema exists (SQLite) or is in sync (Postgres), then bind to
 # Railway's injected $PORT on all interfaces.
-CMD ["sh", "-c", "npx prisma db push --skip-generate && npx next start -H 0.0.0.0"]
+CMD ["sh", "-c", "npx prisma db push --skip-generate && npx next start -H 0.0.0.0 -p 3000"]
