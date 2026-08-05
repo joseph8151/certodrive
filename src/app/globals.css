@@ -46,7 +46,9 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden; /* guard against right-side cutoff on narrow screens */
+  /* `clip` prevents horizontal overflow WITHOUT creating a scroll container,
+     so the sticky header keeps working (plain `hidden` here breaks sticky). */
+  overflow-x: clip;
 }
 
 .font-display {
