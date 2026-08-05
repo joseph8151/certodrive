@@ -103,10 +103,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd relative py-16 md:py-28 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)] reveal">CERTO DRIVE</p>
-            <h1 className="font-display text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.04] font-extrabold mt-4 whitespace-pre-line reveal">
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.12] font-bold mt-4 whitespace-pre-line reveal">
               {t("hero.title")}
             </h1>
-            <p className="mt-6 text-white/85 text-lg md:text-xl max-w-lg reveal-2">{t("hero.subtitle")}</p>
+            <p className="mt-5 text-white/85 text-base md:text-lg max-w-lg reveal-2">{t("hero.subtitle")}</p>
             {/* Social-proof glass chip */}
             <div className="mt-8 inline-flex items-center gap-4 glass rounded-full pl-4 pr-6 py-3 reveal-3">
               <div className="flex -space-x-2.5">

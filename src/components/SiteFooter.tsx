@@ -84,8 +84,8 @@ export default async function SiteFooter() {
       </div>
 
       {/* Trust strip */}
-      <div className="border-b border-white/10">
-        <div className="container-cd py-12 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
+      <div>
+        <div className="container-cd pt-16 pb-4 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
           {trust.map((x) => (
             <div key={x.title} className="flex items-start gap-3">
               <span className="shrink-0 grid place-items-center h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/10 text-[var(--color-gold)]">
@@ -101,7 +101,7 @@ export default async function SiteFooter() {
       </div>
 
       {/* Columns */}
-      <div className="container-cd py-16 md:py-20 grid gap-12 md:grid-cols-5">
+      <div className="container-cd pt-14 pb-16 grid gap-12 md:grid-cols-5">
         <div className="md:col-span-2">
           <div className="font-display text-2xl font-bold">
             Certo<span className="text-[var(--color-gold)]"> Drive</span>
@@ -134,8 +134,8 @@ export default async function SiteFooter() {
       </div>
 
       {/* Popular destinations */}
-      <div className="border-t border-white/10">
-        <div className="container-cd py-12">
+      <div>
+        <div className="container-cd pt-4 pb-16">
           <h4 className="text-white/50 font-semibold text-xs uppercase tracking-wider mb-6">
             {L ? "인기 도시" : "Popular cities"}
           </h4>
