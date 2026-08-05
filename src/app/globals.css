@@ -234,14 +234,17 @@ body {
 }
 .tbl tr:hover td { background: var(--color-mist); }
 
-/* Cinematic hero motion — slow Ken Burns zoom reads like ambient video. */
+/* Cinematic hero motion — slow Ken Burns zoom + pan reads like ambient video.
+   Runs regardless of the OS reduce-motion setting (it's a gentle, decorative
+   background pan, not flashing motion). */
 @keyframes heroZoom {
-  from { transform: scale(1.06); }
-  to { transform: scale(1.2); }
+  0%   { transform: scale(1.05) translate3d(0, 0, 0); }
+  100% { transform: scale(1.22) translate3d(-2.5%, -1.5%, 0); }
 }
 .hero-anim {
-  animation: heroZoom 22s ease-in-out infinite alternate;
+  animation: heroZoom 18s ease-in-out infinite alternate;
   will-change: transform;
+  transform-origin: center;
 }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -256,7 +259,7 @@ body {
 }
 .bob { animation: bob 2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .hero-anim, .reveal, .reveal-2, .reveal-3, .bob { animation: none; }
+  .reveal, .reveal-2, .reveal-3, .bob { animation: none; }
 }
 
 .hero-gradient {

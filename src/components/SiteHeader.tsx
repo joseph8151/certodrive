@@ -12,6 +12,8 @@ export default async function SiteHeader() {
   const session = await getSession();
   const accountHref = session?.role === "ADMIN" ? "/admin" : session?.role === "DRIVER" ? "/driver" : "/account";
 
+  // Full list powers the mobile menu; the desktop bar shows a trimmed primary
+  // set so longer English labels don't crowd the header.
   const links = [
     { href: "/booking/airport-pickup", label: t("nav.pickup") },
     { href: "/booking/airport-dropoff", label: t("nav.dropoff") },
@@ -22,6 +24,8 @@ export default async function SiteHeader() {
     { href: "/how-it-works", label: t("nav.help") },
     { href: "/reviews", label: locale === "ko" ? "후기" : "Reviews" },
   ];
+  const primaryHrefs = ["/booking/airport-pickup", "/booking/hourly", "/vip", "/destinations", "/how-it-works", "/reviews"];
+  const primaryLinks = primaryHrefs.map((h) => links.find((l) => l.href === h)!);
 
   return (
     <>
@@ -34,9 +38,9 @@ export default async function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-[var(--color-ink)]">
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} className="hover:text-[var(--color-gold-dark)] transition-colors">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-sm font-medium text-[var(--color-ink)]">
+          {primaryLinks.map((l) => (
+            <Link key={l.href} href={l.href} className="hover:text-[var(--color-gold-dark)] transition-colors whitespace-nowrap">
               {l.label}
             </Link>
           ))}
