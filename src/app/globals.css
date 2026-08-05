@@ -191,13 +191,16 @@ body {
 .pill-red   { background: #fdeaea; color: #a52626; }
 .pill-slate { background: #eef0f3; color: #47505e; }
 
-/* Section rhythm */
+/* Section rhythm — generous whitespace reads premium. */
 .section {
-  padding: 5rem 0;
+  padding: 7rem 0;
 }
 @media (max-width: 768px) {
-  .section { padding: 3rem 0; }
+  .section { padding: 4.5rem 0; }
 }
+
+/* Keep anchored sections clear of the sticky header. */
+html { scroll-padding-top: 5rem; }
 
 .container-cd {
   width: 100%;
