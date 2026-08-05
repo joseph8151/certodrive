@@ -70,6 +70,23 @@ export default async function ReviewsPage() {
         </div>
       </section>
 
+      {/* Trust band */}
+      <section className="border-b border-[var(--color-line)] bg-white">
+        <div className="container-cd py-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { icon: "shield", t: L ? "검증된 후기만" : "Verified only", d: L ? "실제 완료된 운행 고객만 작성" : "Only completed-trip customers" },
+            { icon: "badge", t: L ? "검증 한인 기사" : "Verified drivers", d: L ? "면허·보험·신원 확인 완료" : "License, insurance, ID checked" },
+            { icon: "globe", t: L ? "전 세계 도시" : "Cities worldwide", d: L ? "서울·파리·도쿄·뉴욕 등" : "Seoul, Paris, Tokyo, NYC…" },
+            { icon: "chat", t: L ? "24시간 한국어" : "24/7 Korean", d: L ? "언제든 한국어로 지원" : "Support anytime, in Korean" },
+          ].map((x) => (
+            <div key={x.t} className="flex items-start gap-3">
+              <span className="shrink-0 h-10 w-10 rounded-full bg-[var(--color-navy)] text-[var(--color-gold)] grid place-items-center"><Icon name={x.icon} size={19} /></span>
+              <div><div className="font-semibold text-sm">{x.t}</div><div className="text-xs text-[var(--color-slate)] mt-0.5">{x.d}</div></div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <main className="container-cd py-12 md:py-16">
         {total === 0 ? (
           <div className="text-center py-16">
@@ -103,7 +120,7 @@ export default async function ReviewsPage() {
             {/* Review cards */}
             <div className="lg:col-span-3 grid sm:grid-cols-2 gap-5">
               {withComment.map((r) => (
-                <figure key={r.id} className="card p-6 flex flex-col">
+                <figure key={r.id} className="card lift p-6 flex flex-col">
                   <div className="flex items-center justify-between">
                     <Stars n={r.rating} />
                     <span className="text-xs text-[var(--color-slate)]">{new Date(r.createdAt).toLocaleDateString()}</span>
@@ -123,6 +140,17 @@ export default async function ReviewsPage() {
           </div>
         )}
       </main>
+
+      {/* CTA */}
+      <section className="section pt-0">
+        <div className="container-cd">
+          <div className="hero-gradient rounded-3xl text-white p-10 md:p-14 text-center">
+            <h2 className="font-display text-3xl font-bold">{L ? "다음 후기의 주인공이 되어보세요" : "Your story could be next"}</h2>
+            <p className="mt-3 text-white/75 max-w-xl mx-auto">{L ? "검증된 한인·한국어 기사와 함께 편안한 여행을 시작하세요." : "Start an effortless trip with a verified Korean-speaking chauffeur."}</p>
+            <Link href="/#book" className="btn btn-gold mt-7 inline-flex">{L ? "예약하기" : "Book now"}</Link>
+          </div>
+        </div>
+      </section>
 
       <SiteFooter />
     </>

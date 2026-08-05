@@ -22,6 +22,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin/settlements", label: L ? "정산" : "Settlements" },
     { href: "/admin/cms", label: L ? "CMS" : "CMS" },
     { href: "/admin/inbox", label: L ? "문의함" : "Inbox" },
+    { href: "/admin/guide", label: L ? "운영 가이드" : "Guide" },
   ];
 
   return (
