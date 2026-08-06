@@ -61,11 +61,11 @@ export default async function SiteFooter() {
         </div>
 
         {/* Link columns */}
-        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10">
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="text-white/50 font-semibold text-xs uppercase tracking-wider mb-4">{c.title}</h4>
-              <ul className="space-y-3 text-sm">
+              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.18em] mb-6">{c.title}</h4>
+              <ul className="space-y-4 text-sm">
                 {c.links.map((l) => (
                   <li key={l.href}>
                     <Link href={l.href} className="text-white/70 hover:text-[var(--color-gold)] transition-colors">{l.label}</Link>
@@ -79,21 +79,21 @@ export default async function SiteFooter() {
 
       {/* Business info (legal disclosure) */}
       <div className="border-t border-white/10">
-        <div className="container-cd py-8 text-xs text-white/45 leading-relaxed">
-          <div className="font-semibold text-white/60 mb-2">{L ? "사업자 정보" : "Business information"}</div>
-          <div className="flex flex-wrap gap-x-5 gap-y-1">
+        <div className="container-cd py-10 md:py-12 text-xs text-white/45 leading-relaxed">
+          <div className="font-semibold text-white/55 mb-4 tracking-wide">{L ? "사업자 정보" : "Business information"}</div>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
             <span>{L ? "상호" : "Company"}: {L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
             <span>{L ? "대표" : "Representative"}: {BUSINESS.representative}</span>
             <span>{L ? "사업자등록번호" : "Business reg. no."}: {BUSINESS.registrationNo}</span>
             {BUSINESS.mailOrderNo && <span>{L ? "통신판매업신고" : "Mail-order no."}: {BUSINESS.mailOrderNo}</span>}
           </div>
-          <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1">
+          <div className="mt-2.5 flex flex-wrap gap-x-6 gap-y-2">
             <span>{L ? "주소" : "Address"}: {L ? BUSINESS.addressKo : BUSINESS.addressEn}</span>
             <span>{L ? "이메일" : "Email"}: {BUSINESS.email}</span>
             {BUSINESS.phone && <span>{L ? "전화" : "Phone"}: {BUSINESS.phone}</span>}
           </div>
           {L && (
-            <p className="mt-3 text-white/40">
+            <p className="mt-5 text-white/40 max-w-4xl">
               체르토 드라이브는 통신판매중개자로서 예약을 중개하며, 실제 운송은 각 운송면허를 보유한 기사·사업자가 제공합니다. 개별 운송 서비스에 대한 책임은 해당 사업자에게 있습니다.
             </p>
           )}
