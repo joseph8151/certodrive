@@ -92,7 +92,7 @@ export default async function SiteFooter() {
       </div>
 
       {/* Business info (legal disclosure) — compact */}
-      <div className="border-t border-white/10">
+      <div>
         <div className="container-cd py-6 text-[11px] leading-relaxed text-white/40">
           <div className="flex flex-wrap gap-x-4 gap-y-1">
             <span className="text-white/50 font-medium">{L ? "사업자 정보" : "Business"}</span>
@@ -111,7 +111,7 @@ export default async function SiteFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10">
+      <div>
         <div className="container-cd py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Certo Drive. {t("footer.rights")}</span>
           <div className="flex items-center gap-4">
