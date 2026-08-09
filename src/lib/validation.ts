@@ -35,8 +35,9 @@ export type BookingInput = z.infer<typeof bookingSchema>;
 export const driverRegistrationSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
+  phone: z.string().optional().nullable(),
   partnerType: z.enum(["INDIVIDUAL", "COMPANY"]).default("INDIVIDUAL"),
-  businessName: z.string().min(1),
+  businessName: z.string().optional().nullable(),
   contactName: z.string().min(1),
   country: z.string().min(1),
   city: z.string().min(1),

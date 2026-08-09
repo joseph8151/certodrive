@@ -59,6 +59,7 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
   const [f, setF] = useState({
     email: "",
     password: "",
+    phone: "",
     partnerType: "INDIVIDUAL",
     businessName: "",
     contactName: "",
@@ -119,11 +120,18 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
 
   return (
     <form onSubmit={submit} className="grid gap-5">
+      <div className="rounded-lg bg-[var(--color-mist)] px-4 py-3 text-sm text-[var(--color-slate)]">
+        {L
+          ? "몇 분이면 지원이 끝납니다. 제출 후 관리자 승인을 거쳐 활성화되며, 승인되면 이메일로 안내드립니다."
+          : "Takes just a few minutes. After you submit, an admin reviews and approves your application."}
+      </div>
       <section className="grid gap-4">
-        <h3 className="font-semibold">{L ? "계정" : "Account"}</h3>
+        <h3 className="font-semibold">{L ? "계정 · 연락처" : "Account · contact"}</h3>
         <div className="grid sm:grid-cols-2 gap-4">
           <div><label className="field-label">{L ? "이메일" : "Email"}</label><input type="email" className="input" value={f.email} onChange={(e) => set("email", e.target.value)} required /></div>
-          <div><label className="field-label">{L ? "비밀번호" : "Password"}</label><input type="password" className="input" value={f.password} onChange={(e) => set("password", e.target.value)} required minLength={6} /></div>
+          <div><label className="field-label">{L ? "비밀번호" : "Password"}</label><input type="password" className="input" value={f.password} onChange={(e) => set("password", e.target.value)} required minLength={6} placeholder={L ? "6자 이상" : "6+ characters"} /></div>
+          <div><label className="field-label">{L ? "담당자명" : "Your name"}</label><input className="input" value={f.contactName} onChange={(e) => set("contactName", e.target.value)} required /></div>
+          <div><label className="field-label">{L ? "연락처(휴대폰)" : "Phone"}</label><input className="input" value={f.phone} onChange={(e) => set("phone", e.target.value)} placeholder="010-1234-5678" /></div>
         </div>
       </section>
 
@@ -137,13 +145,12 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
               <option value="COMPANY">{L ? "운송업체" : "Company"}</option>
             </select>
           </div>
-          <div><label className="field-label">{L ? "사업자명 / 상호" : "Business name"}</label><input className="input" value={f.businessName} onChange={(e) => set("businessName", e.target.value)} required /></div>
-          <div><label className="field-label">{L ? "담당자명" : "Contact name"}</label><input className="input" value={f.contactName} onChange={(e) => set("contactName", e.target.value)} required /></div>
+          <div><label className="field-label">{L ? "상호(선택)" : "Business name (optional)"}</label><input className="input" value={f.businessName} onChange={(e) => set("businessName", e.target.value)} placeholder={L ? "미입력 시 이름 사용" : "defaults to your name"} /></div>
           <div><label className="field-label">{L ? "국가" : "Country"}</label><input className="input" value={f.country} onChange={(e) => set("country", e.target.value)} placeholder={L ? "대한민국" : "South Korea"} required /></div>
           <div><label className="field-label">{L ? "도시" : "City"}</label><input className="input" value={f.city} onChange={(e) => set("city", e.target.value)} placeholder={L ? "서울" : "Seoul"} required /></div>
-          <div><label className="field-label">{L ? "서비스 가능 공항 (쉼표로 구분)" : "Airports (comma separated)"}</label><input className="input" value={f.airports} onChange={(e) => set("airports", e.target.value)} placeholder="ICN, GMP" /></div>
+          <div><label className="field-label">{L ? "서비스 가능 공항 (선택)" : "Airports (optional)"}</label><input className="input" value={f.airports} onChange={(e) => set("airports", e.target.value)} placeholder="ICN, GMP" /></div>
         </div>
-        <div><label className="field-label">{L ? "서비스 가능 지역 (쉼표로 구분)" : "Service regions (comma separated)"}</label><input className="input" value={f.serviceRegions} onChange={(e) => set("serviceRegions", e.target.value)} placeholder={L ? "서울, 인천, 경기" : "Seoul, Incheon"} /></div>
+        <div><label className="field-label">{L ? "서비스 가능 지역 (선택)" : "Service regions (optional)"}</label><input className="input" value={f.serviceRegions} onChange={(e) => set("serviceRegions", e.target.value)} placeholder={L ? "서울, 인천, 경기" : "Seoul, Incheon"} /></div>
       </section>
 
       <section className="grid gap-4">
@@ -204,7 +211,7 @@ export default function DriverRegistrationForm({ locale }: { locale: Locale }) {
       </section>
 
       <section className="grid gap-4">
-        <h3 className="font-semibold">{L ? "정산 정보" : "Settlement"}</h3>
+        <h3 className="font-semibold">{L ? "정산 정보" : "Settlement"} <span className="text-xs font-normal text-[var(--color-slate)]">({L ? "선택 · 나중에 입력 가능" : "optional"})</span></h3>
         <div className="grid sm:grid-cols-3 gap-4">
           <div className="sm:col-span-1"><label className="field-label">{L ? "정산 통화" : "Currency"}</label>
             <select className="select" value={f.settlementCurrency} onChange={(e) => set("settlementCurrency", e.target.value)}>

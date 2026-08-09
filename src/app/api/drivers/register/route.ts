@@ -29,10 +29,11 @@ export async function POST(req: Request) {
       passwordHash: await hashPassword(d.password),
       role: "DRIVER",
       name: d.contactName,
+      phone: d.phone ?? null,
       driverProfile: {
         create: {
           partnerType: d.partnerType,
-          businessName: d.businessName,
+          businessName: (d.businessName && d.businessName.trim()) || d.contactName,
           contactName: d.contactName,
           country: d.country,
           city: d.city,

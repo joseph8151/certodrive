@@ -19,7 +19,7 @@ export const dict = {
   "nav.book": { ko: "예약하기", en: "Book now" },
 
   // Hero
-  "hero.title": { ko: "해외에서 만나는 한인 기사\n공항 픽업부터 하루 종일 전세까지", en: "Your Korean chauffeur abroad —\nfrom airport pickup to full-day hire" },
+  "hero.title": { ko: "당신의 도시,\n당신의 기사.", en: "Your city.\nYour chauffeur." },
   "hero.subtitle": { ko: "해외여행·출장 중 한국어가 통하는 검증된 한인 기사를 예약하세요. 공항 픽업·샌딩은 물론, 도시 간 이동과 하루 종일 기사·차량 전세까지. 정찰제 요금, 출발 전 기사 확정, 24시간 한국어 지원.", en: "Book a verified Korean-speaking chauffeur while you travel abroad. Airport pickup & drop-off, intercity rides, and full-day driver + vehicle hire. Fixed pricing, driver confirmed before departure, 24/7 Korean support." },
 
   // Booking widget
