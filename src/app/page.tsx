@@ -109,7 +109,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
         {/* Slow-zoom photo layer (video-like motion) */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 hero-anim" style={photoBg(IMG.hero, "linear-gradient(100deg, rgba(9,14,24,0.92) 0%, rgba(11,17,28,0.72) 45%, rgba(11,17,28,0.42) 100%)")} />
+          <div className="absolute inset-0 hero-anim" style={photoBg(IMG.hero, "linear-gradient(100deg, rgba(28,25,20,0.92) 0%, rgba(30,27,22,0.72) 45%, rgba(30,27,22,0.42) 100%)")} />
         </div>
         {/* Bottom fade for depth */}
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-navy)] to-transparent" />
@@ -232,7 +232,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               { img: cityImage(L ? "서울" : "Seoul"), t: L ? "유학생·장기 체류" : "Students & long stays", d: L ? "입국·이사·정착까지, 든든한 한인 기사가 도와드립니다." : "Arrivals, moving and settling in — a Korean driver who helps." },
             ].map((u) => (
               <div key={u.t} className="card lift overflow-hidden hover:card-shadow transition-shadow">
-                <div className="aspect-[16/9]" style={photoBg(u.img, "linear-gradient(180deg, rgba(11,17,28,0.08) 0%, rgba(11,17,28,0.35) 100%)")} />
+                <div className="aspect-[16/9]" style={photoBg(u.img, "linear-gradient(180deg, rgba(30,27,22,0.08) 0%, rgba(30,27,22,0.35) 100%)")} />
                 <div className="p-6">
                   <h3 className="font-display text-xl">{u.t}</h3>
                   <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{u.d}</p>
@@ -303,7 +303,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       {/* Editorial band */}
       <section className="relative text-white" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={photoBg(IMG.editorial, "linear-gradient(90deg, rgba(11,17,28,0.92) 0%, rgba(13,21,37,0.72) 55%, rgba(13,21,37,0.45) 100%)")} />
+        <div className="absolute inset-0" style={photoBg(IMG.editorial, "linear-gradient(90deg, rgba(30,27,22,0.92) 0%, rgba(41,37,30,0.72) 55%, rgba(41,37,30,0.45) 100%)")} />
         <div className="container-cd relative py-20 md:py-28">
           <div className="max-w-xl">
             <p className="eyebrow text-[var(--color-gold)]">{L ? "체르토 드라이브" : "The Certo standard"}</p>
@@ -349,7 +349,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               const m = VEHICLE_META[v];
               return (
                 <div key={v} className="card lift overflow-hidden flex flex-col hover:card-shadow transition-shadow">
-                  <div className="aspect-[16/10] bg-gradient-to-br from-[#1d2c48] to-[var(--color-ink)] flex items-center justify-center px-4">
+                  <div className="aspect-[16/10] bg-gradient-to-br from-[#4a453d] to-[var(--color-ink)] flex items-center justify-center px-4">
                     <CarArt type={carType(v)} className="w-full max-w-[220px]" />
                   </div>
                   <div className="p-5">
@@ -383,7 +383,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
                 key={c.city}
                 href={`/destinations/${encodeURIComponent(c.city)}`}
                 className="relative rounded-2xl overflow-hidden aspect-[4/5] flex flex-col justify-end p-5 text-white group"
-                style={photoBg(cityImage(c.city), "linear-gradient(180deg, rgba(12,18,30,0.10) 0%, rgba(11,17,28,0.85) 78%)")}
+                style={photoBg(cityImage(c.city), "linear-gradient(180deg, rgba(30,27,22,0.10) 0%, rgba(30,27,22,0.85) 78%)")}
               >
                 <div className="text-[11px] uppercase tracking-wide text-white/70">{c.country}</div>
                 <div className="font-display text-2xl font-bold leading-tight">{c.city}</div>
@@ -420,7 +420,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
                 return (
                   <div key={d.id} className="card lift p-6">
                     <div className="flex items-center gap-3">
-                      <span className="h-12 w-12 rounded-full grid place-items-center font-display font-bold text-lg text-white" style={{ background: "linear-gradient(140deg,#1d3a6b,#14294f)" }}>
+                      <span className="h-12 w-12 rounded-full grid place-items-center font-display font-bold text-lg text-white" style={{ background: "linear-gradient(140deg,#4a453d,#35312b)" }}>
                         {initial}
                       </span>
                       <div>

@@ -35,7 +35,7 @@ export default function MobileNav({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[60] bg-[rgba(11,17,28,0.5)]" onClick={() => setOpen(false)}>
+        <div className="fixed inset-0 z-[60] bg-[rgba(30,27,22,0.5)]" onClick={() => setOpen(false)}>
           <div
             className="absolute right-0 top-0 h-full w-[86%] max-w-sm bg-white shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}

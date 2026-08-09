@@ -29,7 +29,7 @@ export default async function Destinations() {
                   key={c.city}
                   href={`/destinations/${encodeURIComponent(c.city)}`}
                   className="relative rounded-2xl overflow-hidden aspect-[3/2] flex flex-col justify-end p-5 text-white group"
-                  style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(12,18,30,0.1) 0%, rgba(11,17,28,0.85) 80%), url(${cityImage(c.city)})`, backgroundSize: "cover", backgroundPosition: "center" }}
+                  style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(30,27,22,0.1) 0%, rgba(30,27,22,0.85) 80%), url(${cityImage(c.city)})`, backgroundSize: "cover", backgroundPosition: "center" }}
                 >
                   <div className="font-display text-xl font-bold">{c.city}</div>
                   <div className="text-[11px] text-white/65 mt-1">{c.airports.join(" · ")}</div>

@@ -83,7 +83,7 @@ export default async function HowItWorks() {
 
       {/* Hero */}
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(11,17,28,0.93), rgba(13,21,37,0.6)), url(${IMG.airport})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(30,27,22,0.93), rgba(41,37,30,0.6)), url(${IMG.airport})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="container-cd relative py-16 md:py-24">
           <p className="eyebrow text-[var(--color-gold)]">{L ? "이용 방법" : "How it works"}</p>
           <h1 className="font-display text-4xl md:text-5xl font-bold mt-3 max-w-3xl">
@@ -115,7 +115,7 @@ export default async function HowItWorks() {
 
       {/* Airport meet band */}
       <section className="relative text-white" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(90deg, rgba(11,17,28,0.9), rgba(13,21,37,0.55)), url(${IMG.meet})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(90deg, rgba(30,27,22,0.9), rgba(41,37,30,0.55)), url(${IMG.meet})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="container-cd relative py-20 md:py-24">
           <div className="max-w-xl">
             <p className="eyebrow text-[var(--color-gold)]">{L ? "공항 미팅" : "Meet & greet"}</p>

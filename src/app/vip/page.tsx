@@ -52,7 +52,7 @@ export default async function VIP() {
 
       {/* Hero */}
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={photoBg(IMG.vipBand, "linear-gradient(105deg, rgba(9,14,24,0.95) 0%, rgba(11,17,28,0.82) 45%, rgba(11,17,28,0.55) 100%)")} />
+        <div className="absolute inset-0" style={photoBg(IMG.vipBand, "linear-gradient(105deg, rgba(28,25,20,0.95) 0%, rgba(30,27,22,0.82) 45%, rgba(30,27,22,0.55) 100%)")} />
         <div className="container-cd relative py-16 md:py-24 max-w-2xl">
           <p className="eyebrow text-[var(--color-gold)]">VIP & PROTOCOL</p>
           <h1 className="font-display text-4xl md:text-5xl font-bold mt-4 leading-tight">
@@ -93,7 +93,7 @@ export default async function VIP() {
 
       {/* Fleet band */}
       <section className="relative text-white" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={photoBg(IMG.editorial, "linear-gradient(90deg, rgba(9,14,24,0.94) 0%, rgba(11,17,28,0.72) 60%, rgba(11,17,28,0.5) 100%)")} />
+        <div className="absolute inset-0" style={photoBg(IMG.editorial, "linear-gradient(90deg, rgba(28,25,20,0.94) 0%, rgba(30,27,22,0.72) 60%, rgba(30,27,22,0.5) 100%)")} />
         <div className="container-cd relative py-16 md:py-20">
           <div className="max-w-xl">
             <p className="eyebrow text-[var(--color-gold)]">{L ? "차량" : "The fleet"}</p>

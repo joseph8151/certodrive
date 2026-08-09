@@ -9,20 +9,21 @@
 --------------------------------------------------------------------------- */
 
 @theme {
-  /* Warm luxury — boutique-hotel: warm ivory, deep navy, champagne gold. */
-  --color-ink: #211d18;          /* warm near-black text */
-  --color-navy: #12233f;         /* deep navy (primary dark) */
-  --color-navy-700: #1e3a63;
-  --color-navy-500: #35548a;
-  --color-slate: #6f6a61;        /* warm gray body text */
-  --color-mist: #efe9df;         /* warm ivory light (light sections) */
-  --color-line: #e6ded1;         /* warm hairline borders */
-  --color-gold: #b8944e;         /* champagne gold accent (refined) */
+  /* Muted luxury — warm greige/charcoal, ivory, a whisper of champagne gold.
+     No navy. Think Aman / The Row: quiet, expensive, tonal. */
+  --color-ink: #2a2620;          /* warm near-black text */
+  --color-navy: #35312b;         /* warm charcoal (primary dark) — replaces navy */
+  --color-navy-700: #4a453d;     /* mid warm gray */
+  --color-navy-500: #6f6a60;     /* soft taupe gray */
+  --color-slate: #7a7469;        /* warm gray body text */
+  --color-mist: #ece7dd;         /* warm ivory-gray light sections */
+  --color-line: #e2dccf;         /* warm hairline borders */
+  --color-gold: #b8944e;         /* champagne gold accent (used sparingly) */
   --color-gold-dark: #8c6a2c;    /* deep champagne — readable on ivory */
-  /* Legacy tokens repointed to navy so older components stay on-brand. */
-  --color-red: #12233f;
-  --color-red-dark: #0d1a30;
-  --color-charcoal: #12233f;
+  /* Legacy tokens repointed to the charcoal so older components stay on-brand. */
+  --color-red: #35312b;
+  --color-red-dark: #26231d;
+  --color-charcoal: #35312b;
 
   /* Body: Pretendard (clean Korean gothic). Headings: editorial serif. */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
@@ -41,7 +42,7 @@ html {
 }
 
 body {
-  background: #f6f2ea; /* warm ivory */
+  background: #f4f0e8; /* warm ivory */
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -287,8 +288,8 @@ html { scroll-padding-top: 5rem; }
 
 .hero-gradient {
   background:
-    linear-gradient(180deg, rgba(15, 24, 41, 0.55) 0%, rgba(9, 14, 25, 0.86) 100%),
-    radial-gradient(1200px 620px at 76% -25%, #35496b 0%, #1c2c48 42%, #16233a 62%, #0c1424 100%);
+    linear-gradient(180deg, rgba(53, 49, 43, 0.5) 0%, rgba(31, 28, 23, 0.88) 100%),
+    radial-gradient(1200px 620px at 76% -25%, #55504594 0%, #4a453d 40%, #35312b 66%, #26231d 100%);
 }
 /* Subtle champagne hairline under dark hero sections for a couture edge. */
 .hero-gradient::after { content: none; }

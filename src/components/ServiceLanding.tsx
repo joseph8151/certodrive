@@ -184,7 +184,7 @@ export default function ServiceLanding({
 
       {/* Hero */}
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={photoBg(d.heroImg, "linear-gradient(105deg, rgba(11,17,28,0.95) 0%, rgba(13,21,37,0.82) 45%, rgba(13,21,37,0.55) 100%)")} />
+        <div className="absolute inset-0" style={photoBg(d.heroImg, "linear-gradient(105deg, rgba(30,27,22,0.95) 0%, rgba(41,37,30,0.82) 45%, rgba(41,37,30,0.55) 100%)")} />
         <div className="container-cd relative py-12 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
@@ -208,7 +208,7 @@ export default function ServiceLanding({
       {/* What's included */}
       <section className="section">
         <div className="container-cd grid lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl overflow-hidden aspect-[4/3] hidden lg:block" style={photoBg(IMG.meet, "linear-gradient(180deg, rgba(11,17,28,0.05) 0%, rgba(11,17,28,0.35) 100%)")} />
+          <div className="rounded-3xl overflow-hidden aspect-[4/3] hidden lg:block" style={photoBg(IMG.meet, "linear-gradient(180deg, rgba(30,27,22,0.05) 0%, rgba(30,27,22,0.35) 100%)")} />
           <div>
             <p className="eyebrow">{L ? "포함 사항" : "What's included"}</p>
             <h2 className="font-display text-3xl font-bold mt-2">{L ? "요금 안에 이 모든 것이" : "All of this, in one fixed fare"}</h2>
@@ -260,7 +260,7 @@ export default function ServiceLanding({
               const m = VEHICLE_META[v];
               return (
                 <div key={v} className="card overflow-hidden hover:card-shadow transition-shadow">
-                  <div className="aspect-[16/10] bg-gradient-to-br from-[#1d2c48] to-[var(--color-ink)] flex items-center justify-center px-4">
+                  <div className="aspect-[16/10] bg-gradient-to-br from-[#4a453d] to-[var(--color-ink)] flex items-center justify-center px-4">
                     <CarArt type={carType(v)} className="w-full max-w-[200px]" />
                   </div>
                   <div className="p-5">

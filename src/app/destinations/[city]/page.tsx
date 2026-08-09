@@ -53,7 +53,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
     <>
       <SiteHeader />
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(11,17,28,0.93) 0%, rgba(13,21,37,0.78) 45%, rgba(13,21,37,0.5) 100%), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(30,27,22,0.93) 0%, rgba(41,37,30,0.78) 45%, rgba(41,37,30,0.5) 100%), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="container-cd relative py-12 md:py-16 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">{cityMeta?.country ?? ""}</p>
@@ -101,7 +101,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Why a Korean driver here */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd grid lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl overflow-hidden aspect-[4/3] hidden lg:block" style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(11,17,28,0.05), rgba(11,17,28,0.35)), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />
+          <div className="rounded-3xl overflow-hidden aspect-[4/3] hidden lg:block" style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(30,27,22,0.05), rgba(30,27,22,0.35)), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />
           <div>
             <p className="eyebrow">{L ? "왜 한인 기사인가" : "Why a Korean driver"}</p>
             <h2 className="font-display text-3xl font-bold mt-2">{L ? `${name}에서도 언어 걱정 없이` : `No language barrier in ${name}`}</h2>

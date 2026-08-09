@@ -3,7 +3,7 @@
 // pickup and destination pin. Decorative; used on marketing surfaces.
 export default function RouteMap({ from, to, className = "" }: { from: string; to: string; className?: string }) {
   return (
-    <div className={`relative rounded-3xl overflow-hidden ring-1 ring-white/10 ${className}`} style={{ background: "linear-gradient(160deg,#16233f 0%,#0e1830 60%,#0b1424 100%)" }}>
+    <div className={`relative rounded-3xl overflow-hidden ring-1 ring-white/10 ${className}`} style={{ background: "linear-gradient(160deg,#3a352e 0%,#2a2620 60%,#201d18 100%)" }}>
       <svg viewBox="0 0 400 300" className="w-full h-full block" preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${from} → ${to}`}>
         {/* faint street grid */}
         <g stroke="#ffffff" strokeOpacity="0.05" strokeWidth="1">
@@ -18,13 +18,13 @@ export default function RouteMap({ from, to, className = "" }: { from: string; t
         </g>
 
         {/* route path */}
-        <path id="cd-route" d="M60 240 C 130 210, 150 120, 230 90 S 330 70, 350 60" fill="none" stroke="#1f3a63" strokeWidth="6" strokeLinecap="round" />
-        <path d="M60 240 C 130 210, 150 120, 230 90 S 330 70, 350 60" fill="none" stroke="#e6b53f" strokeWidth="3" strokeLinecap="round" className="route-dash" />
+        <path id="cd-route" d="M60 240 C 130 210, 150 120, 230 90 S 330 70, 350 60" fill="none" stroke="#4a453b" strokeWidth="6" strokeLinecap="round" />
+        <path d="M60 240 C 130 210, 150 120, 230 90 S 330 70, 350 60" fill="none" stroke="#b8944e" strokeWidth="3" strokeLinecap="round" className="route-dash" />
 
         {/* pickup pin */}
         <g>
-          <circle cx="60" cy="240" r="9" fill="#e6b53f" fillOpacity="0.25" className="pulse-dot" />
-          <circle cx="60" cy="240" r="5" fill="#e6b53f" />
+          <circle cx="60" cy="240" r="9" fill="#b8944e" fillOpacity="0.25" className="pulse-dot" />
+          <circle cx="60" cy="240" r="5" fill="#b8944e" />
         </g>
         {/* destination pin */}
         <g transform="translate(350 60)">
