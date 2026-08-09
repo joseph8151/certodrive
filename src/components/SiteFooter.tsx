@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
 import { BUSINESS } from "@/lib/business";
+import { IMG } from "@/lib/images";
 import FloatingContact from "./FloatingContact";
 import Icon from "./Icon";
 
@@ -42,13 +43,13 @@ export default async function SiteFooter() {
   return (
     <footer className="mt-24 text-white" style={{ backgroundColor: "var(--color-navy)" }}>
       {/* Main */}
-      <div className="container-cd py-20 md:py-28 grid gap-16 md:grid-cols-12">
+      <div className="container-cd py-20 md:py-28 grid gap-x-14 gap-y-14 md:grid-cols-12 items-start">
         {/* Brand + contact */}
-        <div className="md:col-span-5">
-          <div className="font-display text-2xl font-bold">
+        <div className="md:col-span-4">
+          <div className="font-display text-2xl">
             Certo<span className="text-[var(--color-gold)]"> Drive</span>
           </div>
-          <p className="mt-4 text-sm text-white/60 max-w-sm leading-relaxed">{t("brand.tagline")}</p>
+          <p className="mt-4 text-sm text-white/60 max-w-xs leading-relaxed">{t("brand.tagline")}</p>
           <div className="mt-6 space-y-3 text-sm text-white/75">
             <a href="mailto:support@certodrive.com" className="flex items-center gap-2.5 hover:text-white transition-colors">
               <Icon name="chat" size={16} className="text-[var(--color-gold)]" /> support@certodrive.com
@@ -61,10 +62,10 @@ export default async function SiteFooter() {
         </div>
 
         {/* Link columns */}
-        <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10">
+        <div className="md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10">
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.18em] mb-6">{c.title}</h4>
+              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.2em] mb-6">{c.title}</h4>
               <ul className="space-y-4 text-sm">
                 {c.links.map((l) => (
                   <li key={l.href}>
@@ -75,26 +76,35 @@ export default async function SiteFooter() {
             </div>
           ))}
         </div>
+
+        {/* Image panel */}
+        <div className="md:col-span-3">
+          <div
+            className="relative rounded-2xl overflow-hidden aspect-[4/5] ring-1 ring-white/10"
+            style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(30,27,22,0.15) 0%, rgba(30,27,22,0.8) 100%), url(${IMG.meet})`, backgroundSize: "cover", backgroundPosition: "center" }}
+          >
+            <div className="absolute inset-x-0 bottom-0 p-5">
+              <div className="font-display text-lg leading-snug">{L ? "품격 있는 이동의 기준" : "A higher standard of travel"}</div>
+              <div className="text-xs text-white/60 mt-1">{L ? "검증된 한인 기사와 함께" : "With a verified Korean chauffeur"}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Business info (legal disclosure) */}
+      {/* Business info (legal disclosure) — compact */}
       <div className="border-t border-white/10">
-        <div className="container-cd py-10 md:py-12 text-xs text-white/45 leading-relaxed">
-          <div className="font-semibold text-white/55 mb-4 tracking-wide">{L ? "사업자 정보" : "Business information"}</div>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <span>{L ? "상호" : "Company"}: {L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
-            <span>{L ? "대표" : "Representative"}: {BUSINESS.representative}</span>
-            <span>{L ? "사업자등록번호" : "Business reg. no."}: {BUSINESS.registrationNo}</span>
-            {BUSINESS.mailOrderNo && <span>{L ? "통신판매업신고" : "Mail-order no."}: {BUSINESS.mailOrderNo}</span>}
-          </div>
-          <div className="mt-2.5 flex flex-wrap gap-x-6 gap-y-2">
-            <span>{L ? "주소" : "Address"}: {L ? BUSINESS.addressKo : BUSINESS.addressEn}</span>
-            <span>{L ? "이메일" : "Email"}: {BUSINESS.email}</span>
-            {BUSINESS.phone && <span>{L ? "전화" : "Phone"}: {BUSINESS.phone}</span>}
+        <div className="container-cd py-6 text-[11px] leading-relaxed text-white/40">
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            <span className="text-white/50 font-medium">{L ? "사업자 정보" : "Business"}</span>
+            <span>{L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
+            <span>{L ? "대표" : "Rep."} {BUSINESS.representative}</span>
+            <span>{L ? "사업자등록번호" : "Reg."} {BUSINESS.registrationNo}</span>
+            {BUSINESS.mailOrderNo && <span>{L ? "통신판매" : "Mail-order"} {BUSINESS.mailOrderNo}</span>}
+            <span>{L ? BUSINESS.addressKo : BUSINESS.addressEn}</span>
           </div>
           {L && (
-            <p className="mt-5 text-white/40 max-w-4xl">
-              체르토 드라이브는 통신판매중개자로서 예약을 중개하며, 실제 운송은 각 운송면허를 보유한 기사·사업자가 제공합니다. 개별 운송 서비스에 대한 책임은 해당 사업자에게 있습니다.
+            <p className="mt-2 text-white/30 max-w-4xl">
+              체르토 드라이브는 통신판매중개자로서 예약을 중개하며, 실제 운송은 각 운송면허를 보유한 기사·사업자가 제공합니다. 개별 운송 서비스의 책임은 해당 사업자에게 있습니다.
             </p>
           )}
         </div>

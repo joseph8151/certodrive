@@ -90,7 +90,7 @@ export default function AddressAutocomplete({
         }}
       />
       {open && (list.length > 0 || loading) && (
-        <div className="absolute z-30 mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white shadow-lg max-h-64 overflow-auto">
+        <div className="absolute z-30 mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white text-[var(--color-ink)] shadow-lg max-h-64 overflow-auto">
           {value.trim().length < 3 && quick.length > 0 && (
             <div className="px-3 pt-2 pb-1 text-[11px] uppercase tracking-wide text-[var(--color-slate)]">
               {locale === "ko" ? "주요 공항" : "Airports"}
