@@ -116,29 +116,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         <div className="container-cd relative py-16 md:py-28 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <div className="flex items-center gap-4 reveal">
-              <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
-              <span className="inline-flex items-center gap-2 text-xs text-white/75">
-                <span className="h-2 w-2 rounded-full bg-[#2ecc71] live-dot" />
-                {L ? "지금 예약 접수 중" : "Taking bookings now"}
-              </span>
-            </div>
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl leading-[1.12] font-bold mt-4 whitespace-pre-line reveal">
+            <p className="eyebrow text-[var(--color-gold)] reveal">{L ? "해외 한인 기사 · 프라이빗 드라이브" : "Korean chauffeurs abroad · private drive"}</p>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-semibold mt-6 whitespace-pre-line reveal">
               {t("hero.title")}
             </h1>
-            <p className="mt-5 text-white/85 text-base md:text-lg max-w-lg reveal-2">{t("hero.subtitle")}</p>
-            {/* Social-proof glass chip */}
-            <div className="mt-8 inline-flex items-center gap-4 glass rounded-full pl-4 pr-6 py-3 reveal-3">
-              <div className="flex -space-x-2.5">
-                {[IMG.meet, IMG.family, IMG.vipBand].map((src) => (
-                  <span key={src} className="h-9 w-9 rounded-full ring-2 ring-white/70 bg-cover bg-center" style={{ backgroundImage: `url(${src})` }} />
-                ))}
-              </div>
-              <div className="text-sm leading-tight">
-                <div className="font-semibold text-[var(--color-gold)]">★★★★★ 4.9 / 5</div>
-                <div className="text-white/70 text-xs">{L ? "전 세계 여행자들이 신뢰합니다" : "Trusted by travelers worldwide"}</div>
-              </div>
-            </div>
+            <div className="mt-7 h-px w-16 bg-[var(--color-gold)]/70 reveal-2" />
+            <p className="mt-7 text-white/80 text-base md:text-lg max-w-md leading-relaxed reveal-2">{t("hero.subtitle")}</p>
+            <p className="mt-8 text-sm text-white/55 tracking-wide reveal-3">
+              {L ? "40여 개 도시 · 검증된 한인 기사 · 24시간 한국어 지원" : "40+ cities · verified Korean drivers · 24/7 support"}
+            </p>
           </div>
           <div id="book" className="scroll-mt-24 reveal-2">
             <BookingWidget locale={locale} prefill={hasPrefill ? prefill : undefined} />
@@ -151,18 +137,18 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* Stats band */}
-      <section className="border-b border-[var(--color-line)] bg-white">
-        <div className="container-cd py-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      {/* Stats — editorial */}
+      <section className="border-y border-[var(--color-line)]">
+        <div className="container-cd py-14 md:py-16 grid grid-cols-2 md:grid-cols-4 gap-y-10">
           {[
-            { node: <CountUp value={40} suffix="+" />, l: L ? "서비스 도시" : "Cities served" },
-            { node: <CountUp value={100} suffix="%" />, l: L ? "검증된 한인 기사" : "Verified Korean drivers" },
-            { node: <CountUp value={4.9} decimals={1} suffix="★" />, l: L ? "평균 만족도" : "Average rating" },
+            { node: <CountUp value={40} suffix="+" />, l: L ? "서비스 도시" : "Cities" },
+            { node: <CountUp value={100} suffix="%" />, l: L ? "검증된 한인 기사" : "Verified drivers" },
+            { node: <CountUp value={4.9} decimals={1} />, l: L ? "평균 만족도" : "Avg. rating" },
             { node: <>24/7</>, l: L ? "한국어 지원" : "Korean support" },
-          ].map((s) => (
-            <div key={s.l}>
-              <div className="font-display text-5xl md:text-6xl font-bold text-[var(--color-navy)]">{s.node}</div>
-              <div className="mt-2 text-xs md:text-sm text-[var(--color-slate)]">{s.l}</div>
+          ].map((s, i) => (
+            <div key={s.l} className={`text-center px-4 ${i > 0 ? "md:border-l md:border-[var(--color-line)]" : ""} ${i % 2 === 1 ? "border-l border-[var(--color-line)] md:border-l" : ""}`}>
+              <div className="font-display text-5xl md:text-[3.5rem] leading-none text-[var(--color-navy)]">{s.node}</div>
+              <div className="mt-4 text-[11px] uppercase tracking-[0.2em] text-[var(--color-slate)]">{s.l}</div>
             </div>
           ))}
         </div>
@@ -189,22 +175,21 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* Service pillars */}
+      {/* Service pillars — editorial */}
       <section className="section">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{L ? "서비스" : "Services"}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "공항부터 하루 종일까지, 한 번에" : "From the airport to your whole day"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "공항부터 하루 종일까지, 한 번에" : "From the airport to your whole day"}</h2>
           </div>
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
-            {pillars.map((p) => (
-              <Link key={p.t} href={p.href} className="card lift p-7 hover:card-shadow transition-shadow group">
-                <div className="h-12 w-12 rounded-full border border-[var(--color-gold)]/40 text-[var(--color-gold-dark)] flex items-center justify-center">
-                  <Icon name={p.icon} size={22} />
-                </div>
-                <h3 className="mt-5 font-display text-xl font-bold group-hover:text-[var(--color-gold-dark)]">{p.t}</h3>
-                <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{p.d}</p>
-                <span className="mt-4 inline-block text-sm font-semibold text-[var(--color-gold-dark)]">{L ? "예약하기 →" : "Book now →"}</span>
+          <div className="mt-16 grid md:grid-cols-3 gap-x-12 gap-y-14">
+            {pillars.map((p, i) => (
+              <Link key={p.t} href={p.href} className="group block">
+                <div className="font-display text-5xl text-[var(--color-gold-dark)]/70">{String(i + 1).padStart(2, "0")}</div>
+                <div className="mt-5 h-px w-full bg-[var(--color-line)] group-hover:bg-[var(--color-gold)] transition-colors" />
+                <h3 className="mt-6 font-display text-2xl group-hover:text-[var(--color-gold-dark)] transition-colors">{p.t}</h3>
+                <p className="mt-3 text-[15px] text-[var(--color-slate)] leading-relaxed">{p.d}</p>
+                <span className="mt-6 inline-block text-[11px] uppercase tracking-[0.2em] text-[var(--color-gold-dark)]">{L ? "예약하기" : "Book"} →</span>
               </Link>
             ))}
           </div>
