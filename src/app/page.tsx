@@ -196,21 +196,19 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* Value props */}
+      {/* Value props — editorial */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{t("value.title")}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "믿고 맡기는 이유" : "Why travelers trust us"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "믿고 맡기는 이유" : "Why travelers trust us"}</h2>
           </div>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
             {values.map((v) => (
-              <div key={v.title} className="card lift p-7 hover:card-shadow transition-shadow">
-                <div className="h-12 w-12 rounded-full bg-[var(--color-navy)] text-[var(--color-gold)] flex items-center justify-center">
-                  <Icon name={v.icon} size={22} />
-                </div>
-                <h3 className="mt-4 font-semibold text-lg">{v.title}</h3>
-                <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{v.desc}</p>
+              <div key={v.title} className="border-t border-[var(--color-line)] pt-6">
+                <Icon name={v.icon} size={24} className="text-[var(--color-gold-dark)]" />
+                <h3 className="mt-5 font-display text-xl">{v.title}</h3>
+                <p className="mt-2.5 text-[15px] text-[var(--color-slate)] leading-relaxed">{v.desc}</p>
               </div>
             ))}
           </div>
@@ -220,11 +218,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       {/* Use cases */}
       <section className="section">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{L ? "이럴 때 이용하세요" : "Made for"}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "여행 유형에 딱 맞는 이동" : "The right ride for your trip"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "여행 유형에 딱 맞는 이동" : "The right ride for your trip"}</h2>
           </div>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { img: IMG.family, t: L ? "가족 여행" : "Family trips", d: L ? "아이 카시트, 넉넉한 짐 공간, 안전한 한인 기사와 함께 온 가족이 편안하게." : "Child seats, luggage space and a trusted Korean driver for the whole family." },
               { img: IMG.vipBand, t: L ? "비즈니스 출장" : "Business travel", d: L ? "정시 도착과 조용한 이동. 공항 미팅부터 미팅 장소까지 매끄럽게." : "On-time, quiet rides — from airport meet to your meeting." },
@@ -236,7 +234,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               <div key={u.t} className="card lift overflow-hidden hover:card-shadow transition-shadow">
                 <div className="aspect-[16/9]" style={photoBg(u.img, "linear-gradient(180deg, rgba(11,17,28,0.08) 0%, rgba(11,17,28,0.35) 100%)")} />
                 <div className="p-6">
-                  <h3 className="font-display text-xl font-bold">{u.t}</h3>
+                  <h3 className="font-display text-xl">{u.t}</h3>
                   <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{u.d}</p>
                 </div>
               </div>
@@ -248,21 +246,19 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       {/* Why a Korean driver */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{L ? "왜 한인 기사인가" : "Why a Korean driver"}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "낯선 도시, 언어 걱정 없이" : "A new city, without the language barrier"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "낯선 도시, 언어 걱정 없이" : "A new city, without the language barrier"}</h2>
           </div>
-          <div className="mt-12 grid md:grid-cols-3 gap-6">
+          <div className="mt-16 grid md:grid-cols-3 gap-x-12 gap-y-12">
             {[
               { icon: "chat", t: L ? "완벽한 한국어 소통" : "Fluent Korean", d: L ? "목적지·요청사항을 한국어로 편하게. 오해 없는 이동." : "Explain destinations and requests in Korean — no misunderstandings." },
               { icon: "shield", t: L ? "검증된 신원과 안전" : "Vetted & safe", d: L ? "면허·보험·신원 확인을 마친 기사만 배정됩니다." : "Only drivers with verified license, insurance and identity." },
               { icon: "tag", t: L ? "투명한 사전 요금" : "Transparent fares", d: L ? "현지 택시 바가지 걱정 없이 예약 시 금액 확정." : "No taxi surprises — the price is fixed when you book." },
             ].map((x) => (
-              <div key={x.t} className="card lift p-7">
-                <div className="h-12 w-12 rounded-full bg-[var(--color-navy)] text-[var(--color-gold)] flex items-center justify-center">
-                  <Icon name={x.icon} size={22} />
-                </div>
-                <h3 className="mt-4 font-semibold text-lg">{x.t}</h3>
+              <div key={x.t} className="border-t border-[var(--color-line)] pt-6">
+                <Icon name={x.icon} size={24} className="text-[var(--color-gold-dark)]" />
+                <h3 className="mt-5 font-display text-xl">{x.t}</h3>
                 <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{x.d}</p>
               </div>
             ))}
@@ -276,7 +272,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd relative py-16 md:py-24 grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">{L ? "관리형 배차" : "Managed dispatch"}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-3 leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl mt-3 leading-tight">
               {L ? "길에서 잡는 택시가 아닙니다" : "Not a taxi you hail on the street"}
             </h2>
             <p className="mt-4 text-white/75 leading-relaxed max-w-lg">
@@ -311,7 +307,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd relative py-20 md:py-28">
           <div className="max-w-xl">
             <p className="eyebrow text-[var(--color-gold)]">{L ? "체르토 드라이브" : "The Certo standard"}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-3 leading-tight">
+            <h2 className="font-display text-3xl md:text-4xl mt-3 leading-tight">
               {L ? "낯선 도시에서도, 한국어로 통하는 품격 있는 이동" : "Effortless, dignified travel — in your own language"}
             </h2>
             <p className="mt-4 text-white/75 leading-relaxed">
@@ -325,15 +321,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       {/* How it works */}
       <section className="section">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{t("how.title")}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "예약부터 도착까지" : "Booking to arrival"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "예약부터 도착까지" : "Booking to arrival"}</h2>
           </div>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
             {steps.map((s) => (
-              <div key={s.n} className="relative">
-                <div className="font-display text-5xl font-bold text-[var(--color-gold)]/90">{s.n}</div>
-                <h3 className="mt-3 font-semibold text-lg">{s.title}</h3>
+              <div key={s.n} className="relative border-t border-[var(--color-line)] pt-6">
+                <div className="font-display text-4xl text-[var(--color-gold-dark)]/70">{s.n}</div>
+                <h3 className="mt-4 font-display text-xl">{s.title}</h3>
                 <p className="mt-2 text-sm text-[var(--color-slate)] leading-relaxed">{s.desc}</p>
               </div>
             ))}
@@ -344,11 +340,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       {/* Fleet */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd">
-          <div className="text-center max-w-2xl mx-auto">
+          <div className="max-w-xl">
             <p className="eyebrow">{t("fleet.title")}</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "여행 목적에 맞는 차량" : "The right vehicle for every journey"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "여행 목적에 맞는 차량" : "The right vehicle for every journey"}</h2>
           </div>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {VEHICLE_CATEGORIES.map((v) => {
               const m = VEHICLE_META[v];
               return (
@@ -377,7 +373,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div>
               <p className="eyebrow">{t("nav.cities")}</p>
-              <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "전 세계 주요 도시" : "Major cities worldwide"}</h2>
+              <h2 className="font-display text-4xl md:text-5xl mt-2 leading-[1.1]">{L ? "전 세계 주요 도시" : "Major cities worldwide"}</h2>
             </div>
             <Link href="/destinations" className="btn btn-outline text-sm">{L ? "전체 보기" : "View all"}</Link>
           </div>
@@ -408,7 +404,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <div className="flex items-end justify-between flex-wrap gap-4">
               <div>
                 <p className="eyebrow">{L ? "검증된 기사" : "Verified drivers"}</p>
-                <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "믿을 수 있는 한인 기사 네트워크" : "A trusted Korean-driver network"}</h2>
+                <h2 className="font-display text-4xl md:text-5xl mt-2 leading-[1.1]">{L ? "믿을 수 있는 한인 기사 네트워크" : "A trusted Korean-driver network"}</h2>
               </div>
               <Link href="/partners" className="btn btn-outline text-sm">{L ? "기사로 합류하기" : "Become a driver"}</Link>
             </div>
@@ -461,11 +457,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       {/* FAQ */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd max-w-3xl">
-          <div className="text-center">
+          <div>
             <p className="eyebrow">FAQ</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold mt-2">{L ? "예약 전에 궁금한 점" : "Before you book"}</h2>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "예약 전에 궁금한 점" : "Before you book"}</h2>
           </div>
-          <div className="mt-10 divide-y divide-[var(--color-line)] card px-6">
+          <div className="mt-12 divide-y divide-[var(--color-line)] card px-6">
             {(L
               ? [
                   { q: "요금은 어떻게 결정되나요?", a: "등록된 노선은 예약 시 정찰제로 즉시 확정됩니다. 등록되지 않은 노선은 견적 요청 후 기사 공급가를 바탕으로 최종 금액을 안내드립니다. 어느 경우든 결제 전에 금액을 확인하실 수 있습니다." },
@@ -498,7 +494,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <section className="section pt-0">
         <div className="container-cd">
           <div className="hero-gradient rounded-3xl text-white p-10 md:p-16 text-center">
-            <h2 className="font-display text-3xl md:text-4xl font-bold">{t("cta.title")}</h2>
+            <h2 className="font-display text-4xl md:text-5xl">{t("cta.title")}</h2>
             <p className="mt-3 text-white/75">{t("cta.sub")}</p>
             <Link href="/#book" className="btn btn-gold mt-8 inline-flex">{t("nav.book")}</Link>
           </div>
