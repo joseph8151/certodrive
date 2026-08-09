@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
+import { isFlaggedMessage } from "@/lib/chatModeration";
 
 export const dynamic = "force-dynamic";
 
@@ -49,8 +50,9 @@ export async function POST(req: Request) {
   const r = await resolveSender(reference);
   if ("error" in r) return NextResponse.json({ error: r.error }, { status: r.code });
 
+  const flagged = isFlaggedMessage(body);
   const msg = await prisma.bookingMessage.create({
-    data: { bookingId: r.booking.id, sender: r.sender, senderName: r.senderName, body: body.trim() },
+    data: { bookingId: r.booking.id, sender: r.sender, senderName: r.senderName, body: body.trim(), flagged },
   });
-  return NextResponse.json({ ok: true, message: msg });
+  return NextResponse.json({ ok: true, message: msg, warning: flagged });
 }

@@ -304,6 +304,7 @@ model BookingMessage {
   sender     String   // CUSTOMER | DRIVER | ADMIN
   senderName String
   body       String
+  flagged    Boolean  @default(false) // off-platform / price-negotiation risk
   createdAt  DateTime @default(now())
 
   @@index([bookingId])
