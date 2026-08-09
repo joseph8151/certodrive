@@ -105,24 +105,24 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     <>
       <SiteHeader />
 
-      {/* Hero — cinematic */}
-      <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
-        {/* Slow-zoom photo layer (video-like motion) */}
+      {/* Hero — bright editorial */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: "var(--color-mist)" }}>
+        {/* Subtle photo texture under a light ivory scrim (keeps it bright). */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 hero-anim" style={photoBg(IMG.hero, "linear-gradient(100deg, rgba(28,25,20,0.92) 0%, rgba(30,27,22,0.72) 45%, rgba(30,27,22,0.42) 100%)")} />
+          <div className="absolute inset-0 hero-anim" style={photoBg(IMG.hero, "linear-gradient(100deg, rgba(244,240,232,0.97) 0%, rgba(244,240,232,0.9) 42%, rgba(244,240,232,0.62) 100%)")} />
         </div>
-        {/* Bottom fade for depth */}
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-navy)] to-transparent" />
+        {/* Bottom fade into the page background */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[var(--color-mist)] to-transparent" />
 
         <div className="container-cd relative py-16 md:py-28 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="eyebrow text-[var(--color-gold)] reveal">{L ? "해외 한인 기사 · 프라이빗 드라이브" : "Korean chauffeurs abroad · private drive"}</p>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-[1.1] font-semibold mt-6 whitespace-pre-line reveal">
+            <p className="eyebrow reveal">{L ? "해외 한인 기사 · 프라이빗 드라이브" : "Korean chauffeurs abroad · private drive"}</p>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.05] mt-6 whitespace-pre-line reveal text-[var(--color-ink)]">
               {t("hero.title")}
             </h1>
-            <div className="mt-7 h-px w-16 bg-[var(--color-gold)]/70 reveal-2" />
-            <p className="mt-7 text-white/80 text-base md:text-lg max-w-md leading-relaxed reveal-2">{t("hero.subtitle")}</p>
-            <p className="mt-8 text-sm text-white/55 tracking-wide reveal-3">
+            <div className="mt-7 h-px w-16 bg-[var(--color-gold)] reveal-2" />
+            <p className="mt-7 text-[var(--color-slate)] text-base md:text-lg max-w-md leading-relaxed reveal-2">{t("hero.subtitle")}</p>
+            <p className="mt-8 text-sm text-[var(--color-slate)] tracking-wide reveal-3">
               {L ? "40여 개 도시 · 검증된 한인 기사 · 24시간 한국어 지원" : "40+ cities · verified Korean drivers · 24/7 support"}
             </p>
           </div>
@@ -132,7 +132,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
 
         {/* Scroll cue */}
-        <div className="relative z-10 hidden md:flex justify-center pb-6 text-white/50">
+        <div className="relative z-10 hidden md:flex justify-center pb-6 text-[var(--color-slate)]/60">
           <span className="bob"><Icon name="arrival" size={22} /></span>
         </div>
       </section>

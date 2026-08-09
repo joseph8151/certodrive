@@ -43,7 +43,7 @@ export default async function SiteFooter() {
   return (
     <footer className="mt-24 text-white" style={{ backgroundColor: "var(--color-navy)" }}>
       {/* Main */}
-      <div className="container-cd pt-28 md:pt-40 pb-20 md:pb-28 grid gap-x-14 gap-y-14 md:grid-cols-12 items-start">
+      <div className="container-cd pt-32 md:pt-48 pb-20 md:pb-28 grid gap-x-14 gap-y-14 md:grid-cols-12 items-start">
         {/* Brand + contact */}
         <div className="md:col-span-4">
           <div className="font-display text-2xl">
