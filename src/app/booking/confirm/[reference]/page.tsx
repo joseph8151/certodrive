@@ -5,6 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import BookingSummary from "@/components/BookingSummary";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import PayButton from "@/components/PayButton";
+import BookingChat from "@/components/BookingChat";
 import ReviewForm from "@/components/ReviewForm";
 import ChangeRequestForm from "@/components/ChangeRequestForm";
 import StatusPill from "@/components/StatusPill";
@@ -128,6 +129,10 @@ export default async function ConfirmPage({ params }: { params: Promise<{ refere
                     {locale === "ko" ? "예약 조회" : "Manage booking"}
                   </Link>
                 </div>
+              )}
+
+              {booking.assignedDriverId && !["CANCELLED", "REFUNDED", "NO_SHOW"].includes(booking.status) && (
+                <BookingChat reference={booking.reference} me="CUSTOMER" locale={locale} />
               )}
 
               {!["COMPLETED", "CANCELLED", "REFUNDED", "NO_SHOW"].includes(booking.status) && (

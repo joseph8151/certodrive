@@ -275,6 +275,7 @@ model Booking {
   statusEvents  BookingStatusEvent[]
   review        Review?
   changeRequests BookingChangeRequest[]
+  messages      BookingMessage[]
 
   @@index([status])
   @@index([pickupCountry, pickupCity])
@@ -291,6 +292,19 @@ model BookingStatusEvent {
   note      String?
   actor     String? // system | admin:<id> | driver:<id> | customer
   createdAt DateTime @default(now())
+
+  @@index([bookingId])
+}
+
+// Direct chat between the customer and the assigned driver on a booking.
+model BookingMessage {
+  id         String   @id @default(cuid())
+  bookingId  String
+  booking    Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  sender     String   // CUSTOMER | DRIVER | ADMIN
+  senderName String
+  body       String
+  createdAt  DateTime @default(now())
 
   @@index([bookingId])
 }

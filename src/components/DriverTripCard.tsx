@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Locale } from "@/lib/i18n";
 import StatusPill from "./StatusPill";
+import BookingChat from "./BookingChat";
 
 type Booking = {
   id: string;
@@ -25,6 +26,7 @@ export default function DriverTripCard({ booking, locale }: { booking: Booking; 
   const router = useRouter();
   const L = locale === "ko";
   const [loading, setLoading] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   async function action(action: string, evidenceUrl?: string) {
     setLoading(true);
@@ -88,7 +90,16 @@ export default function DriverTripCard({ booking, locale }: { booking: Booking; 
             <button className="btn btn-ghost text-xs px-2" disabled={loading} onClick={() => reportNoShow(null)}>{L ? "증빙 없이 노쇼" : "No-show only"}</button>
           </div>
         )}
+        <button className="btn btn-outline" onClick={() => setShowChat((v) => !v)}>
+          {showChat ? (L ? "대화 닫기" : "Hide chat") : (L ? "고객과 대화" : "Message customer")}
+        </button>
       </div>
+
+      {showChat && (
+        <div className="mt-4">
+          <BookingChat reference={booking.reference} me="DRIVER" locale={locale} />
+        </div>
+      )}
     </div>
   );
 }
