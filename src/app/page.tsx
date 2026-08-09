@@ -310,10 +310,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <h2 className="font-display text-3xl md:text-4xl mt-3 leading-tight">
               {L ? "낯선 도시에서도, 한국어로 통하는 품격 있는 이동" : "Effortless, dignified travel — in your own language"}
             </h2>
-            <p className="mt-4 text-white/75 leading-relaxed">
+            <p className="mt-5 text-white/75 leading-relaxed">
               {L ? "검증된 한인·한국어 가능 기사가 공항에서 맞이하고, 문제가 생기면 체르토 드라이브가 중간에서 직접 대응합니다. 가족여행부터 기업 의전까지." : "A verified Korean-speaking chauffeur meets you at the airport, and if anything goes wrong, Certo Drive steps in directly — from family trips to executive protocol."}
             </p>
-            <Link href="/#book" className="btn btn-gold mt-7 inline-flex">{t("nav.book")}</Link>
+            <Link href="/#book" className="btn btn-gold mt-10 inline-flex">{t("nav.book")}</Link>
           </div>
         </div>
       </section>

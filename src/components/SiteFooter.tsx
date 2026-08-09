@@ -62,11 +62,11 @@ export default async function SiteFooter() {
         </div>
 
         {/* Link columns */}
-        <div className="md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10">
+        <div className="md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12">
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.2em] mb-6">{c.title}</h4>
-              <ul className="space-y-4 text-sm">
+              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.2em] mb-7">{c.title}</h4>
+              <ul className="space-y-6 text-sm">
                 {c.links.map((l) => (
                   <li key={l.href}>
                     <Link href={l.href} className="text-white/70 hover:text-[var(--color-gold)] transition-colors">{l.label}</Link>
