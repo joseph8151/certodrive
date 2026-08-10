@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { getLocale } from "@/lib/locale";
+import { prisma } from "@/lib/db";
 import LogoutButton from "@/components/LogoutButton";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -10,6 +11,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (session.role !== "ADMIN") redirect("/");
   const locale = await getLocale();
   const L = locale === "ko";
+
+  const flaggedCount = await prisma.bookingMessage.count({ where: { flagged: true } });
 
   const nav = [
     { href: "/admin", label: L ? "대시보드" : "Dashboard" },
@@ -20,10 +23,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin/rates", label: L ? "환율" : "Rates" },
     { href: "/admin/drivers", label: L ? "기사" : "Drivers" },
     { href: "/admin/settlements", label: L ? "정산" : "Settlements" },
+    { href: "/admin/messages", label: L ? "대화" : "Chats", badge: flaggedCount || undefined },
     { href: "/admin/cms", label: L ? "CMS" : "CMS" },
     { href: "/admin/inbox", label: L ? "문의함" : "Inbox" },
     { href: "/admin/guide", label: L ? "운영 가이드" : "Guide" },
-  ];
+  ] as { href: string; label: string; badge?: number }[];
 
   return (
     <div className="min-h-screen bg-[var(--color-mist)]">
@@ -33,7 +37,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <Link href="/admin" className="font-display text-lg font-bold">Certo<span className="text-[var(--color-gold)]"> Drive</span> <span className="text-white/40 text-sm font-sans">Admin</span></Link>
             <nav className="hidden md:flex items-center gap-1 text-sm">
               {nav.map((n) => (
-                <Link key={n.href} href={n.href} className="px-3 py-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/10">{n.label}</Link>
+                <Link key={n.href} href={n.href} className="px-3 py-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/10 relative">
+                  {n.label}
+                  {n.badge ? <span className="ml-1 inline-flex items-center justify-center min-w-[16px] h-[16px] px-1 rounded-full bg-[#c0392b] text-white text-[10px] font-bold align-middle">{n.badge}</span> : null}
+                </Link>
               ))}
             </nav>
           </div>

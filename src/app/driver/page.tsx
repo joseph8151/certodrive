@@ -30,6 +30,7 @@ export default async function DriverDashboard() {
     prisma.booking.findMany({
       where: { assignedDriverId: profile.id, status: { in: ["DRIVER_ASSIGNED", "DRIVER_CONFIRMED", "IN_PROGRESS"] } },
       orderBy: { serviceDate: "asc" },
+      include: { _count: { select: { messages: true } } },
     }),
     prisma.booking.findMany({
       where: { assignedDriverId: profile.id, status: { in: ["COMPLETED", "NO_SHOW"] } },
@@ -120,7 +121,7 @@ export default async function DriverDashboard() {
         ) : (
           <div className="grid gap-3">
             {upcoming.map((b) => (
-              <DriverTripCard key={b.id} booking={b} locale={locale} />
+              <DriverTripCard key={b.id} booking={b} locale={locale} messageCount={b._count.messages} />
             ))}
           </div>
         )}
