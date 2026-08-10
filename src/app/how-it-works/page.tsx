@@ -186,6 +186,42 @@ export default async function HowItWorks() {
         </div>
       </section>
 
+      {/* Customer protection */}
+      <section className="section">
+        <div className="container-cd">
+          <div className="max-w-xl">
+            <p className="eyebrow">{L ? "고객 보호" : "Your protection"}</p>
+            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "안심하고 맡기세요" : "Travel with peace of mind"}</h2>
+          </div>
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
+            {(L
+              ? [
+                  { icon: "shield", t: "검증된 기사만", d: "운전면허·보험·신원, 그리고 국내는 운송면허까지 확인된 기사만 배정됩니다. 자가용 무면허 운행은 원천 차단합니다." },
+                  { icon: "tag", t: "정찰제 · 선결제", d: "예약 시 요금이 확정되고 안전하게 선결제됩니다. 현장 흥정이나 숨은 비용이 없어요." },
+                  { icon: "chat", t: "24시간 한국어 지원", d: "예약 전 문의부터 이동 중 문제까지, 언제든 한국어로 도와드립니다. 문제가 생기면 체르토가 직접 대응합니다." },
+                  { icon: "plane", t: "항공편 지연 보호", d: "입국 항공편을 자동 확인해 기사님이 대기합니다. 지연으로 인한 추가 요금이 없습니다." },
+                  { icon: "badge", t: "바우처 · 기록", d: "예약·기사·차량 정보가 바우처와 기록으로 남아, 분쟁 시 근거가 됩니다." },
+                  { icon: "route", t: "안전한 앱 내 소통", d: "기사와의 대화는 앱 안에서. 외부 결제·직거래 시도는 자동 감지되어 보호받지 못합니다." },
+                ]
+              : [
+                  { icon: "shield", t: "Verified drivers only", d: "License, insurance, identity — and a transport licence in Korea. No unlicensed private-car driving." },
+                  { icon: "tag", t: "Fixed, prepaid fares", d: "The price is locked at booking and prepaid securely — no haggling, no hidden costs." },
+                  { icon: "chat", t: "24/7 Korean support", d: "From pre-booking to mid-trip issues, we help in Korean and step in directly if needed." },
+                  { icon: "plane", t: "Flight-delay protection", d: "We track your flight so the driver waits — no extra charge for delays." },
+                  { icon: "badge", t: "Vouchers & records", d: "Booking, driver and vehicle details are kept on record for any dispute." },
+                  { icon: "route", t: "Safe in-app messaging", d: "Chat stays in the app; off-platform payment attempts are detected and unprotected." },
+                ]
+            ).map((x) => (
+              <div key={x.t} className="border-t border-[var(--color-line)] pt-6">
+                <Icon name={x.icon} size={24} className="text-[var(--color-gold-dark)]" />
+                <h3 className="mt-5 font-display text-xl">{x.t}</h3>
+                <p className="mt-2.5 text-[15px] text-[var(--color-slate)] leading-relaxed">{x.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="section bg-[var(--color-mist)]">
         <div className="container-cd max-w-3xl">
