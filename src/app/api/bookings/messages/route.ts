@@ -50,6 +50,11 @@ export async function POST(req: Request) {
   const r = await resolveSender(reference);
   if ("error" in r) return NextResponse.json({ error: r.error }, { status: r.code });
 
+  // Chat opens only after payment + driver assignment.
+  if (!r.booking.assignedDriverId) {
+    return NextResponse.json({ error: "채팅은 결제 및 기사 배정 완료 후 이용할 수 있습니다." }, { status: 409 });
+  }
+
   const flagged = isFlaggedMessage(body);
   const msg = await prisma.bookingMessage.create({
     data: { bookingId: r.booking.id, sender: r.sender, senderName: r.senderName, body: body.trim(), flagged },
