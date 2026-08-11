@@ -49,7 +49,7 @@ export default async function SiteFooter() {
 
   return (
     <footer className="bg-[var(--color-graphite)] text-white">
-      <div className="container-cd pt-20 md:pt-28 pb-16 md:pb-20 grid gap-x-12 gap-y-14 md:grid-cols-12">
+      <div className="container-cd pt-24 md:pt-36 pb-16 md:pb-20 grid gap-x-12 gap-y-14 md:grid-cols-12">
         {/* Brand */}
         <div className="md:col-span-4">
           <div className="font-display text-2xl font-extrabold tracking-tight">

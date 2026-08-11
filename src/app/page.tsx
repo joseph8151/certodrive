@@ -112,31 +112,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* ═══ Live city ticker ═══ */}
-      <div className="border-b border-[var(--color-line)] bg-[var(--color-bg)]">
-        <div className="container-cd py-3.5 flex items-center gap-4">
-          <span className="hidden sm:inline text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-slate)] shrink-0">
-            {L ? "운행 도시" : "Live in"}
-          </span>
-          <div className="marquee-mask flex-1 overflow-hidden">
-            <div className="flex w-max marquee-track">
-              {[0, 1].map((dup) => (
-                <div key={dup} className="flex items-center gap-6 pr-6 text-sm text-[var(--color-slate)] whitespace-nowrap" aria-hidden={dup === 1}>
-                  {(L
-                    ? ["서울", "인천공항", "도쿄", "오사카", "파리", "런던", "뉴욕", "로스앤젤레스", "로마", "바르셀로나", "방콕", "싱가포르"]
-                    : ["Seoul", "Incheon", "Tokyo", "Osaka", "Paris", "London", "New York", "Los Angeles", "Rome", "Barcelona", "Bangkok", "Singapore"]
-                  ).map((c) => (
-                    <span key={c} className="flex items-center gap-6">
-                      <span>{c}</span><span className="text-[var(--color-line-strong)]">/</span>
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* ═══ WHAT IS CERTO — the core clarification (managed, not a marketplace) ═══ */}
       <section className="section">
         <div className="container-cd grid lg:grid-cols-[0.9fr_1.1fr] gap-14 lg:gap-20 items-start">
