@@ -49,8 +49,32 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
     take: 3,
   });
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        serviceType: L ? `${name} 공항 픽업 · 한인 택시` : `${name} airport pickup & Korean taxi`,
+        provider: { "@type": "Organization", name: "Certo Drive" },
+        areaServed: { "@type": "City", name },
+        description: L
+          ? `${name}에서 검증된 한국어 가능 기사와 함께하는 공항 픽업·시내 이동·하루 종일 전세.`
+          : `Verified Korean-speaking drivers in ${name} for airport pickup, city transfers and full-day hire.`,
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SiteHeader />
       <section className="relative text-white overflow-hidden" style={{ backgroundColor: "var(--color-navy)" }}>
         <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(30,27,22,0.93) 0%, rgba(41,37,30,0.78) 45%, rgba(41,37,30,0.5) 100%), url(${cityImage(name)})`, backgroundSize: "cover", backgroundPosition: "center" }} />

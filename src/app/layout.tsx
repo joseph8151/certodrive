@@ -34,6 +34,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Certo Drive",
+              url: process.env.NEXT_PUBLIC_BASE_URL ?? "https://certodrive.com",
+              email: "support@certodrive.com",
+              description:
+                "Managed airport pickup, Korean taxi, intercity and VIP chauffeur service with verified Korean-speaking drivers worldwide.",
+              areaServed: "Worldwide",
+              knowsLanguage: ["ko", "en"],
+            }),
+          }}
+        />
       </head>
       <body>{children}</body>
     </html>
