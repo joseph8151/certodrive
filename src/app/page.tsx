@@ -54,11 +54,17 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   // ── Priced routes (edit here until wired to live pricing) ──────────────────
   const routes = [
     { code: "ICN", city: L ? "서울" : "Seoul", to: L ? "강남 · 서울 시내" : "Gangnam · Seoul", from: "₩90,000", slug: L ? "서울" : "Seoul" },
-    { code: "NRT", city: L ? "도쿄" : "Tokyo", to: L ? "도쿄 시내" : "Central Tokyo", from: "¥25,000", slug: L ? "도쿄" : "Tokyo" },
+    { code: "GMP", city: L ? "서울" : "Seoul", to: L ? "서울 시내" : "Central Seoul", from: "₩75,000", slug: L ? "서울" : "Seoul" },
+    { code: "NRT", city: L ? "도쿄" : "Tokyo", to: L ? "도쿄 시내" : "Central Tokyo", from: "¥26,000", slug: L ? "도쿄" : "Tokyo" },
+    { code: "HND", city: L ? "도쿄" : "Tokyo", to: L ? "시부야 · 도쿄" : "Shibuya · Tokyo", from: "¥21,000", slug: L ? "도쿄" : "Tokyo" },
     { code: "CDG", city: L ? "파리" : "Paris", to: L ? "파리 시내" : "Central Paris", from: "€95", slug: L ? "파리" : "Paris" },
+    { code: "ORY", city: L ? "파리" : "Paris", to: L ? "파리 시내" : "Central Paris", from: "€88", slug: L ? "파리" : "Paris" },
     { code: "LHR", city: L ? "런던" : "London", to: L ? "런던 시내" : "Central London", from: "£110", slug: L ? "런던" : "London" },
-    { code: "JFK", city: L ? "뉴욕" : "New York", to: L ? "맨해튼" : "Manhattan", from: "$145", slug: L ? "뉴욕" : "New York" },
+    { code: "LGW", city: L ? "런던" : "London", to: L ? "런던 시내" : "Central London", from: "£104", slug: L ? "런던" : "London" },
+    { code: "JFK", city: L ? "뉴욕" : "New York", to: L ? "맨해튼" : "Manhattan", from: "$149", slug: L ? "뉴욕" : "New York" },
+    { code: "EWR", city: L ? "뉴욕" : "New York", to: L ? "맨해튼" : "Manhattan", from: "$149", slug: L ? "뉴욕" : "New York" },
     { code: "FCO", city: L ? "로마" : "Rome", to: L ? "로마 시내" : "Central Rome", from: "€90", slug: L ? "로마" : "Rome" },
+    { code: "BCN", city: L ? "바르셀로나" : "Barcelona", to: L ? "바르셀로나 시내" : "Central Barcelona", from: "€78", slug: L ? "바르셀로나" : "Barcelona" },
   ];
 
   const cities = [

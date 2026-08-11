@@ -224,14 +224,70 @@ export async function resolvePromotion(code: string | null | undefined) {
   return promo;
 }
 
-// Look up a registered route price for the instant-quote path.
+// ---------------------------------------------------------------------------
+// Airport base-fare fallback
+//
+// When no admin-registered PriceRule matches, an airport pickup can still be
+// priced instantly from a built-in table keyed by IATA code. The code is
+// language-neutral, so this works identically for Korean and English bookings
+// and needs no database seeding. Admin PriceRules always take precedence.
+//
+// Values are the driver supply price for a Business Sedan, airport → central
+// city, in the airport's local currency. Other vehicle classes scale from it.
+// ---------------------------------------------------------------------------
+const BASE_AIRPORT_FARES: Record<string, { currency: string; base: number }> = {
+  // Korea
+  ICN: { currency: "KRW", base: 72000 }, GMP: { currency: "KRW", base: 58000 },
+  // Japan
+  NRT: { currency: "JPY", base: 21000 }, HND: { currency: "JPY", base: 16000 }, KIX: { currency: "JPY", base: 20000 },
+  // France
+  CDG: { currency: "EUR", base: 78 }, ORY: { currency: "EUR", base: 70 },
+  // UK
+  LHR: { currency: "GBP", base: 92 }, LGW: { currency: "GBP", base: 86 },
+  // USA
+  JFK: { currency: "USD", base: 120 }, EWR: { currency: "USD", base: 120 }, LGA: { currency: "USD", base: 115 },
+  LAX: { currency: "USD", base: 110 }, SFO: { currency: "USD", base: 115 },
+  // Italy / Spain
+  FCO: { currency: "EUR", base: 74 }, BCN: { currency: "EUR", base: 62 },
+  // Singapore
+  SIN: { currency: "SGD", base: 70 },
+};
+
+const CLASS_MULTIPLIER: Record<string, number> = {
+  "Economy Sedan": 0.82,
+  "Business Sedan": 1.0,
+  "Premium Sedan": 1.4,
+  "Standard Van": 1.28,
+  "Premium Van": 1.65,
+  Minibus: 2.3,
+  "VIP Chauffeur": 2.6,
+};
+
+function syntheticAirportRule(params: {
+  pickupLocation: string;
+  vehicleCategory: string;
+}): { driverSupplyPrice: number; currency: string } | null {
+  const multiplier = CLASS_MULTIPLIER[params.vehicleCategory];
+  if (!multiplier) return null; // e.g. Hourly Hire — priced separately
+  // Pull the leading 3-letter IATA code from the pickup label ("ICN 인천공항").
+  const code = params.pickupLocation.toUpperCase().match(/\b([A-Z]{3})\b/)?.[1];
+  if (!code) return null;
+  const fare = BASE_AIRPORT_FARES[code];
+  if (!fare) return null;
+  const zeroDecimal = ["KRW", "JPY"].includes(fare.currency);
+  const supply = fare.base * multiplier;
+  return { driverSupplyPrice: zeroDecimal ? Math.round(supply) : Math.round(supply * 100) / 100, currency: fare.currency };
+}
+
+// Look up a registered route price for the instant-quote path. Falls back to
+// the built-in airport base fare when no admin PriceRule matches.
 export async function findRoutePrice(params: {
   country: string;
   city: string;
   pickupLocation: string;
   destination: string;
   vehicleCategory: string;
-}) {
+}): Promise<{ driverSupplyPrice: number; currency: string } | null> {
   const rules = await prisma.priceRule.findMany({
     where: {
       country: params.country,
@@ -248,5 +304,5 @@ export async function findRoutePrice(params: {
     (r) => norm(r.pickupLocation) === norm(params.pickupLocation) && norm(r.destination) === norm(params.destination),
   );
   const pickupOnly = rules.find((r) => norm(r.pickupLocation) === norm(params.pickupLocation));
-  return exact ?? pickupOnly ?? null;
+  return exact ?? pickupOnly ?? syntheticAirportRule(params);
 }
