@@ -2,9 +2,7 @@ import Link from "next/link";
 import { getLocale } from "@/lib/locale";
 import { makeT } from "@/lib/i18n";
 import { BUSINESS } from "@/lib/business";
-import { IMG } from "@/lib/images";
 import FloatingContact from "./FloatingContact";
-import Icon from "./Icon";
 
 export default async function SiteFooter() {
   const locale = await getLocale();
@@ -13,25 +11,34 @@ export default async function SiteFooter() {
 
   const cols = [
     {
-      title: t("footer.company"),
+      title: L ? "서비스" : "Services",
       links: [
-        { href: "/how-it-works", label: t("nav.help") },
-        { href: "/reviews", label: L ? "고객 후기" : "Reviews" },
-        { href: "/destinations", label: t("nav.cities") },
+        { href: "/booking/airport-pickup", label: t("nav.pickup") },
+        { href: "/booking/intercity", label: t("nav.intercity") },
+        { href: "/booking/hourly", label: t("nav.hourly") },
         { href: "/vip", label: t("nav.vip") },
-        { href: "/support", label: t("footer.support") },
       ],
     },
     {
-      title: t("footer.partners"),
+      title: L ? "도시" : "Cities",
+      links: [
+        { href: "/destinations", label: t("nav.cities") },
+        { href: "/how-it-works", label: t("nav.help") },
+        { href: "/reviews", label: L ? "후기" : "Reviews" },
+        { href: "/lookup", label: t("nav.lookup") },
+      ],
+    },
+    {
+      title: L ? "기사 · 비즈니스" : "Drivers & business",
       links: [
         { href: "/partners", label: t("nav.driver") },
         { href: "/corporate", label: t("footer.corporate") },
         { href: "/login", label: t("nav.login") },
+        { href: "/support", label: t("footer.support") },
       ],
     },
     {
-      title: t("footer.legal"),
+      title: L ? "약관" : "Legal",
       links: [
         { href: "/terms", label: t("footer.terms") },
         { href: "/cancellation", label: t("footer.cancel") },
@@ -41,61 +48,44 @@ export default async function SiteFooter() {
   ];
 
   return (
-    <footer className="mt-24 text-white" style={{ backgroundColor: "var(--color-navy)" }}>
-      {/* Main */}
-      <div className="container-cd pt-32 md:pt-48 pb-20 md:pb-28 grid gap-x-14 gap-y-14 md:grid-cols-12 items-start">
-        {/* Brand + contact */}
+    <footer className="bg-[var(--color-graphite)] text-white">
+      <div className="container-cd pt-16 md:pt-20 pb-14 grid gap-x-12 gap-y-12 md:grid-cols-12">
+        {/* Brand */}
         <div className="md:col-span-4">
-          <div className="font-display text-2xl">
-            Certo<span className="text-[var(--color-gold)]"> Drive</span>
+          <div className="font-display text-2xl font-extrabold tracking-tight">
+            Certo<span className="text-white/50">Drive</span>
           </div>
-          <p className="mt-4 text-sm text-white/60 max-w-xs leading-relaxed">{t("brand.tagline")}</p>
-          <div className="mt-6 space-y-3 text-sm text-white/75">
-            <a href="mailto:support@certodrive.com" className="flex items-center gap-2.5 hover:text-white transition-colors">
-              <Icon name="chat" size={16} className="text-[var(--color-gold)]" /> support@certodrive.com
-            </a>
-            <div className="flex items-center gap-2.5">
-              <Icon name="clock" size={16} className="text-[var(--color-gold)]" /> {L ? "24시간 · 연중무휴 한국어 지원" : "24/7 Korean support"}
-            </div>
+          <p className="mt-4 text-sm text-white/55 max-w-xs leading-relaxed">
+            {L ? "전 세계 주요 도시의 한국어 가능 프리미엄 이동 — 예약부터 도착까지 관리형 서비스." : "Premium Korean-speaking rides in cities worldwide — managed from booking to arrival."}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <a href="mailto:support@certodrive.com" className="chip bg-transparent border-white/20 text-white/80 hover:border-white/50">support@certodrive.com</a>
+            <span className="chip bg-transparent border-white/20 text-white/80">{L ? "24시간 한국어 지원" : "24/7 Korean support"}</span>
           </div>
-          <Link href="/#book" className="btn btn-gold mt-7 inline-flex">{t("nav.book")}</Link>
         </div>
 
-        {/* Link columns */}
-        <div className="md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-12">
+        {/* Links */}
+        <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="text-white/45 font-semibold text-[11px] uppercase tracking-[0.2em] mb-7">{c.title}</h4>
-              <ul className="space-y-6 text-sm">
+              <h4 className="text-white/40 font-semibold text-[11px] uppercase tracking-[0.14em] mb-4">{c.title}</h4>
+              <ul className="space-y-3 text-sm">
                 {c.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-white/70 hover:text-[var(--color-gold)] transition-colors">{l.label}</Link>
+                    <Link href={l.href} className="text-white/65 hover:text-white transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-
-        {/* Image panel */}
-        <div className="md:col-span-3">
-          <div
-            className="relative rounded-2xl overflow-hidden aspect-[4/5] ring-1 ring-white/10"
-            style={{ backgroundColor: "var(--color-navy)", backgroundImage: `linear-gradient(180deg, rgba(30,27,22,0.15) 0%, rgba(30,27,22,0.8) 100%), url(${IMG.meet})`, backgroundSize: "cover", backgroundPosition: "center" }}
-          >
-            <div className="absolute inset-x-0 bottom-0 p-5">
-              <div className="font-display text-lg leading-snug">{L ? "품격 있는 이동의 기준" : "A higher standard of travel"}</div>
-              <div className="text-xs text-white/60 mt-1">{L ? "검증된 한인 기사와 함께" : "With a verified Korean chauffeur"}</div>
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Business info (legal disclosure) — compact */}
-      <div>
+      {/* Legal disclosure (Korea) */}
+      <div className="border-t border-white/10">
         <div className="container-cd py-6 text-[11px] leading-relaxed text-white/40">
           <div className="flex flex-wrap gap-x-4 gap-y-1">
-            <span className="text-white/50 font-medium">{L ? "사업자 정보" : "Business"}</span>
+            <span className="text-white/55 font-medium">{L ? "사업자 정보" : "Business"}</span>
             <span>{L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
             <span>{L ? "대표" : "Rep."} {BUSINESS.representative}</span>
             <span>{L ? "사업자등록번호" : "Reg."} {BUSINESS.registrationNo}</span>
@@ -110,17 +100,10 @@ export default async function SiteFooter() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div>
-        <div className="container-cd py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
+      <div className="border-t border-white/10">
+        <div className="container-cd py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Certo Drive. {t("footer.rights")}</span>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <Icon name="shield" size={14} className="text-[var(--color-gold)]" />
-              {L ? "안전한 카드 결제" : "Secure card payment"}
-            </span>
-            <span>Seoul · Worldwide</span>
-          </div>
+          <span>Seoul · Worldwide</span>
         </div>
       </div>
       <FloatingContact locale={locale} />

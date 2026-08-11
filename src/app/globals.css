@@ -1,36 +1,51 @@
 @import "tailwindcss";
-/* Pretendard (the modern Korean web standard) is loaded via <link> in layout.tsx. */
+/* Pretendard (Korean) + Inter/Manrope (Latin) are loaded via <link> in layout.tsx. */
 
-/* --------------------------------------------------------------------------
-   Certo Drive design system — "Midnight & Champagne"
-   American premium travel-luxury: deep midnight navy, champagne gold accent,
-   warm ivory backgrounds. Serif display headings + clean sans body,
-   generous whitespace.
---------------------------------------------------------------------------- */
+/* ==========================================================================
+   Certo Drive — Mobility Platform design system
+   Reference sensibility: Uber / Blacklane / Wheely / Linear / Stripe.
+   Monochrome base (near-black · graphite · warm off-white) with a single
+   restrained signal accent. Tight grotesk typography, small radii, minimal
+   shadow, editorial spacing. No serif, no champagne, no SaaS gradients.
+   ========================================================================== */
 
 @theme {
-  /* Muted luxury — warm greige/charcoal, ivory, a whisper of champagne gold.
-     No navy. Think Aman / The Row: quiet, expensive, tonal. */
-  --color-ink: #2a2620;          /* warm near-black text */
-  --color-navy: #35312b;         /* warm charcoal (primary dark) — replaces navy */
-  --color-navy-700: #4a453d;     /* mid warm gray */
-  --color-navy-500: #6f6a60;     /* soft taupe gray */
-  --color-slate: #7a7469;        /* warm gray body text */
-  --color-mist: #ece7dd;         /* warm ivory-gray light sections */
-  --color-line: #e2dccf;         /* warm hairline borders */
-  --color-gold: #b8944e;         /* champagne gold accent (used sparingly) */
-  --color-gold-dark: #8c6a2c;    /* deep champagne — readable on ivory */
-  /* Legacy tokens repointed to the charcoal so older components stay on-brand. */
-  --color-red: #35312b;
-  --color-red-dark: #26231d;
-  --color-charcoal: #35312b;
+  /* --- Core neutral scale --------------------------------------------- */
+  --color-ink: #111111;          /* primary text + primary (black) buttons */
+  --color-graphite: #1c1c1a;     /* dark sections */
+  --color-graphite-700: #2a2a27; /* raised surfaces on dark */
+  --color-slate: #6b6b64;        /* secondary / muted text */
+  --color-slate-400: #97968d;    /* tertiary text, placeholders */
+  --color-bg: #f6f6f3;           /* warm off-white page background */
+  --color-mist: #eeeee9;         /* light section fill */
+  --color-line: #e3e3dd;         /* hairline borders */
+  --color-line-strong: #cfcfc7;  /* stronger dividers */
 
-  /* Body: Pretendard (clean Korean gothic). Headings: editorial serif. */
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-    system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", Roboto, sans-serif;
-  --font-serif: "Cormorant Garamond", "Nanum Myeongjo", Georgia, "Apple SD Gothic Neo", "Nanum Myeongjo", serif;
+  /* --- Signal accent (used sparingly: CTA, focus, live state) ---------- */
+  --color-accent: #d8f24a;       /* signal lime */
+  --color-accent-strong: #c3e02f;
+  --color-accent-ink: #17190a;   /* text on accent */
 
-  --radius-xl: 0.9rem;
+  /* --- Legacy token repoints (keep older components on-brand) ---------- */
+  --color-navy: #111111;
+  --color-navy-700: #2a2a27;
+  --color-navy-500: #6b6b64;
+  --color-gold: #111111;         /* legacy "gold" accents → ink (mono) */
+  --color-gold-dark: #111111;
+  --color-red: #111111;
+  --color-red-dark: #000000;
+  --color-charcoal: #1c1c1a;
+
+  /* --- Type --------------------------------------------------------------
+     Latin: Inter (body/UI) + Manrope (display). Korean: Pretendard. */
+  --font-sans: "Inter", "Pretendard Variable", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic",
+    "맑은 고딕", "Noto Sans KR", Roboto, sans-serif;
+  --font-display: "Manrope", "Inter", "Pretendard Variable", Pretendard,
+    -apple-system, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-serif: var(--font-display); /* legacy alias */
+
+  --radius-xl: 14px;
 }
 
 * {
@@ -39,127 +54,112 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: #f4f0e8; /* warm ivory */
+  background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  /* `clip` prevents horizontal overflow WITHOUT creating a scroll container,
-     so the sticky header keeps working (plain `hidden` here breaks sticky). */
   overflow-x: clip;
+  letter-spacing: -0.006em;
 }
 
+/* Display headings — tight grotesk, the signature of the type system. */
 .font-display {
-  font-family: var(--font-serif);
-  letter-spacing: -0.005em; /* elegant serif — near-natural tracking */
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.03;
 }
 
-/* Utility: elevated premium card — resting shadow gives everything depth. */
+/* ---- Surfaces ------------------------------------------------------------ */
 .card {
   background: #fff;
   border: 1px solid var(--color-line);
   border-radius: var(--radius-xl);
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 14px -6px rgba(16, 24, 40, 0.10);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
-/* Cards inside marketing surfaces lift on hover for a tactile, Uber-like feel. */
+/* Subtle, single-direction elevation only where interaction implies it. */
 .lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(16, 24, 40, 0.05), 0 26px 48px -18px rgba(16, 24, 40, 0.28);
+  border-color: var(--color-line-strong);
+  transform: translateY(-2px);
 }
-
 .card-shadow {
-  box-shadow: 0 2px 6px rgba(10, 14, 23, 0.05), 0 20px 44px -16px rgba(10, 14, 23, 0.22);
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 12px 32px -12px rgba(17, 17, 17, 0.16);
 }
 
-/* Soft depth for hero/CTA glass panels. */
 .glass {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* Buttons */
+/* ---- Buttons ------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   font-weight: 600;
-  border-radius: 0.55rem;
-  padding: 0.85rem 1.6rem;
-  transition: all 0.18s ease;
+  font-size: 0.95rem;
+  border-radius: 9px;
+  padding: 0.72rem 1.3rem;
+  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
   cursor: pointer;
   white-space: nowrap;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
+/* Primary = black (Uber-style). */
 .btn-primary {
-  background: var(--color-navy);
+  background: var(--color-ink);
   color: #fff;
 }
-.btn-primary:hover {
-  background: var(--color-navy-700);
-  transform: translateY(-1px);
+.btn-primary:hover { background: #000; }
+/* Accent = signal lime — the conversion / statement CTA. Used sparingly. */
+.btn-gold,
+.btn-accent {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
 }
-/* Champagne-gold statement button (dark ink text reads elegant on gold). */
-.btn-gold {
-  background: var(--color-gold);
-  color: var(--color-ink);
-}
-.btn-gold:hover {
-  background: var(--color-gold-dark);
-  color: #fff;
-}
-/* Neutral charcoal secondary button. */
+.btn-gold:hover,
+.btn-accent:hover { background: var(--color-accent-strong); }
 .btn-dark {
-  background: var(--color-charcoal);
+  background: var(--color-graphite);
   color: #fff;
 }
-.btn-dark:hover {
-  background: var(--color-navy-700);
-}
+.btn-dark:hover { background: #000; }
 .btn-outline {
-  border: 1px solid var(--color-charcoal);
-  color: var(--color-charcoal);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
   background: transparent;
 }
-.btn-outline:hover {
-  background: var(--color-charcoal);
-  color: #fff;
-}
-.btn-ghost {
-  color: var(--color-ink);
-}
-.btn-ghost:hover {
-  background: var(--color-mist);
-}
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
+.btn-outline:hover { border-color: var(--color-ink); background: var(--color-ink); color: #fff; }
+.btn-ghost { color: var(--color-ink); }
+.btn-ghost:hover { background: var(--color-mist); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
-/* Form controls */
+/* ---- Form controls ------------------------------------------------------- */
 .field-label {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-slate);
-  margin-bottom: 0.35rem;
-  text-transform: none;
+  margin-bottom: 0.4rem;
 }
 .input,
 .select,
 .textarea {
   width: 100%;
-  border: 1px solid var(--color-line);
-  border-radius: 0.6rem;
-  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 9px;
+  padding: 0.72rem 0.85rem;
   background: #fff;
   color: var(--color-ink);
   font-size: 0.95rem;
@@ -169,15 +169,13 @@ body {
 .select:focus,
 .textarea:focus {
   outline: none;
-  border-color: var(--color-navy-500);
-  box-shadow: 0 0 0 3px rgba(36, 56, 110, 0.12);
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
 }
 .input::placeholder,
-.textarea::placeholder {
-  color: #aeb4bf;
-}
+.textarea::placeholder { color: var(--color-slate-400); }
 
-/* Status pills */
+/* ---- Pills / tags -------------------------------------------------------- */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -188,53 +186,68 @@ body {
   border-radius: 999px;
   white-space: nowrap;
 }
-.pill-amber { background: #fdf3e0; color: #9a6a12; }
-.pill-blue  { background: #e8eefc; color: #1e3a8a; }
-.pill-green { background: #e6f5ec; color: #16794a; }
-.pill-red   { background: #fdeaea; color: #a52626; }
-.pill-slate { background: #eef0f3; color: #47505e; }
+.pill-amber { background: #f6efdc; color: #7a5a12; }
+.pill-blue  { background: #e7ecf5; color: #29405f; }
+.pill-green { background: #e4f0e6; color: #1f6b3f; }
+.pill-red   { background: #f6e6e6; color: #8f2a2a; }
+.pill-slate { background: #ecece7; color: #4a4a44; }
 
-/* Section rhythm — generous whitespace reads premium. */
-.section {
-  padding: 7rem 0;
-}
-@media (max-width: 768px) {
-  .section { padding: 4.5rem 0; }
+/* Verified/data chip — square-ish, monochrome, "platform UI" flavor. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+  background: #fff;
 }
 
-/* Keep anchored sections clear of the sticky header. */
-html { scroll-padding-top: 5rem; }
+/* ---- Layout rhythm ------------------------------------------------------- */
+.section { padding: 6.5rem 0; }
+@media (max-width: 768px) { .section { padding: 4rem 0; } }
 
 .container-cd {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
 }
+@media (max-width: 640px) { .container-cd { padding: 0 1.15rem; } }
 
+/* Eyebrow — quiet mono label with a small accent tick. */
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-gold-dark);
+  color: var(--color-slate);
+}
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 2px;
+  background: var(--color-ink);
+  display: inline-block;
 }
 
-/* Admin/driver table */
-.tbl {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
+/* ---- Admin/driver table -------------------------------------------------- */
+.tbl { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .tbl th {
   text-align: left;
   font-weight: 600;
   color: var(--color-slate);
   padding: 0.7rem 0.85rem;
   border-bottom: 1px solid var(--color-line);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 .tbl td {
   padding: 0.75rem 0.85rem;
@@ -243,53 +256,37 @@ html { scroll-padding-top: 5rem; }
 }
 .tbl tr:hover td { background: var(--color-mist); }
 
-/* Cinematic hero motion — slow Ken Burns zoom + pan reads like ambient video.
-   Runs regardless of the OS reduce-motion setting (it's a gentle, decorative
-   background pan, not flashing motion). */
-@keyframes heroZoom {
-  0%   { transform: scale(1.05) translate3d(0, 0, 0); }
-  100% { transform: scale(1.22) translate3d(-2.5%, -1.5%, 0); }
-}
-.hero-anim {
-  animation: heroZoom 18s ease-in-out infinite alternate;
-  will-change: transform;
-  transform-origin: center;
-}
+/* ---- Motion (restrained) ------------------------------------------------- */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
-.reveal { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.reveal-2 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both; }
-.reveal-3 { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both; }
-/* Continuous marquee — "live" scrolling city/trust ticker. */
+.reveal { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.reveal-2 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+.reveal-3 { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.marquee-track { animation: marquee 32s linear infinite; }
-.marquee-mask { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { animation: marquee 40s linear infinite; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
 
-/* Live pulse dot. */
-@keyframes livePulse { 0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.55); } 70% { box-shadow: 0 0 0 8px rgba(46,204,113,0); } 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); } }
-.live-dot { animation: livePulse 2s ease-out infinite; }
+/* Live pulse dot (accent). */
+@keyframes livePulse {
+  0% { box-shadow: 0 0 0 0 rgba(216, 242, 74, 0.6); }
+  70% { box-shadow: 0 0 0 7px rgba(216, 242, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(216, 242, 74, 0); }
+}
+.live-dot { animation: livePulse 2.2s ease-out infinite; }
 
-/* Animated route line — mobility-platform motif. */
+/* Animated route line — the mobility motif. */
 @keyframes dashFlow { to { stroke-dashoffset: -220; } }
-.route-dash { stroke-dasharray: 5 9; animation: dashFlow 5s linear infinite; }
-@keyframes pulseDot { 0%, 100% { r: 5; opacity: 1; } 50% { r: 8; opacity: 0.55; } }
-.pulse-dot { animation: pulseDot 2.4s ease-in-out infinite; }
+.route-dash { stroke-dasharray: 4 8; animation: dashFlow 6s linear infinite; }
 
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(7px); }
-}
-.bob { animation: bob 2s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .reveal-2, .reveal-3, .bob { animation: none; }
+  .reveal, .reveal-2, .reveal-3, .marquee-track, .route-dash { animation: none; }
 }
 
-.hero-gradient {
-  background:
-    linear-gradient(180deg, rgba(53, 49, 43, 0.5) 0%, rgba(31, 28, 23, 0.88) 100%),
-    radial-gradient(1200px 620px at 76% -25%, #55504594 0%, #4a453d 40%, #35312b 66%, #26231d 100%);
-}
-/* Subtle champagne hairline under dark hero sections for a couture edge. */
-.hero-gradient::after { content: none; }
+/* Legacy hero-gradient alias → flat graphite (no SaaS gradient). */
+.hero-gradient { background: var(--color-graphite); }

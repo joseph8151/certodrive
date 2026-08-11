@@ -15,12 +15,12 @@ export const dict = {
   "nav.help": { ko: "이용안내", en: "How it works" },
   "nav.lookup": { ko: "예약 조회", en: "Manage booking" },
   "nav.driver": { ko: "기사 파트너", en: "Drive with us" },
-  "nav.login": { ko: "로그인", en: "Sign in" },
-  "nav.book": { ko: "예약하기", en: "Book now" },
+  "nav.login": { ko: "로그인", en: "Log in" },
+  "nav.book": { ko: "요금 확인", en: "Get a quote" },
 
   // Hero
-  "hero.title": { ko: "당신의 도시,\n당신의 기사.", en: "Your city.\nYour chauffeur." },
-  "hero.subtitle": { ko: "해외여행·출장 중 한국어가 통하는 검증된 한인 기사를 예약하세요. 공항 픽업·샌딩은 물론, 도시 간 이동과 하루 종일 기사·차량 전세까지. 정찰제 요금, 출발 전 기사 확정, 24시간 한국어 지원.", en: "Book a verified Korean-speaking chauffeur while you travel abroad. Airport pickup & drop-off, intercity rides, and full-day driver + vehicle hire. Fixed pricing, driver confirmed before departure, 24/7 Korean support." },
+  "hero.title": { ko: "해외 이동,\n도착 전에 확정하세요.", en: "Your ride,\nconfirmed before you land." },
+  "hero.subtitle": { ko: "검증된 한국어 가능 기사와 함께, 공항 픽업부터 도시 간 이동까지. 요금은 예약할 때 확정되고, 기사는 출발 전에 배정됩니다.", en: "Verified Korean-speaking drivers, from airport pickup to city transfers. Your price is fixed at booking and your driver is assigned before departure." },
 
   // Booking widget
   "book.title": { ko: "차량 예약", en: "Book your ride" },
