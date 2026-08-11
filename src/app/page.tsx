@@ -177,7 +177,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
       {/* ═══ MANAGED FLOW — BOOK → CERTO CHECK → … → SUPPORT ═══ */}
       <section className="bg-[var(--color-graphite)] text-white">
-        <div className="container-cd py-16 md:py-20">
+        <div className="container-cd py-20 md:py-28">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
               <span className="w-4 h-px bg-white/50" />{L ? "관리형 배차" : "Certo managed dispatch"}
@@ -195,10 +195,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               { n: "05", t: L ? "픽업" : "Pickup", d: L ? "공항·현장 미팅" : "Airport meet" },
               { n: "06", t: L ? "지원" : "Support", d: L ? "도착까지 관리" : "Managed to arrival" },
             ].map((s) => (
-              <div key={s.n} className="bg-[var(--color-graphite)] p-5">
+              <div key={s.n} className="bg-[var(--color-graphite)] p-6">
                 <div className="text-[var(--color-accent)] font-display text-sm">{s.n}</div>
-                <div className="mt-3 font-semibold">{s.t}</div>
-                <div className="mt-1 text-[13px] text-white/55 leading-snug">{s.d}</div>
+                <div className="mt-4 font-semibold">{s.t}</div>
+                <div className="mt-1.5 text-[13px] text-white/55 leading-snug">{s.d}</div>
               </div>
             ))}
           </div>
