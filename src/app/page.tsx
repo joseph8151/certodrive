@@ -23,8 +23,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   const hasPrefill = Object.keys(prefill).length > 0;
 
   // Real, verified drivers only — no sample data shown publicly.
+  // Only surface drivers with a real track record so seed/low-review profiles
+  // don't undermine trust. If none qualify, the section hides entirely.
   const driverRows = await prisma.driverProfile.findMany({
-    where: { approvalStatus: "APPROVED" },
+    where: { approvalStatus: "APPROVED", ratingCount: { gte: 3 } },
     orderBy: [{ rating: "desc" }, { ratingCount: "desc" }],
     take: 4,
     include: { vehicles: true },

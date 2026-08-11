@@ -42,11 +42,13 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
               {locale === "ko" ? "파트너 지원" : "Apply here"}
             </Link>
           </p>
-          <div className="mt-6 rounded-lg bg-[var(--color-mist)] p-4 text-xs text-[var(--color-slate)]">
-            <p className="font-semibold text-[var(--color-ink)] mb-1">{locale === "ko" ? "데모 계정" : "Demo accounts"}</p>
-            <p>Admin — admin@certodrive.com / password123</p>
-            <p>Driver — driver.seoul@certodrive.com / password123</p>
-          </div>
+          {process.env.NODE_ENV !== "production" && (
+            <div className="mt-6 rounded-lg bg-[var(--color-mist)] p-4 text-xs text-[var(--color-slate)]">
+              <p className="font-semibold text-[var(--color-ink)] mb-1">{locale === "ko" ? "데모 계정 (개발 전용)" : "Demo accounts (dev only)"}</p>
+              <p>Admin — admin@certodrive.com / password123</p>
+              <p>Driver — driver.seoul@certodrive.com / password123</p>
+            </div>
+          )}
         </div>
       </main>
       <SiteFooter />
