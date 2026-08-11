@@ -289,6 +289,73 @@ export default async function PartnersPage() {
         </div>
       </section>
 
+      {/* Partner dashboard preview */}
+      <section className="section bg-[var(--color-graphite)] text-white">
+        <div className="container-cd">
+          <div className="flex items-end justify-between flex-wrap gap-4">
+            <div className="max-w-xl">
+              <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
+                <span className="w-4 h-px bg-white/50" />{L ? "파트너 대시보드" : "Partner dashboard"}
+              </div>
+              <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-4">{L ? "승인 후 사용하는 화면" : "What you'll use once approved"}</h2>
+            </div>
+            <span className="text-xs text-white/45">{L ? "미리보기" : "Preview"}</span>
+          </div>
+
+          <div className="mt-10 rounded-2xl bg-white text-[var(--color-ink)] p-5 md:p-7 border border-white/10">
+            {/* Stat tiles */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {(L
+                ? [["이번 주 운행", "6"], ["다가오는 예약", "3"], ["지급 예정", "€ —"], ["새 운행 요청", "2"]]
+                : [["This week", "6"], ["Upcoming", "3"], ["Pending payout", "€ —"], ["New requests", "2"]]
+              ).map(([k, v]) => (
+                <div key={k} className="rounded-xl border border-[var(--color-line)] p-4">
+                  <div className="text-[11px] text-[var(--color-slate)]">{k}</div>
+                  <div className="font-display text-2xl mt-1">{v}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 grid lg:grid-cols-[1.4fr_1fr] gap-4">
+              {/* Upcoming trips */}
+              <div className="rounded-xl border border-[var(--color-line)] p-4">
+                <div className="text-sm font-semibold mb-3">{L ? "다가오는 운행" : "Upcoming trips"}</div>
+                <div className="divide-y divide-[var(--color-line)]">
+                  {[
+                    { r: "CD-8241", route: "CDG → Paris 8e", when: "Aug 28 · 14:30", pay: "€ —" },
+                    { r: "CD-8237", route: L ? "파리 → 베르사유" : "Paris → Versailles", when: "Aug 29 · 09:00", pay: "€ —" },
+                    { r: "CD-8230", route: "ORY → Paris 1e", when: "Aug 30 · 18:15", pay: "€ —" },
+                  ].map((t) => (
+                    <div key={t.r} className="flex items-center gap-3 py-2.5 text-sm">
+                      <span className="text-[var(--color-slate)] w-16 shrink-0">{t.r}</span>
+                      <span className="min-w-0 truncate">{t.route}</span>
+                      <span className="text-[var(--color-slate)] ml-auto shrink-0 hidden sm:block">{t.when}</span>
+                      <span className="font-semibold shrink-0 w-12 text-right">{t.pay}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Documents status */}
+              <div className="rounded-xl border border-[var(--color-line)] p-4">
+                <div className="text-sm font-semibold mb-3">{L ? "문서 상태" : "Documents"}</div>
+                <div className="grid gap-2">
+                  {(L
+                    ? [["운전면허", "확인", "green"], ["차량 보험", "확인", "green"], ["차량등록증", "확인", "green"], ["운송 면허", "만료 임박", "amber"]]
+                    : [["Driver license", "Verified", "green"], ["Insurance", "Verified", "green"], ["Registration", "Verified", "green"], ["Transport permit", "Expiring", "amber"]]
+                  ).map(([k, v, tone]) => (
+                    <div key={k} className="flex items-center justify-between text-sm">
+                      <span>{k}</span>
+                      <span className={`pill ${tone === "green" ? "pill-green" : "pill-amber"}`}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-white/45">{L ? "실제 지급액·정산 주기는 관리자 정책에 따라 표시됩니다." : "Actual earnings and payout cycle follow admin policy."}</p>
+        </div>
+      </section>
+
       {/* Earnings — honest structure */}
       <section className="section">
         <div className="container-cd grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
