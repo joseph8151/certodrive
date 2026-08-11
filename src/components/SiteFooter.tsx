@@ -49,7 +49,7 @@ export default async function SiteFooter() {
 
   return (
     <footer className="bg-[var(--color-graphite)] text-white">
-      <div className="container-cd pt-16 md:pt-20 pb-14 grid gap-x-12 gap-y-12 md:grid-cols-12">
+      <div className="container-cd pt-20 md:pt-28 pb-16 md:pb-20 grid gap-x-12 gap-y-14 md:grid-cols-12">
         {/* Brand */}
         <div className="md:col-span-4">
           <div className="font-display text-2xl font-extrabold tracking-tight">
@@ -65,11 +65,11 @@ export default async function SiteFooter() {
         </div>
 
         {/* Links */}
-        <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+        <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-12">
           {cols.map((c) => (
             <div key={c.title}>
-              <h4 className="text-white/40 font-semibold text-[11px] uppercase tracking-[0.14em] mb-4">{c.title}</h4>
-              <ul className="space-y-3 text-sm">
+              <h4 className="text-white/40 font-semibold text-[11px] uppercase tracking-[0.14em] mb-5">{c.title}</h4>
+              <ul className="space-y-4 text-sm">
                 {c.links.map((l) => (
                   <li key={l.href}>
                     <Link href={l.href} className="text-white/65 hover:text-white transition-colors">{l.label}</Link>
@@ -83,8 +83,8 @@ export default async function SiteFooter() {
 
       {/* Legal disclosure (Korea) */}
       <div className="border-t border-white/10">
-        <div className="container-cd py-6 text-[11px] leading-relaxed text-white/40">
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
+        <div className="container-cd py-8 text-[11px] leading-relaxed text-white/40">
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
             <span className="text-white/55 font-medium">{L ? "사업자 정보" : "Business"}</span>
             <span>{L ? BUSINESS.nameKo : BUSINESS.nameEn}</span>
             <span>{L ? "대표" : "Rep."} {BUSINESS.representative}</span>
@@ -101,7 +101,7 @@ export default async function SiteFooter() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-cd py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
+        <div className="container-cd py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Certo Drive. {t("footer.rights")}</span>
           <span>Seoul · Worldwide</span>
         </div>

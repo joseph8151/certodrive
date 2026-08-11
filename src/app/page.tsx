@@ -641,11 +641,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      <SiteFooter />
-      <StickyMobileCTA locale={locale} />
-
       {/* Fleet reference (compact, admin-owned data) */}
       <FleetStrip locale={locale} />
+
+      <SiteFooter />
+      <StickyMobileCTA locale={locale} />
     </>
   );
 }
