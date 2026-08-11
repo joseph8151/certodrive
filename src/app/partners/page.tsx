@@ -181,7 +181,7 @@ export default async function PartnersPage() {
           <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
             <span className="w-4 h-px bg-white/50" />{L ? "기사 파트너" : "Drive with Certo"}
           </div>
-          <h1 className="font-display text-[1.9rem] sm:text-[2.4rem] md:text-[3rem] mt-5 leading-[1.1]">
+          <h1 className="font-display font-semibold text-[1.6rem] sm:text-[1.95rem] md:text-[2.4rem] mt-5 leading-[1.15]">
             {L ? "한국인 여행객의 이동을 함께할 파트너를 찾습니다" : "Partner with Certo to move Korean travelers"}
           </h1>
           <p className="mt-6 text-white/70 text-lg leading-relaxed">
@@ -213,7 +213,7 @@ export default async function PartnersPage() {
         <div className="container-cd">
           <div className="max-w-xl">
             <p className="eyebrow">{L ? "등록 절차" : "Registration"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "가입은 6단계입니다" : "Six steps to get on the road"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "가입은 6단계입니다" : "Six steps to get on the road"}</h2>
           </div>
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10">
             {regSteps.map((s) => (
@@ -232,7 +232,7 @@ export default async function PartnersPage() {
         <div className="container-cd grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-start">
           <div>
             <p className="eyebrow">{L ? "운영 방식" : "How it works"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "가입 후, 이렇게 운행합니다" : "How you drive once approved"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "가입 후, 이렇게 운행합니다" : "How you drive once approved"}</h2>
             <div className="mt-10 grid gap-6">
               {opFlow.map((s, i) => (
                 <div key={s.t} className="flex gap-4">
@@ -294,7 +294,7 @@ export default async function PartnersPage() {
         <div className="container-cd grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div>
             <p className="eyebrow">{L ? "수익 구조" : "Earnings"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "막연한 약속이 아니라, 구조로 설명합니다" : "Structure, not slogans"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "막연한 약속이 아니라, 구조로 설명합니다" : "Structure, not slogans"}</h2>
             <p className="mt-5 text-[var(--color-slate)] leading-relaxed max-w-md">
               {L ? "“높은 수익”을 약속하지 않습니다. 대신 실제로 제공되는 것만 명확히 안내합니다." : "We don't promise “high earnings.” We tell you exactly what the platform provides."}
             </p>
@@ -317,7 +317,7 @@ export default async function PartnersPage() {
             <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
               <span className="w-4 h-px bg-white/50" />{L ? "정산" : "Settlement"}
             </div>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-4">{L ? "정산은 이렇게 관리됩니다" : "How settlement is managed"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-4">{L ? "정산은 이렇게 관리됩니다" : "How settlement is managed"}</h2>
           </div>
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8">
             {settlement.map((s) => (
@@ -338,7 +338,7 @@ export default async function PartnersPage() {
         <div className="container-cd grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
             <p className="eyebrow">{L ? "등록 조건" : "Who can join"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-3xl mt-5">{L ? "이런 분과 함께합니다" : "Who can partner"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.8rem] mt-5">{L ? "이런 분과 함께합니다" : "Who can partner"}</h2>
             <ul className="mt-8 grid gap-3">
               {whoCanJoin.map((r) => (
                 <li key={r} className="flex items-start gap-3">
@@ -353,7 +353,7 @@ export default async function PartnersPage() {
           </div>
           <div>
             <p className="eyebrow">{L ? "필요 서류" : "Documents"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-3xl mt-5">{L ? "업로드할 서류" : "What to upload"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.8rem] mt-5">{L ? "업로드할 서류" : "What to upload"}</h2>
             <div className="mt-8 grid gap-3">
               {docs.map((d) => (
                 <div key={d.t} className="rounded-xl border border-[var(--color-line)] bg-white p-4 flex items-start justify-between gap-4">
@@ -377,7 +377,7 @@ export default async function PartnersPage() {
         <div className="container-cd grid lg:grid-cols-[0.7fr_1.3fr] gap-10 lg:gap-16">
           <div className="lg:sticky lg:top-24 self-start">
             <p className="eyebrow">FAQ</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "기사 자주 묻는 질문" : "Driver FAQ"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "기사 자주 묻는 질문" : "Driver FAQ"}</h2>
             <p className="mt-4 text-[var(--color-slate)]">{L ? "더 궁금한 점은 지원팀에 문의하세요." : "Anything else — reach the support team."}</p>
             <a href="mailto:support@certodrive.com" className="btn btn-outline mt-6 text-sm">support@certodrive.com</a>
           </div>
@@ -400,7 +400,7 @@ export default async function PartnersPage() {
         <div className="container-cd max-w-3xl">
           <div className="mb-8">
             <p className="eyebrow">{L ? "지원서" : "Application"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "지금 파트너로 지원하세요" : "Apply to partner with us"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "지금 파트너로 지원하세요" : "Apply to partner with us"}</h2>
             <p className="mt-4 text-[var(--color-slate)]">{L ? "기본 정보를 입력하면 관리자가 검토 후 안내드립니다." : "Enter your details and an admin will review and follow up."}</p>
           </div>
           <div className="card p-6 md:p-8">

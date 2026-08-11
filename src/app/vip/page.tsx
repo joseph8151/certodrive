@@ -55,7 +55,7 @@ export default async function VIP() {
         <div className="absolute inset-0" style={photoBg(IMG.vipBand, "linear-gradient(105deg, rgba(28,25,20,0.95) 0%, rgba(30,27,22,0.82) 45%, rgba(30,27,22,0.55) 100%)")} />
         <div className="container-cd relative py-16 md:py-24 max-w-2xl">
           <p className="eyebrow text-[var(--color-gold)]">VIP & PROTOCOL</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold mt-4 leading-tight">
+          <h1 className="font-display text-2xl md:text-[2rem] font-bold mt-4 leading-tight">
             {L ? "귀빈을 위한 최고 수준의 의전 이동" : "The highest standard of VIP chauffeur"}
           </h1>
           <p className="mt-5 text-white/80 text-lg">

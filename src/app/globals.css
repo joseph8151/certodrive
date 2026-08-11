@@ -71,9 +71,9 @@ body {
 /* Display headings — tight grotesk, the signature of the type system. */
 .font-display {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.028em;
-  line-height: 1.03;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
 }
 
 /* ---- Surfaces ------------------------------------------------------------ */

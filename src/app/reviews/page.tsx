@@ -55,7 +55,7 @@ export default async function ReviewsPage() {
         <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(30,27,22,0.92), rgba(41,37,30,0.55)), url(${IMG.reviews})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="container-cd relative py-16 md:py-20">
           <p className="eyebrow text-[var(--color-gold)]">{L ? "고객 후기" : "Reviews"}</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold mt-3 max-w-2xl">
+          <h1 className="font-display text-2xl md:text-[2rem] font-bold mt-3 max-w-2xl">
             {L ? "여행자들이 남긴 진짜 후기" : "Real stories from our travelers"}
           </h1>
           {total > 0 && (

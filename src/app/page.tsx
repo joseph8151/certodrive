@@ -89,7 +89,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] live-dot" />
               {L ? "글로벌 한국어 모빌리티 네트워크" : "Global Korean-speaking mobility network"}
             </div>
-            <h1 className="font-display text-[1.9rem] leading-[1.1] sm:text-[2.4rem] lg:text-[3rem] mt-5 whitespace-pre-line">
+            <h1 className="font-display font-semibold text-[1.6rem] leading-[1.15] sm:text-[1.95rem] lg:text-[2.4rem] mt-5 whitespace-pre-line">
               {t("hero.title")}
             </h1>
             <p className="mt-5 text-white/65 text-[15px] md:text-base max-w-md leading-relaxed">{t("hero.subtitle")}</p>
@@ -142,7 +142,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd grid lg:grid-cols-[0.9fr_1.1fr] gap-14 lg:gap-20 items-start">
           <div className="lg:sticky lg:top-24">
             <p className="eyebrow">{L ? "체르토 드라이브란" : "What Certo is"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">
               {L ? "기사 연결이 아니라, 예약부터 도착까지 관리되는 이동 서비스입니다." : "Not a driver marketplace. A managed ride, from booking to arrival."}
             </h2>
             <p className="mt-6 text-[var(--color-slate)] leading-relaxed">
@@ -207,7 +207,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
               <span className="w-4 h-px bg-white/50" />{L ? "관리형 배차" : "Certo managed dispatch"}
             </div>
-            <h2 className="font-display text-3xl md:text-[2.6rem] mt-4">
+            <h2 className="font-display text-2xl md:text-[1.85rem] mt-4">
               {L ? "모든 예약은 체르토가 확인하고, 배정하고, 지원합니다." : "Every booking is reviewed, assigned and supported by Certo."}
             </h2>
           </div>
@@ -236,7 +236,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div className="max-w-xl">
               <p className="eyebrow">{L ? "서비스" : "Services"}</p>
-              <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "어떤 이동이든, 한 곳에서" : "Every kind of ride, in one place"}</h2>
+              <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "어떤 이동이든, 한 곳에서" : "Every kind of ride, in one place"}</h2>
             </div>
           </div>
 
@@ -329,7 +329,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd">
           <div className="max-w-xl">
             <p className="eyebrow">{L ? "이용 방법" : "How it works"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "예약부터 도착까지, 6단계" : "From booking to arrival, in six steps"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "예약부터 도착까지, 6단계" : "From booking to arrival, in six steps"}</h2>
           </div>
           <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
             {[
@@ -369,7 +369,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd grid lg:grid-cols-[1fr_0.9fr] gap-12 lg:gap-16 items-center">
           <div>
             <p className="eyebrow">{L ? "신뢰" : "Trust"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "모든 기사는 Certo Verified 입니다" : "Every driver is Certo Verified"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "모든 기사는 Certo Verified 입니다" : "Every driver is Certo Verified"}</h2>
             <p className="mt-6 text-[var(--color-slate)] leading-relaxed max-w-lg">
               {L ? "면허·보험·차량·운송 자격과 한국어 소통 가능 여부까지 관리자가 직접 확인한 기사만 배정됩니다. 아래는 고객에게 공개되는 기사 프로필 예시입니다." : "Only drivers whose license, insurance, vehicle, transport eligibility and Korean communication we've reviewed get assigned. Below is an example of the profile customers see."}
             </p>
@@ -472,7 +472,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div>
               <p className="eyebrow">{L ? "서비스 도시" : "Cities"}</p>
-              <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "주요 글로벌 도시" : "Popular destinations"}</h2>
+              <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "주요 글로벌 도시" : "Popular destinations"}</h2>
             </div>
             <Link href="/destinations" className="btn btn-outline text-sm">{L ? "전체 도시" : "All cities"}</Link>
           </div>
@@ -496,7 +496,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd">
           <div className="max-w-xl">
             <p className="eyebrow">{L ? "인기 노선" : "Popular routes"}</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "노선별 예상 요금" : "Sample fares by route"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "노선별 예상 요금" : "Sample fares by route"}</h2>
             <p className="mt-4 text-[var(--color-slate)]">{L ? "대표 노선의 시작 요금입니다. 차량·옵션·시간대에 따라 예약 시 정확한 정찰 요금이 확정됩니다." : "Starting fares for popular routes. Your exact fixed price is confirmed at booking, based on vehicle, options and time."}</p>
           </div>
           <div className="mt-10 rounded-2xl border border-[var(--color-line)] overflow-hidden bg-white divide-y divide-[var(--color-line)]">
@@ -526,7 +526,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
               <span className="w-4 h-px bg-white/50" />{L ? "이런 분께" : "Made for"}
             </div>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-4">{L ? "이럴 때, 체르토 드라이브" : "When Certo Drive fits"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-4">{L ? "이럴 때, 체르토 드라이브" : "When Certo Drive fits"}</h2>
           </div>
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8">
             {(L ? [
@@ -600,7 +600,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <div className="container-cd grid lg:grid-cols-[0.7fr_1.3fr] gap-10 lg:gap-16">
           <div className="lg:sticky lg:top-24 self-start">
             <p className="eyebrow">FAQ</p>
-            <h2 className="font-display text-[2.1rem] md:text-[2.7rem] mt-5">{L ? "예약 전에 궁금한 점" : "Before you book"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "예약 전에 궁금한 점" : "Before you book"}</h2>
             <p className="mt-4 text-[var(--color-slate)]">{L ? "더 궁금한 점은 언제든 고객센터로 문의하세요." : "Anything else — reach our support team anytime."}</p>
             <Link href="/support" className="btn btn-outline mt-6 text-sm">{L ? "고객센터" : "Support"}</Link>
           </div>
@@ -629,7 +629,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <section className="section pt-0">
         <div className="container-cd grid md:grid-cols-[1.4fr_1fr] gap-5">
           <div className="rounded-3xl bg-[var(--color-ink)] text-white p-10 md:p-14">
-            <h2 className="font-display text-3xl md:text-[2.6rem]">{L ? "다음 이동, 지금 확정하세요" : "Confirm your next ride now"}</h2>
+            <h2 className="font-display text-2xl md:text-[1.85rem]">{L ? "다음 이동, 지금 확정하세요" : "Confirm your next ride now"}</h2>
             <p className="mt-4 text-white/65 max-w-md">{L ? "요금을 먼저 확인하고, 검증된 한인 기사와 함께 이동하세요." : "See your price first, then travel with a verified Korean-speaking driver."}</p>
             <Link href="/#book" className="btn btn-gold mt-8">{t("nav.book")}</Link>
           </div>

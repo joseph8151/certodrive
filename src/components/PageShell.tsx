@@ -16,7 +16,7 @@ export default function PageShell({
       <section className="hero-gradient text-white">
         <div className="container-cd py-14 md:py-16">
           <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
-          <h1 className="font-display text-3xl md:text-5xl font-bold mt-3 max-w-3xl">{title}</h1>
+          <h1 className="font-display text-2xl md:text-[2rem] font-semibold mt-3 max-w-3xl">{title}</h1>
           {subtitle && <p className="mt-4 text-white/75 max-w-2xl">{subtitle}</p>}
         </div>
       </section>

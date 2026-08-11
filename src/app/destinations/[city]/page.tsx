@@ -57,7 +57,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         <div className="container-cd relative py-12 md:py-16 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">{cityMeta?.country ?? ""}</p>
-            <h1 className="font-display text-3xl md:text-5xl font-bold mt-3">
+            <h1 className="font-display text-2xl md:text-[2rem] font-semibold mt-3">
               {cmsPublished?.headline || (L ? `${name} 공항 픽업 및 차량 예약` : `${name} airport pickup & chauffeur`)}
             </h1>
             <p className="mt-4 text-white/75 max-w-lg">

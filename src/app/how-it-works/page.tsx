@@ -86,7 +86,7 @@ export default async function HowItWorks() {
         <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(105deg, rgba(30,27,22,0.93), rgba(41,37,30,0.6)), url(${IMG.airport})`, backgroundSize: "cover", backgroundPosition: "center" }} />
         <div className="container-cd relative py-16 md:py-24">
           <p className="eyebrow text-[var(--color-gold)]">{L ? "이용 방법" : "How it works"}</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold mt-3 max-w-3xl">
+          <h1 className="font-display text-2xl md:text-[2rem] font-bold mt-3 max-w-3xl">
             {L ? "예약부터 공항 미팅까지, 이렇게 제공됩니다" : "How the service works, end to end"}
           </h1>
           <p className="mt-4 text-white/75 max-w-2xl">
@@ -191,7 +191,7 @@ export default async function HowItWorks() {
         <div className="container-cd">
           <div className="max-w-xl">
             <p className="eyebrow">{L ? "고객 보호" : "Your protection"}</p>
-            <h2 className="font-display text-4xl md:text-5xl mt-5 leading-[1.1]">{L ? "안심하고 맡기세요" : "Travel with peace of mind"}</h2>
+            <h2 className="font-display text-2xl md:text-[2rem] mt-5 leading-[1.1]">{L ? "안심하고 맡기세요" : "Travel with peace of mind"}</h2>
           </div>
           <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
             {(L

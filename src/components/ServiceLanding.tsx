@@ -188,7 +188,7 @@ export default function ServiceLanding({
         <div className="container-cd relative py-12 md:py-20 grid lg:grid-cols-2 gap-10 items-center">
           <div>
             <p className="eyebrow text-[var(--color-gold)]">CERTO DRIVE</p>
-            <h1 className="font-display text-3xl md:text-5xl font-bold mt-3 leading-tight">{title}</h1>
+            <h1 className="font-display text-2xl md:text-[2rem] font-semibold mt-3 leading-tight">{title}</h1>
             <p className="mt-4 text-white/80 text-lg max-w-lg">{subtitle}</p>
             <div className="mt-8 grid sm:grid-cols-2 gap-4">
               {points.map((p) => (
