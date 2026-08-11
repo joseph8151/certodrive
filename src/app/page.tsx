@@ -89,10 +89,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] live-dot" />
               {L ? "글로벌 한국어 모빌리티 네트워크" : "Global Korean-speaking mobility network"}
             </div>
-            <h1 className="font-display text-[2.7rem] leading-[1.02] sm:text-6xl lg:text-[4.4rem] mt-5 whitespace-pre-line">
+            <h1 className="font-display text-[1.9rem] leading-[1.1] sm:text-[2.4rem] lg:text-[3rem] mt-5 whitespace-pre-line">
               {t("hero.title")}
             </h1>
-            <p className="mt-6 text-white/70 text-base md:text-lg max-w-lg leading-relaxed">{t("hero.subtitle")}</p>
+            <p className="mt-5 text-white/65 text-[15px] md:text-base max-w-md leading-relaxed">{t("hero.subtitle")}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/65">
               {[
                 L ? "검증된 한인 기사" : "Verified drivers",

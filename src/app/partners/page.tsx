@@ -181,7 +181,7 @@ export default async function PartnersPage() {
           <div className="inline-flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/60">
             <span className="w-4 h-px bg-white/50" />{L ? "기사 파트너" : "Drive with Certo"}
           </div>
-          <h1 className="font-display text-4xl md:text-[3.4rem] mt-5 leading-[1.03]">
+          <h1 className="font-display text-[1.9rem] sm:text-[2.4rem] md:text-[3rem] mt-5 leading-[1.1]">
             {L ? "한국인 여행객의 이동을 함께할 파트너를 찾습니다" : "Partner with Certo to move Korean travelers"}
           </h1>
           <p className="mt-6 text-white/70 text-lg leading-relaxed">
