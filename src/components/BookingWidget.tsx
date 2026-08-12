@@ -7,6 +7,7 @@ import { makeT } from "@/lib/i18n";
 import { formatMoney } from "@/lib/utils";
 import AddressAutocomplete from "./AddressAutocomplete";
 import MapPreview from "./MapPreview";
+import FlightStatus from "./FlightStatus";
 import {
   VEHICLE_CATEGORIES,
   VEHICLE_META,
@@ -417,6 +418,7 @@ export default function BookingWidget({
           <div>
             <label className="field-label">{t("book.flight")} <span className="text-[var(--color-slate)] font-normal">({t("common.optional")})</span></label>
             <input className="input" value={form.flightNumber} onChange={(e) => set("flightNumber", e.target.value.toUpperCase())} placeholder="KE901 / OZ102" />
+            {form.flightNumber.trim() && <FlightStatus flight={form.flightNumber} date={form.serviceDate || undefined} locale={locale} />}
           </div>
 
           <div className="grid gap-2">
