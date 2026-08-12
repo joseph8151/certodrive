@@ -235,7 +235,7 @@ export async function resolvePromotion(code: string | null | undefined) {
 // Values are the driver supply price for a Business Sedan, airport → central
 // city, in the airport's local currency. Other vehicle classes scale from it.
 // ---------------------------------------------------------------------------
-const BASE_AIRPORT_FARES: Record<string, { currency: string; base: number }> = {
+export const BASE_AIRPORT_FARES: Record<string, { currency: string; base: number }> = {
   // Korea
   ICN: { currency: "KRW", base: 72000 }, GMP: { currency: "KRW", base: 58000 },
   // Japan
@@ -253,7 +253,7 @@ const BASE_AIRPORT_FARES: Record<string, { currency: string; base: number }> = {
   SIN: { currency: "SGD", base: 70 },
 };
 
-const CLASS_MULTIPLIER: Record<string, number> = {
+export const CLASS_MULTIPLIER: Record<string, number> = {
   "Economy Sedan": 0.82,
   "Business Sedan": 1.0,
   "Premium Sedan": 1.4,
@@ -262,6 +262,19 @@ const CLASS_MULTIPLIER: Record<string, number> = {
   Minibus: 2.3,
   "VIP Chauffeur": 2.6,
 };
+
+// Approximate customer-facing "from" price for a class at an airport (marketing
+// display only; the real total is confirmed at booking). Applies a ~1.25 platform
+// uplift over the driver supply base.
+export function airportFrom(code: string, vehicleCategory = "Business Sedan"): { currency: string; amount: number } | null {
+  const fare = BASE_AIRPORT_FARES[code];
+  const mult = CLASS_MULTIPLIER[vehicleCategory];
+  if (!fare || !mult) return null;
+  const zeroDecimal = ["KRW", "JPY"].includes(fare.currency);
+  const raw = fare.base * mult * 1.25;
+  const amount = zeroDecimal ? Math.round(raw / 1000) * 1000 : Math.round(raw);
+  return { currency: fare.currency, amount };
+}
 
 function syntheticAirportRule(params: {
   pickupLocation: string;

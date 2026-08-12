@@ -484,7 +484,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </div>
           <div className="mt-10 rounded-2xl border border-[var(--color-line)] overflow-hidden bg-white divide-y divide-[var(--color-line)]">
             {routes.map((r) => (
-              <Link key={r.code + r.city} href={`/destinations/${encodeURIComponent(r.slug)}`} className="flex items-center gap-4 md:gap-6 px-5 md:px-7 py-5 hover:bg-[var(--color-mist)] transition-colors">
+              <Link key={r.code + r.city} href={`/airport/${r.code.toLowerCase()}`} className="flex items-center gap-4 md:gap-6 px-5 md:px-7 py-5 hover:bg-[var(--color-mist)] transition-colors">
                 <span className="font-display text-lg w-14 shrink-0">{r.code}</span>
                 <span className="flex items-center gap-2.5 text-sm md:text-base min-w-0">
                   <span className="h-2 w-2 rounded-full bg-[var(--color-accent-strong)] shrink-0" />
