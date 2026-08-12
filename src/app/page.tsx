@@ -36,14 +36,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     CONVERSATIONAL: { ko: "회화", en: "Conversational" }, BASIC: { ko: "기초", en: "Basic" }, NONE: { ko: "", en: "" },
   };
 
-  // Featured real review, if any exist.
-  const reviewRows = await prisma.review.findMany({
-    where: { rating: { gte: 4 }, comment: { not: null } },
-    orderBy: { createdAt: "desc" },
-    take: 4,
-    include: { booking: { select: { pickupCity: true, pickupLocation: true, destination: true, serviceDate: true } } },
-  });
-
   const photoBg = (url: string, overlay: string) => ({
     backgroundColor: "var(--color-graphite)",
     backgroundImage: `${overlay}, url(${url})`,
@@ -367,6 +359,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
                 </div>
               ))}
             </div>
+            <Link href="/verified" className="mt-7 inline-block text-sm font-semibold text-[var(--color-ink)] hover:underline">{L ? "Certo Verified 검증 프로그램 자세히 →" : "About the Certo Verified program →"}</Link>
           </div>
           {/* Sample verified-driver profile card */}
           <div className="card p-6 max-w-sm mx-auto lg:mx-0 w-full">
@@ -542,41 +535,39 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* ═══ FEATURED REVIEW (real only) ═══ */}
-      {reviewRows.length > 0 && (
-        <section className="section">
-          <div className="container-cd">
-            <p className="eyebrow">{L ? "고객 후기" : "Reviews"}</p>
-            <div className="mt-8 grid lg:grid-cols-[1.3fr_1fr] gap-8 items-stretch">
-              {/* Featured */}
-              <figure className="rounded-2xl border border-[var(--color-line)] bg-white p-8 md:p-10 flex flex-col">
-                <div className="text-[var(--color-ink)] text-lg">★★★★★</div>
-                <blockquote className="mt-5 font-display text-2xl md:text-[1.9rem] leading-snug">
-                  “{reviewRows[0].comment}”
-                </blockquote>
-                <figcaption className="mt-auto pt-7 flex items-center gap-3 text-sm">
-                  <span className="font-semibold">{reviewRows[0].authorName || (L ? "체르토 고객" : "Certo customer")}</span>
-                  <span className="text-[var(--color-slate)]">· {reviewRows[0].booking.pickupCity}</span>
-                  <span className="ml-auto chip"><Icon name="shield" size={12} /> {L ? "예약 인증" : "Verified booking"}</span>
-                </figcaption>
-              </figure>
-              {/* Smaller */}
-              <div className="grid gap-4">
-                {reviewRows.slice(1, 3).map((r) => (
-                  <figure key={r.id} className="rounded-2xl border border-[var(--color-line)] bg-white p-6 flex flex-col">
-                    <div className="text-[var(--color-ink)] text-sm">{"★".repeat(r.rating)}</div>
-                    <blockquote className="mt-3 text-[15px] leading-relaxed text-[var(--color-ink)] line-clamp-4">“{r.comment}”</blockquote>
-                    <figcaption className="mt-3 text-xs text-[var(--color-slate)] flex items-center gap-2">
-                      {r.authorName || (L ? "고객" : "Customer")} · {r.booking.pickupCity}
-                      <span className="ml-auto chip text-[10px]">{L ? "예약 인증" : "Verified"}</span>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-            </div>
+      {/* ═══ WHAT YOU CAN EXPECT — shown until genuine, booking-verified reviews exist ═══ */}
+      <section className="section">
+        <div className="container-cd">
+          <div className="max-w-xl">
+            <p className="eyebrow">{L ? "기대할 수 있는 것" : "What you can expect"}</p>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "예약할 때 약속드리는 것" : "What every booking gives you"}</h2>
+            <p className="mt-4 text-[var(--color-slate)]">{L ? "후기는 실제 이용 고객의 예약 인증 후기만 게시합니다. 그전까지, 모든 예약에 적용되는 원칙을 먼저 확인하세요." : "We publish only booking-verified reviews from real riders. Until then, here's what applies to every booking."}</p>
           </div>
-        </section>
-      )}
+          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8">
+            {(L ? [
+              ["출발 전 기사 확정", "현장 배차가 아니라, 이동 전에 담당 기사와 차량이 확정됩니다."],
+              ["정찰제 요금", "예약 시 금액이 확정되고, 톨게이트·주차·기본 대기가 포함됩니다."],
+              ["검증된 한국어 기사", "면허·보험·차량과 한국어 소통을 확인한 기사만 배정됩니다."],
+              ["항공편 지연 확인", "항공편 번호로 도착을 확인해, 지연 시 기사님이 대기합니다."],
+              ["입국장 피켓 미팅", "성함이 적힌 피켓으로 만나고, 미팅 위치를 미리 안내합니다."],
+              ["문제 시 체르토 지원", "기사와 직접 해결하지 않습니다. 체르토가 중간에서 지원합니다."],
+            ] : [
+              ["Driver confirmed before departure", "Not on-street dispatch — your driver and vehicle are set before the trip."],
+              ["Upfront fixed pricing", "Locked at booking, with tolls, parking and base waiting included."],
+              ["Verified Korean-speaking drivers", "Only drivers we've checked for license, insurance, vehicle and Korean."],
+              ["Flight-delay tracking", "We track your flight and the driver waits on delays."],
+              ["Meet & greet at arrivals", "Found by name board, with the meeting point shared in advance."],
+              ["Certo steps in", "You never sort issues out alone — Certo supports in between."],
+            ]).map(([t, d], i) => (
+              <div key={i} className="border-t border-[var(--color-line)] pt-5">
+                <div className="grid place-items-center w-6 h-6 rounded-full bg-[var(--color-ink)] text-[var(--color-accent)]"><Check /></div>
+                <h3 className="mt-4 font-semibold">{t}</h3>
+                <p className="mt-1.5 text-[15px] text-[var(--color-slate)] leading-relaxed">{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ═══ FAQ — categorized ═══ */}
       <section className="section bg-[var(--color-mist)]">

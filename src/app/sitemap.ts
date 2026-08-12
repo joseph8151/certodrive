@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/booking/hourly",
     "/vip",
     "/destinations",
+    "/verified",
     "/how-it-works",
     "/lookup",
     "/partners",

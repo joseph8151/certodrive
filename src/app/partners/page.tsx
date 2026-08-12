@@ -1,6 +1,7 @@
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import DriverRegistrationForm from "@/components/DriverRegistrationForm";
+import DriverEligibilityCheck from "@/components/DriverEligibilityCheck";
 import Icon from "@/components/Icon";
 import { getLocale } from "@/lib/locale";
 import { IMG } from "@/lib/images";
@@ -213,7 +214,8 @@ export default async function PartnersPage() {
         <div className="container-cd">
           <div className="max-w-xl">
             <p className="eyebrow">{L ? "등록 절차" : "Registration"}</p>
-            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "가입은 6단계입니다" : "Six steps to get on the road"}</h2>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "지원부터 승인까지" : "From application to approval"}</h2>
+            <p className="mt-3 text-[var(--color-slate)] max-w-xl">{L ? "지원서 자체는 3단계로 간단합니다. 제출 후 체르토가 검토해 승인하며, 정산 정보는 승인 후 대시보드에서 입력합니다." : "The application itself is a quick 3 steps. Certo then reviews and approves, and you add payout details in your dashboard after approval."}</p>
           </div>
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10">
             {regSteps.map((s) => (
@@ -462,8 +464,20 @@ export default async function PartnersPage() {
         </div>
       </section>
 
+      {/* Eligibility self-check */}
+      <section className="section pb-0">
+        <div className="container-cd max-w-3xl">
+          <div className="mb-6">
+            <p className="eyebrow">{L ? "자격 확인" : "Eligibility"}</p>
+            <h2 className="font-display text-[1.55rem] md:text-[1.95rem] mt-5">{L ? "1분 자격 확인" : "Check if you can join"}</h2>
+            <p className="mt-3 text-[var(--color-slate)]">{L ? "지원 전에 간단히 확인해 보세요. 이 확인은 법적 자격을 보장하지 않으며, 최종 승인은 체르토 검토 후 결정됩니다." : "A quick pre-check before you apply. It doesn't guarantee legal eligibility — final approval follows Certo's review."}</p>
+          </div>
+          <DriverEligibilityCheck locale={locale} />
+        </div>
+      </section>
+
       {/* Application form */}
-      <section id="apply" className="section pt-0 scroll-mt-20">
+      <section id="apply" className="section scroll-mt-20">
         <div className="container-cd max-w-3xl">
           <div className="mb-8">
             <p className="eyebrow">{L ? "지원서" : "Application"}</p>

@@ -488,13 +488,30 @@ export default function BookingWidget({
       {step > 1 && estimate && (
         <div className="mt-5 rounded-xl border border-[var(--color-line)] overflow-hidden">
           {estimate.available ? (
-            <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-mist)]">
-              <div>
-                <div className="text-xs text-[var(--color-slate)]">{locale === "ko" ? "예상 요금 (정찰제)" : "Estimated fixed price"}</div>
-                <div className="text-[11px] text-[var(--color-slate)]">{locale === "ko" ? "선택 옵션 반영 · 결제 전 최종 확인" : "Includes options · confirmed before payment"}</div>
+            <div>
+              <div className="flex items-center justify-between px-4 py-3 bg-[var(--color-mist)]">
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-[var(--color-slate)]">{locale === "ko" ? "예상 요금 (정찰제)" : "Estimated fixed price"}</span>
+                    <span className="pill pill-green text-[10px]">{locale === "ko" ? "즉시 예약" : "Instant"}</span>
+                  </div>
+                  <div className="text-[11px] text-[var(--color-slate)]">{locale === "ko" ? "결제 전 최종 확인" : "Confirmed before payment"}</div>
+                </div>
+                <div className="font-display text-2xl font-bold text-[var(--color-navy)]">
+                  {formatMoney(estimate.customerPrice, estimate.currency)}
+                </div>
               </div>
-              <div className="font-display text-2xl font-bold text-[var(--color-navy)]">
-                {formatMoney(estimate.customerPrice, estimate.currency)}
+              <div className="px-4 py-3 border-t border-[var(--color-line)] bg-white">
+                <div className="text-[11px] font-semibold uppercase tracking-wide text-[var(--color-slate)]">{locale === "ko" ? "요금에 포함" : "Your fare includes"}</div>
+                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--color-ink)]">
+                  {(locale === "ko"
+                    ? ["기본 대기시간", "톨게이트", "주차", "항공편 지연 확인", ...(form.airportPicket ? ["공항 피켓 미팅"] : [])]
+                    : ["Base waiting", "Tolls", "Parking", "Flight tracking", ...(form.airportPicket ? ["Meet & greet"] : [])]
+                  ).map((x) => <span key={x} className="inline-flex items-center gap-1">✓ {x}</span>)}
+                </div>
+                <p className="mt-2 text-[11px] text-[var(--color-slate)]">
+                  {locale === "ko" ? "추가 정차·대기 초과·예약 외 일정 변경은 별도 요금이 안내됩니다." : "Extra stops, waiting beyond the included time, and off-booking changes are advised separately."}
+                </p>
               </div>
             </div>
           ) : estimate.reason === "quote" ? (

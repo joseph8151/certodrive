@@ -24,7 +24,7 @@ export default async function SiteFooter() {
       links: [
         { href: "/destinations", label: t("nav.cities") },
         { href: "/how-it-works", label: t("nav.help") },
-        { href: "/reviews", label: L ? "후기" : "Reviews" },
+        { href: "/verified", label: "Certo Verified" },
         { href: "/lookup", label: t("nav.lookup") },
       ],
     },
